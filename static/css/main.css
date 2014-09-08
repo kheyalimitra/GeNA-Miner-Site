@@ -1,0 +1,121 @@
+div.main {
+    font-size: 14px;
+    padding: 10px;
+    overflow: hidden;
+}
+
+div.block {
+    position: relative;
+    border: 1px solid;
+    box-sizing:border-box;
+    padding: 10px;
+}
+
+.beta-ribbon-wrapper {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    overflow: hidden;
+}
+.beta-ribbon {
+    font-size: 14px;
+    text-align: center;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    position: relative;
+    padding: 5px 0;
+    right: 10px;
+    top: 20px;
+    width: 150px;
+    height: 30px;
+    background-color: rgba(255, 234, 148, 0.8);
+}
+.beta-ribbon a {
+    font-family:'Lucida Console';
+    font-weight: bold;
+    text-shadow: 1px 1px rgba(0,0,0,0.25);
+    display:inline-block; 
+    vertical-align: middle;
+    text-decoration: none;
+    color: black;
+}
+
+.breadcrumb {
+    margin-bottom: 0px;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.tooltip-inner {
+    white-space: pre-wrap;
+    max-width: 400px;
+    text-align: left;
+}
+
+
+.dataTables_wrapper {
+    overflow: hidden;
+}
+.dataTables_wrapper .dataTables_length {
+    float: left;
+    margin-left: 0px;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.dataTables_wrapper .dataTables_filter {
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.dataTables_wrapper .DTTT_container {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.dataTables_wrapper .dataTables_info {
+    float: left;
+    margin-left: 0px;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.dataTables_wrapper .clear {
+    clear: both;
+    height: 0;
+}
+.dataTables_wrapper .dataTables_processing {
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+
+    background: none; 
+    background-color: rgba(255, 255, 255, 0);
+
+    z-index: 1000;
+}
+
+div.FixedHeader_Cloned th, div.FixedHeader_Cloned td {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+}

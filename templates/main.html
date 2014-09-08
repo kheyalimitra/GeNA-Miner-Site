@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<title>
+    GeNA Miner -- {{ query }} ({{ yearFrom }}-{{ yearTo }})
+</title>
+<head>
+<script src="static/js/jquery.min.js"></script>
+
+<script src="static/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
+
+<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+
+<script src="static/js/jquery.bootstrap-growl.min.js"></script>
+
+<script src="static/js/bootbox.js"></script>
+
+<script src="static/js/jquery.dataTables.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
+
+<script src="static/js/dataTables.bootstrap.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.css">
+
+<script src="static/js/dataTables.responsive.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.responsive.css">
+
+<script src="static/js/dataTables.tableTools.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.tableTools.css">
+
+<script src="static/js/dataTables.fixedHeader.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.css">
+
+<script src="static/js/main.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/main.css">
+
+<style>
+tr.group {
+    background-color: #dddddd !important;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 0;
+    outline: none;
+    background: none;
+    cursor: inherit;
+    display: block;
+}
+
+#form_table th,td {
+    padding: 5px;
+}
+
+#example_filter input {
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-property: width, background;
+    -webkit-transition-timing-function: ease;
+    -moz-transition-duration: 400ms;
+    -moz-transition-property: width, background;
+    -moz-transition-timing-function: ease;
+    -o-transition-duration: 400ms;
+    -o-transition-property: width, background;
+    -o-transition-timing-function: ease;
+    width: 200px;
+}
+#example_filter input:focus {
+    width: 300px;
+}
+</style>
+
+<script type="text/javascript" class="init">
+$(document).ready(function() {
+    var query = "{{ query }}";
+    var yearFrom = "{{ yearFrom }}";
+    var yearTo = "{{ yearTo }}";
+
+	var table = $('#example').DataTable( {
+        dom: 'lfTrtip',
+        tableTools: {
+            "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
+            "aButtons": [
+                {
+                    "sExtends": "copy",
+                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
+                    "oSelectorOpts": {
+                        page: 'current'
+                    }
+                },
+                {
+                    "sExtends": "csv",
+                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
+                    "oSelectorOpts": {
+                        page: 'current'
+                    }
+                }
+            ]
+        }, 
+
+        "serverSide": true,
+        "ajax": {
+            "url": "http://127.0.0.1:5000/main/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo,
+            "dataType": "jsonp",
+            cache: true,
+            jsonpCallback: "jsonpcallback_main",
+        },
+
+        "processing": true,
+        "language": {
+            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.8);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
+        },
+        "deferRender": true,
+        "pageLength": 25,
+        "pagingType": "simple_numbers",
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+
+        "responsive": {
+            details: { 
+                type: 'column', 
+                target: 'tr'
+            }
+        },
+
+        "columns": [
+            {
+                "data": null,
+                "defaultContent": '',
+                "orderable": false,
+                className: 'control',
+                targets: 0
+            },
+            { 
+                "data": "id",
+                "orderable": false
+            },
+            { 
+                "width": "50%", 
+                "data": "title",
+                "orderable": false 
+            },
+            { 
+                "data": "year" 
+            },
+            { 
+                "width": "30%", 
+                "data": "source",
+                "orderable": false 
+            },
+            { 
+                "width": "20%", 
+                "data": "abbrAuthors",
+                "orderable": false 
+            },
+            { 
+                "data": "authors",
+                "orderable": false 
+            },
+            { 
+                "data": "abstract",
+                "orderable": false 
+            },
+            { 
+                "data": "keywords",
+                "orderable": false 
+            },
+            { 
+                "data": "url",
+                "orderable": false 
+            }
+        ],
+        "order": [[ 3, "desc" ]], 
+
+        "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(3, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group"><td colspan="10">'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        }
+
+	});
+    new $.fn.dataTable.FixedHeader( table );
+
+    $(".DTTT_container").addClass("btn-group");
+    $(".DTTT_container a").removeClass("DTTT_button");
+    $(".DTTT_container a").addClass("btn btn-default btn-sm");
+    $(".dataTables_length label").addClass("control-label");
+    $(".dataTables_filter label").addClass("control-label");
+
+    var filterValue = ""
+    function search() {
+        filterValue = $("#example_filter input").val();
+        table.search(filterValue).draw();
+        $("#example_filter").addClass("has-success");
+    }
+    $("#example_filter").addClass("has-success");
+    $('#example_filter input').unbind();
+    $('#example_filter input').bind('keyup', function(e) {
+        if(e.keyCode == 13) {
+            search();
+        }
+    });
+    $("#example_filter").addClass("has-feedback");
+    $("#example_filter input").after("<span id=\"example_filter_searchicon\" class=\"glyphicon glyphicon-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
+    $("#example_filter_searchicon").click(function() {
+        search();
+    });
+
+    $("#example_length select").attr("title", "Show all entries may freeze your browser");
+    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'});
+
+    table.on('draw.dt', function () {
+        $("#form_divmask").hide();
+    } );
+
+    $("input[name='query']").val(query);
+    $("input[name='from']").val(yearFrom);
+    $("input[name='to']").val(yearTo);
+
+    $('#trend_interval').val(5);
+    $('#trend_form').submit( function (e) {
+        if (!isIntWithMinVal($('#trend_interval').val(), 1)) {
+            showAlert("Please check your inputs.", "danger");
+            $("#trend_interval").tooltip("show");
+            $("#trend_form").addClass("has-error");
+            e.preventDefault();
+            return;
+        }
+    });
+
+    $('#topk_k').val(10);
+    $('#topk_minlen').val(1);
+    $('#topk_maxlen').val(5);
+
+    $('#topk_form').submit( function (e) {
+        if (!isIntWithMinVal($('#topk_k').val(), 1)) {
+            showAlert("Please check your inputs.", "danger");
+            $("#topk_k").tooltip("show");
+            $("#topk_form").addClass("has-error");
+            e.preventDefault();
+            return;
+        }
+        if (!isIntWithMinVal($('#topk_minlen').val(), 1)) {
+            showAlert("Please check your inputs.", "danger");
+            $("#topk_minlen").tooltip("show");
+            $("#topk_form").addClass("has-error");
+            e.preventDefault();
+            return;
+        }
+        if (!isIntWithMinVal($('#topk_maxlen').val(), 1)) {
+            showAlert("Please check your inputs.", "danger");
+            $("#topk_maxlen").tooltip("show");
+            $("#topk_form").addClass("has-error");
+            e.preventDefault();
+            return;
+        }
+        if ($('#topk_minlen').val() > $('#topk_maxlen').val()) {
+            showAlert("Please check your inputs.", "danger");
+            $("#topk_minlen").tooltip("show");
+            $("#topk_maxlen").tooltip("show");
+            $("#topk_form").addClass("has-error");
+            e.preventDefault();
+            return;
+        }
+    });
+
+    $('#topic_k').val(5);
+    $('#topic_wordnum').val(10);
+
+    $('#topic_form').submit( function (e) {
+        if (!isIntWithMinVal($('#topic_k').val(), 1)) {
+            showAlert("Please check your inputs.", "danger");
+            $("#topic_k").tooltip("show");
+            $("#topic_form").addClass("has-error");
+            e.preventDefault();
+            return;
+        }
+        if (!isIntWithMinVal($('#topic_wordnum').val(), 1)) {
+            showAlert("Please check your inputs.", "danger");
+            $("#topic_wordnum").tooltip("show");
+            $("#topic_form").addClass("has-error");
+            e.preventDefault();
+            return;
+        }
+    });
+
+    function updateThemeList() {
+        $.ajax({
+            dataType: "jsonp",
+            jsonpCallback: "jsonpcallback_themelist",
+            url: "http://127.0.0.1:5000/theme/file/list", 
+            success: function(j) {
+                list = j.data;
+                var options = '';
+
+                toggleDisabled($("#theme_form button, #theme_othersdiv button"), list.length == 0);
+                if (list.length > 0) {
+                    for (var i = 0; i < list.length; i++) {
+                        options += '<option value="' + list[i] + '">' + list[i] + '</option>';
+                    }
+                }
+                $("select#theme_list").html(options);
+            }
+        });
+    }
+    function getThemeListSelected() {
+        return $('#theme_list').find(":selected").text()
+    }
+
+    updateThemeList();
+
+    $('#theme_view').click( function () {
+        var file = getThemeListSelected();
+        showAlert("Dictionary <b>" + file + "</b> has been downloaded.", "info");
+        window.location.href = "http://127.0.0.1:5000/theme/file/view?name=" + file;
+    });
+    $('#theme_delete').click( function () {
+        var file = getThemeListSelected();
+        bootbox.dialog({
+            message: 'Are you sure you want to delete dictionary <b>' + file + "</b>?",
+            title: "Confirm",
+            onEscape: function() {},
+            buttons: {
+                cancel: {
+                    label: "Cancel",
+                    className: "btn-default"
+                },
+                danger: {
+                    label: "<span class=\"glyphicon glyphicon-trash\"></span> Delete",
+                    className: "btn-danger",
+                    callback: function() {
+                        $.getJSON("http://127.0.0.1:5000/theme/file/delete?callback=?", 
+                            {
+                                "name": file
+                            }, 
+                            function(j){
+                                updateThemeList();
+                                showAlert("Dictionary <b>"+ file + "</b> has been deleted.", "info");
+                            }
+                        );
+                    }
+                }
+            }
+        });
+    });
+    $("#theme_uploaddiv").hide();
+    $('#theme_showupload').click( function () {
+        $("#theme_showupload").hide();
+        $("#theme_uploaddiv").fadeIn(400);
+    });
+    $("#theme_uploadblank").load(function(){
+        var file= jQuery.parseJSON($(this).contents().find("pre").html())["name"];
+        $(this).attr("src", "about:blank");
+        updateThemeList();
+        showAlert("Dictionary <b>" + file + "</b> has been uploaded.", "info");
+    });
+    $("#theme_uploadinput").change(function() {
+        var currFile = this.value.split('\\').slice(-1);
+        if (currFile !== "") {
+            $("#theme_uploadfile").html(currFile);
+        }
+        else {
+            $("#theme_uploadfile").html("No file chosen");
+        }
+
+        toggleDisabled($("#theme_uploadsubmit"), currFile == "");
+        if (currFile == "") {
+            $("#theme_uploadsubmit").tooltip("hide");
+        }
+        else {
+            $("#theme_uploadsubmit").tooltip("show");
+        }
+    });
+    $("#theme_uploadfile").html("No file chosen");
+
+    table.on('preXhr.dt', function ( e, settings, data ) {
+        $("#example_processing div").fadeIn(800);
+    });
+    table.on('xhr.dt', function ( e, settings, data ) {
+        $( "#example_processing div").hide();
+    });
+});
+
+</script>
+
+</head>
+<body>
+<ol class="breadcrumb">
+    <li><a href="/"><span class="glyphicon glyphicon-home" title="Home"></span></a></li>
+    <li class="active">Records</li>
+</ol>
+
+<div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
+
+<div class="main">
+
+<h3>
+    {{ query }} ({{ yearFrom }}-{{ yearTo }})
+</h3>
+
+<div class="block" id="form_div" style="width:100%;">
+    <div id="form_divmask" style="position:absolute; z-index: 1000; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); "></div>
+    <table id="form_table" style="width:100%; ">
+        <col width="20%">
+        <col width="40%">
+        <tr>
+            <td>
+                <div style="display:inline-block;">
+                    <form class="form-inline" id="trend_form" action="trend" method="get">
+                        <input type="hidden" name="query"></input>
+                        <input type="hidden" name="from"></input>
+                        <input type="hidden" name="to"></input>
+                        <label class="control-label">Year Interval: </label>
+                        <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Trend</button>
+                    </form>
+                </div>
+            </td>
+            <td>
+                <div style="display:inline-block;">
+                    <div style="display:inline-block;">
+                        <form class="form-inline" id="theme_form" action="theme" method="get">
+                            <input type="hidden" name="query"></input>
+                            <input type="hidden" name="from"></input>
+                            <input type="hidden" name="to"></input>
+                            <label class="control-label">Dictionary: </label>
+                            <select class="form-control input-sm" id="theme_list" name="name" style="width:200px;"></select>
+                            <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Load</button>
+                        </form>
+                    </div>
+                    <div style="display:inline-block;">
+                        |
+                        <div id="theme_othersdiv" style="display: inline-block;">
+                            <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="glyphicon glyphicon-download"></span> View</button>
+                            <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                        </div>
+                        <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="glyphicon glyphicon-upload"></span> New</button>
+                        <div id="theme_uploaddiv" style="display: inline-block;">
+                            <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
+                            <form class="form-inline" id="theme_uploadform" action="http://127.0.0.1:5000/theme/file/upload" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
+                                <input type="hidden" name="root" value="{{ request.url_root + url_for('theme_upload')[1:] }}"></input>
+                                <div class="btn-group">
+                                    <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+                                    <span class="btn btn-default btn-sm btn-file" title="CSV file only">
+                                        Browse...
+                                        <input id="theme_uploadinput" type="file" name="file" accept=".csv" tabindex="0"></input>
+                                    </span>
+                                    <span class="btn btn-sm disabled" id="theme_uploadfile"></span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="display:inline-block;">
+                    <form class="form-inline" id="topic_form" action="topic" method="get">
+                        <input type="hidden" name="query"></input>
+                        <input type="hidden" name="from"></input>
+                        <input type="hidden" name="to"></input>
+                        <label class="control-label">k: </label>
+                        <input class="form-control input-sm" id="topic_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
+                        <label class="control-label">#Word per Topic: </label>
+                        <input class="form-control input-sm" id="topic_wordnum" style="width:50px;" name="wordnum" title="Greater than or equal to 1"></input>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Top-k Topics</button>
+                    </form>
+                </div>
+            </td>
+            <td>
+                <div style="display:inline-block;">
+                    <form class="form-inline" id="topk_form" action="topk" method="get">
+                        <input type="hidden" name="query"></input>
+                        <input type="hidden" name="from"></input>
+                        <input type="hidden" name="to"></input>
+                        <label class="control-label">k: </label>
+                        <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
+                        <label class="control-label">Min. Len.: </label>
+                        <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1<br/>Less than or equal to Max. Len."></input>
+                        <label class="control-label">Max. Len.: </label>
+                        <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1<br/>Greater than or equal Min. Len."></input>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Top-k Co-occurrences</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="block" style="width:100%;">
+    <table id="example" class="table table-hover" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th class="all"></th>
+                <th class="none">ID</th>
+                <th class="all">Title</th>
+                <th class="all">Year</th>
+                <th class="all">Source</th>
+                <th class="all">Authors</th>
+                <th class="none">Authors</th>
+                <th class="none">Abstract</th>
+                <th class="none">Keywords</th>
+                <th class="none">URL</th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+
+</div>
+</body>
+</html>
+

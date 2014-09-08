@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<title>
+    GeNA Miner -- {{ query }} ({{ yearFrom }}-{{ yearTo }}) -- Top-{{ k }} Co-occurrences (Min. Len. = {{ minLen }}, Max. Len. = {{ maxLen }})
+</title>
+<head>
+<script src="static/js/jquery.min.js"></script>
+
+<script src="static/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
+
+<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+
+<script src="static/js/jquery.dataTables.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
+
+<script src="static/js/dataTables.bootstrap.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.css">
+
+<script src="static/js/dataTables.tableTools.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.tableTools.css">
+
+<script src="static/js/dataTables.fixedHeader.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.css">
+
+<link rel="stylesheet" type="text/css" href="static/css/main.css">
+
+<script type="text/javascript" class="init">
+$(document).ready(function() {
+    var query = "{{ query }}";
+    var yearFrom = "{{ yearFrom }}";
+    var yearTo = "{{ yearTo }}";
+    var k = "{{ k }}";
+    var minLen = "{{ minLen }}";
+    var maxLen = "{{ maxLen }}";
+
+	var table = $('#example').DataTable( {
+        dom: 'lfTrtip',
+        tableTools: {
+            "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
+            "aButtons": [
+                {
+                    "sExtends": "copy",
+                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
+                    "oSelectorOpts": {
+                        page: 'current'
+                    }
+                },
+                {
+                    "sExtends": "csv",
+                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
+                    "oSelectorOpts": {
+                        page: 'current'
+                    }
+                }
+            ]
+        }, 
+
+        "ajax": {
+            "url": "http://127.0.0.1:5000/topk/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
+            "dataType": "jsonp",
+            cache: true,
+            jsonpCallback: "jsonpcallback",
+        },
+
+        "processing": true,
+        "language": {
+             "processing": "<span class=\"fa fa-spinner fa-spin\"></span> Processing"
+        },
+        "deferRender": true,
+        "searching": false,
+        "paging": false, 
+        "pagingType": "full_numbers",
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+
+        "columns": [
+            { 
+                "width": "90%", 
+                "data": "pattern",
+                "orderable": false
+            },
+            { 
+                "width": "10%", 
+                "data": "count",
+            },
+        ],
+        "order": [[ 1, "desc" ]]
+	});
+    new $.fn.dataTable.FixedHeader( table );
+
+    $(".DTTT_container").addClass("btn-group");
+    $(".DTTT_container a").removeClass("DTTT_button");
+    $(".DTTT_container a").addClass("btn btn-default btn-sm");
+
+    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+});
+</script>
+</head>
+<body>
+<ol class="breadcrumb">
+    <li><a href="/"><span class="glyphicon glyphicon-home" title="Home"></span></a></li>
+    <li><a href="main?query={{ query }}&from={{ yearFrom }}&to={{ yearTo }}" title="{{ query }} ({{ yearFrom }}-{{ yearTo }})">Records</a></li>
+    <li class="active">Co-occurrences</li>
+</ol>
+<div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
+<div class="main">
+<h3>
+    {{ query }} ({{ yearFrom }}-{{ yearTo }})
+    <small>
+        -- Top-{{ k }} Co-occurrences (Min. Len. = {{ minLen }}, Max. Len. = {{ maxLen }})
+    </small>
+</h3>
+
+<div class="block" style="width:50%;">
+    <table id="example" class="table table-hover" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Pattern</th>
+                <th>Frequency</th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+
+</div>
+</body>
+</html>
+
+
