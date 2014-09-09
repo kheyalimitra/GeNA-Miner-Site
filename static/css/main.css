@@ -59,6 +59,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     text-align: left;
 }
 
+.btn {
+    -webkit-transition: background linear 200ms;
+    -moz-transition: background linear 200ms;
+    -o-transition: background linear 200ms;
+}
 
 .dataTables_wrapper {
     overflow: hidden;
