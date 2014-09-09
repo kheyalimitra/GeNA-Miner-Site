@@ -22,10 +22,7 @@ div.block {
 .beta-ribbon {
     font-size: 14px;
     text-align: center;
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
     position: relative;
     padding: 5px 0;
     right: 10px;
@@ -59,10 +56,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     text-align: left;
 }
 
-.btn {
-    -webkit-transition: background linear 200ms;
-    -moz-transition: background linear 200ms;
-    -o-transition: background linear 200ms;
+.btn, .paginate_button a  {
+    transition: background linear 200ms;
 }
 
 .dataTables_wrapper {

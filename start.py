@@ -20,7 +20,7 @@ cache = Cache(app,config={'CACHE_TYPE': 'simple', 'CACHE_THRESHOLD': 1000, 'CACH
 #cache = Cache(app,config={'CACHE_TYPE': 'null', 'CACHE_NO_NULL_WARNING': True})
 
 def makeCacheKey():
-    return request.url;
+    return request.url
 
 @app.route('/')
 def index():
