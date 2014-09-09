@@ -57,7 +57,7 @@ $(document).ready(function() {
         }, 
 
         "ajax": {
-            "url": "http://127.0.0.1:5000/trend/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval + "&plot=true",
+            "url": "http://{{ host }}/trend/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval + "&plot=true",
             "dataType": "jsonp",
             cache: true,
             jsonpCallback: "jsonpcallback",
@@ -92,7 +92,7 @@ $(document).ready(function() {
     $(".DTTT_container a").addClass("btn btn-default btn-sm");
 
     table.on( 'draw.dt', function () {
-        $("#trendimg").attr("src", "http://127.0.0.1:5000/static/trend/{{ img }}"); 
+        $("#trendimg").attr("src", "http://{{ host }}/static/trend/{{ img }}"); 
     } );
 
     $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})

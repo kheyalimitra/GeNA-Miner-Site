@@ -107,7 +107,7 @@ $(document).ready(function() {
 
         "serverSide": true,
         "ajax": {
-            "url": "http://127.0.0.1:5000/main/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo,
+            "url": "http://{{ host }}/main/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo,
             "dataType": "jsonp",
             cache: true,
             jsonpCallback: "jsonpcallback_main",
@@ -115,7 +115,7 @@ $(document).ready(function() {
 
         "processing": true,
         "language": {
-            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.8);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
+            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
         },
         "deferRender": true,
         "pageLength": 25,
@@ -304,7 +304,7 @@ $(document).ready(function() {
         $.ajax({
             dataType: "jsonp",
             jsonpCallback: "jsonpcallback_themelist",
-            url: "http://127.0.0.1:5000/theme/file/list", 
+            url: "http://{{ host }}/theme/file/list", 
             success: function(j) {
                 list = j.data;
                 var options = '';
@@ -328,7 +328,7 @@ $(document).ready(function() {
     $('#theme_view').click( function () {
         var file = getThemeListSelected();
         showAlert("Dictionary <b>" + file + "</b> has been downloaded.", "info");
-        window.location.href = "http://127.0.0.1:5000/theme/file/view?name=" + file;
+        window.location.href = "http://{{ host }}/theme/file/view?name=" + file;
     });
     $('#theme_delete').click( function () {
         var file = getThemeListSelected();
@@ -345,7 +345,7 @@ $(document).ready(function() {
                     label: "<span class=\"glyphicon glyphicon-trash\"></span> Delete",
                     className: "btn-danger",
                     callback: function() {
-                        $.getJSON("http://127.0.0.1:5000/theme/file/delete?callback=?", 
+                        $.getJSON("http://{{ host }}/theme/file/delete?callback=?", 
                             {
                                 "name": file
                             }, 
@@ -453,7 +453,7 @@ $(document).ready(function() {
                         <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="glyphicon glyphicon-upload"></span> New</button>
                         <div id="theme_uploaddiv" style="display: inline-block;">
                             <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
-                            <form class="form-inline" id="theme_uploadform" action="http://127.0.0.1:5000/theme/file/upload" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
+                            <form class="form-inline" id="theme_uploadform" action="http://{{ host }}/theme/file/upload" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
                                 <input type="hidden" name="root" value="{{ request.url_root + url_for('theme_upload')[1:] }}"></input>
                                 <div class="btn-group">
                                     <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="glyphicon glyphicon-upload"></span> Upload</button>

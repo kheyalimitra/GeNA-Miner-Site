@@ -32,7 +32,7 @@ div.block {
     top: 20px;
     width: 150px;
     height: 30px;
-    background-color: rgba(255, 234, 148, 0.8);
+    background-color: rgba(255, 234, 148, 0.85);
 }
 .beta-ribbon a {
     font-family:'Lucida Console';
@@ -117,5 +117,5 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 div.FixedHeader_Cloned th, div.FixedHeader_Cloned td {
-    background-color: rgba(255, 255, 255, 0.8) !important;
+    background-color: rgba(255, 255, 255, 0.85) !important;
 }

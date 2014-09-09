@@ -95,7 +95,7 @@ $(document).ready(function() {
         dataType: "jsonp",
         cache: true,
         jsonpCallback: "jsonpcallback",
-        url: "http://127.0.0.1:5000/theme/load", 
+        url: "http://{{ host }}/theme/load", 
         data: { 
             "query" : query.replace(" ", "+"), 
             "from" : yearFrom, 

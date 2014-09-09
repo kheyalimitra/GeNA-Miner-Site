@@ -63,7 +63,7 @@ $(document).ready(function() {
         }, 
 
         "ajax": {
-            "url": "http://127.0.0.1:5000/topic/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&wordnum=" + wordNum,
+            "url": "http://{{ host }}/topic/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&wordnum=" + wordNum,
             "dataType": "jsonp",
             cache: true,
             jsonpCallback: "jsonpcallback",
@@ -71,7 +71,7 @@ $(document).ready(function() {
 
         "processing": true,
         "language": {
-             "processing": "<span class=\"fa fa-spinner fa-spin\"></span> Processing"
+            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
         },
         "deferRender": true,
         "searching": false,

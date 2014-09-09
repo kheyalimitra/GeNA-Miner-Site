@@ -7,6 +7,8 @@ import logging
 from flask import Flask, jsonify, request, render_template, redirect, url_for
 from flask.ext.cache import Cache
 
+from config import hosts, ownPort
+
 #log = logging.getLogger('werkzeug')
 #log.setLevel(logging.ERROR)
 
@@ -27,7 +29,7 @@ def index():
 @app.route('/query')
 @cache.cached(key_prefix=makeCacheKey)
 def query():
-    return render_template('query.html')
+    return render_template('query.html', host=hosts["pubmed"])
 
 @app.route('/main')
 @cache.cached(key_prefix=makeCacheKey)
@@ -36,7 +38,7 @@ def main():
     yearFrom = request.args.get('from', 1900, type=int)
     yearTo = request.args.get('to', date.today().year - 1, type=int)
 
-    return render_template('main.html', query=query, yearFrom=yearFrom, yearTo=yearTo)
+    return render_template('main.html', host=hosts["pubmed"], query=query, yearFrom=yearFrom, yearTo=yearTo)
 
 @app.route('/kwic')
 @cache.cached(key_prefix=makeCacheKey)
@@ -46,7 +48,7 @@ def kwic():
     yearTo = request.args.get('to', date.today().year - 1, type=int)
 
     keywords = request.args.get('keywords', "", type=str).strip()
-    return render_template('kwic.html', query=query, yearFrom=yearFrom, yearTo=yearTo, keywords=keywords)
+    return render_template('kwic.html', host=hosts["pubmed"], query=query, yearFrom=yearFrom, yearTo=yearTo, keywords=keywords)
 
 @app.route('/topk')
 @cache.cached(key_prefix=makeCacheKey)
@@ -58,7 +60,7 @@ def topk():
     minLen = request.args.get('minlen', 1, type=int)
     maxLen = request.args.get('maxlen', 5, type=int)
 
-    return render_template('topk.html', query=query, yearFrom=yearFrom, yearTo=yearTo, k=k, minLen=minLen, maxLen=maxLen)
+    return render_template('topk.html', host=hosts["pubmed"], query=query, yearFrom=yearFrom, yearTo=yearTo, k=k, minLen=minLen, maxLen=maxLen)
 
 @app.route('/topic')
 @cache.cached(key_prefix=makeCacheKey)
@@ -71,7 +73,7 @@ def topic():
 
     topicNames = ["Topic #" + str(i + 1) for i in xrange(k)]
 
-    return render_template('topic.html', query=query, yearFrom=yearFrom, yearTo=yearTo, k=k, wordNum=wordNum, topicNames=topicNames)
+    return render_template('topic.html', host=hosts["pubmed"], query=query, yearFrom=yearFrom, yearTo=yearTo, k=k, wordNum=wordNum, topicNames=topicNames)
 
 @app.route('/trend')
 @cache.cached(key_prefix=makeCacheKey)
@@ -83,7 +85,7 @@ def trend():
 
     locFileName = query.replace(' ', '+') + "_" + str(yearFrom) + "-" + str(yearTo) + "_interval=" + str(interval) + ".svg"
 
-    return render_template('trend.html', query=query, yearFrom=yearFrom, yearTo=yearTo, interval=interval, img=locFileName)
+    return render_template('trend.html', host=hosts["pubmed"], query=query, yearFrom=yearFrom, yearTo=yearTo, interval=interval, img=locFileName)
 
 @app.route('/theme')
 @cache.cached(key_prefix=makeCacheKey)
@@ -93,7 +95,7 @@ def theme():
     yearTo = request.args.get('to', date.today().year - 1, type=int)
     fileName = request.args.get('name', "", type=str)
 
-    return render_template('theme.html', query=query, yearFrom=yearFrom, yearTo=yearTo, fileName=fileName)
+    return render_template('theme.html', host=hosts["pubmed"], query=query, yearFrom=yearFrom, yearTo=yearTo, fileName=fileName)
 
 @app.route('/theme/upload')
 @cache.cached(key_prefix=makeCacheKey)
@@ -105,4 +107,4 @@ def theme_upload():
     return jsonify(name=fileName, success=success, overwrite=overwrite);
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(host="0.0.0.0", debug=True, port=ownPort)
