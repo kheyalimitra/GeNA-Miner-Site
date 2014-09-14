@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <title>
-    GeNA Miner -- {{ query }} ({{ yearFrom }}-{{ yearTo }}) -- Top-{{ k }} Topics (#Word per Topic = {{ wordNum }})
 </title>
 <head>
 <script src="static/js/jquery.min.js"></script>
+
+<script src="static/js/purl.js"></script>
 
 <script src="static/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
@@ -34,11 +35,34 @@ td.highlight {
 
 <script type="text/javascript" class="init">
 $(document).ready(function() {
-    var query = "{{ query }}";
-    var yearFrom = "{{ yearFrom }}";
-    var yearTo = "{{ yearTo }}";
-    var k = "{{ k }}";
-    var wordNum = "{{ wordNum }}";
+    var host = $.url().param('host');
+    var query = $.url().param('query');
+    var yearFrom = $.url().param('from');
+    if (!yearFrom) {
+        yearFrom = 1900;
+    }
+    var yearTo = $.url().param('to');
+    if (!yearTo) {
+        yearTo = new Date().getFullYear() - 1;
+    }
+    var k = $.url().param('k');
+    if (!k) {
+        k = 5;
+    }
+    var wordNum = $.url().param('wordnum');
+    if (!wordNum) {
+        wordNum = 10;
+    }
+
+    document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Top-" + k + " Topics (#Word per Topic = " + wordNum + ")";
+    $("#parentPage").attr("href", "main.html?host=" + host + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+    $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Top-" + k + " Topics (#Word per Topic = " + wordNum + ")</small>");
+
+    var tableColHTML = "";
+    for (i = 0; i < k; i++) { 
+        tableColHTML += "<th>Topic #" + (i + 1) + "</th>";
+    }
+    $('#example thead tr').html(tableColHTML);
 
 	var table = $('#example').DataTable( {
         dom: 'lfTrtip',
@@ -63,7 +87,7 @@ $(document).ready(function() {
         }, 
 
         "ajax": {
-            "url": "http://{{ host }}/topic/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&wordnum=" + wordNum,
+            "url": "http://" + host + "/topic/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&wordnum=" + wordNum,
             "dataType": "jsonp",
             cache: true,
             jsonpCallback: "jsonpcallback",
@@ -106,27 +130,20 @@ $(document).ready(function() {
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="/"><span class="glyphicon glyphicon-home" title="Home"></span></a></li>
-    <li><a href="main?query={{ query }}&from={{ yearFrom }}&to={{ yearTo }}" title="{{ query }} ({{ yearFrom }}-{{ yearTo }})">Records</a></li>
+    <li><a href="query.html"><span class="glyphicon glyphicon-home" title="Home"></span></a></li>
+    <li><a id="parentPage">Records</a></li>
     <li class="active">Topics</li>
 </ol>
 
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="main">
 <h3>
-    {{ query }} ({{ yearFrom }}-{{ yearTo }})
-    <small>
-        -- Top-{{ k }} Topics (#Word per Topic = {{ wordNum }})
-    </small>
 </h3>
 
 <div class="block" style="width:100%;">
     <table id="example" class="table" cellspacing="0" width="100%">
         <thead>
             <tr>
-                {% for t in topicNames %}
-                <th>{{ t }}</th>
-                {% endfor %}
             </tr>
         </thead>
  

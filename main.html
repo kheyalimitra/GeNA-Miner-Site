@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <title>
-    GeNA Miner -- {{ query }} ({{ yearFrom }}-{{ yearTo }})
 </title>
 <head>
 <script src="static/js/jquery.min.js"></script>
+
+<script src="static/js/purl.js"></script>
 
 <script src="static/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
@@ -74,9 +75,19 @@ tr.group {
 
 <script type="text/javascript" class="init">
 $(document).ready(function() {
-    var query = "{{ query }}";
-    var yearFrom = "{{ yearFrom }}";
-    var yearTo = "{{ yearTo }}";
+    var host = $.url().param('host');
+    var query = $.url().param('query');
+    var yearFrom = $.url().param('from');
+    if (!yearFrom) {
+        yearFrom = 1900;
+    }
+    var yearTo = $.url().param('to');
+    if (!yearTo) {
+        yearTo = new Date().getFullYear() - 1;
+    }
+
+    document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo;
+    $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
 
 	var table = $('#example').DataTable( {
         dom: 'lfTrtip',
@@ -102,7 +113,7 @@ $(document).ready(function() {
 
         "serverSide": true,
         "ajax": {
-            "url": "http://{{ host }}/main/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo,
+            "url": "http://" + host + "/main/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo,
             "dataType": "jsonp",
             cache: true,
             jsonpCallback: "jsonpcallback_main",
@@ -224,6 +235,7 @@ $(document).ready(function() {
         $("#form_divmask").hide();
     } );
 
+    $("input[name='host']").val(host);
     $("input[name='query']").val(query);
     $("input[name='from']").val(yearFrom);
     $("input[name='to']").val(yearTo);
@@ -238,6 +250,9 @@ $(document).ready(function() {
             return;
         }
     });
+
+    $('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload");
+    $('#theme_uploadstatus').val($.url().attr("protocol") + "://" + $.url().attr("host") + ":" + $.url().attr("port") + "/theme_upload.html");
 
     $('#topk_k').val(10);
     $('#topk_minlen').val(1);
@@ -299,7 +314,7 @@ $(document).ready(function() {
         $.ajax({
             dataType: "jsonp",
             jsonpCallback: "jsonpcallback_themelist",
-            url: "http://{{ host }}/theme/file/list", 
+            url: "http://" + host + "/theme/file/list", 
             success: function(j) {
                 list = j.data;
                 var options = '';
@@ -323,7 +338,7 @@ $(document).ready(function() {
     $('#theme_view').click( function () {
         var file = getThemeListSelected();
         showAlert("Dictionary <b>" + file + "</b> has been downloaded.", "info");
-        window.location.href = "http://{{ host }}/theme/file/view?name=" + file;
+        window.location.href = "http://" + host + "/theme/file/view?name=" + file;
     });
     $('#theme_delete').click( function () {
         var file = getThemeListSelected();
@@ -340,7 +355,7 @@ $(document).ready(function() {
                     label: "<span class=\"glyphicon glyphicon-trash\"></span> Delete",
                     className: "btn-danger",
                     callback: function() {
-                        $.getJSON("http://{{ host }}/theme/file/delete?callback=?", 
+                        $.getJSON("http://" + host + "/theme/file/delete?callback=?", 
                             {
                                 "name": file
                             }, 
@@ -360,10 +375,10 @@ $(document).ready(function() {
         $("#theme_uploaddiv").fadeIn(400);
     });
     $("#theme_uploadblank").load(function(){
-        var file= jQuery.parseJSON($(this).contents().find("pre").html())["name"];
-        $(this).attr("src", "about:blank");
         updateThemeList();
-        showAlert("Dictionary <b>" + file + "</b> has been uploaded.", "info");
+
+        var currFile = $("#theme_uploadinput").val().split('\\').slice(-1);
+        showAlert("Dictionary <b>" + currFile + "</b> has been uploaded.", "info");
     });
     $("#theme_uploadinput").change(function() {
         var currFile = this.value.split('\\').slice(-1);
@@ -397,7 +412,7 @@ $(document).ready(function() {
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="/"><span class="glyphicon glyphicon-home" title="Home"></span></a></li>
+    <li><a href="query.html"><span class="glyphicon glyphicon-home" title="Home"></span></a></li>
     <li class="active">Records</li>
 </ol>
 
@@ -406,7 +421,6 @@ $(document).ready(function() {
 <div class="main">
 
 <h3>
-    {{ query }} ({{ yearFrom }}-{{ yearTo }})
 </h3>
 
 <div class="block" id="form_div" style="width:100%;">
@@ -417,7 +431,8 @@ $(document).ready(function() {
         <tr>
             <td>
                 <div style="display:inline-block;">
-                    <form class="form-inline" id="trend_form" action="trend" method="get">
+                    <form class="form-inline" id="trend_form" action="trend.html" method="get">
+                        <input type="hidden" name="host"></input>
                         <input type="hidden" name="query"></input>
                         <input type="hidden" name="from"></input>
                         <input type="hidden" name="to"></input>
@@ -430,7 +445,8 @@ $(document).ready(function() {
             <td>
                 <div style="display:inline-block;">
                     <div style="display:inline-block;">
-                        <form class="form-inline" id="theme_form" action="theme" method="get">
+                        <form class="form-inline" id="theme_form" action="theme.html" method="get">
+                            <input type="hidden" name="host"></input>
                             <input type="hidden" name="query"></input>
                             <input type="hidden" name="from"></input>
                             <input type="hidden" name="to"></input>
@@ -448,8 +464,8 @@ $(document).ready(function() {
                         <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="glyphicon glyphicon-upload"></span> New</button>
                         <div id="theme_uploaddiv" style="display: inline-block;">
                             <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
-                            <form class="form-inline" id="theme_uploadform" action="http://{{ host }}/theme/file/upload" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
-                                <input type="hidden" name="root" value="{{ request.url_root + url_for('theme_upload')[1:] }}"></input>
+                            <form class="form-inline" id="theme_uploadform" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
+                                <input id="theme_uploadstatus" type="hidden" name="root"></input>
                                 <div class="btn-group">
                                     <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="glyphicon glyphicon-upload"></span> Upload</button>
                                     <span class="btn btn-default btn-sm btn-file" title="CSV file only">
@@ -467,7 +483,8 @@ $(document).ready(function() {
         <tr>
             <td>
                 <div style="display:inline-block;">
-                    <form class="form-inline" id="topic_form" action="topic" method="get">
+                    <form class="form-inline" id="topic_form" action="topic.html" method="get">
+                        <input type="hidden" name="host"></input>
                         <input type="hidden" name="query"></input>
                         <input type="hidden" name="from"></input>
                         <input type="hidden" name="to"></input>
@@ -481,7 +498,8 @@ $(document).ready(function() {
             </td>
             <td>
                 <div style="display:inline-block;">
-                    <form class="form-inline" id="topk_form" action="topk" method="get">
+                    <form class="form-inline" id="topk_form" action="topk.html" method="get">
+                        <input type="hidden" name="host"></input>
                         <input type="hidden" name="query"></input>
                         <input type="hidden" name="from"></input>
                         <input type="hidden" name="to"></input>
