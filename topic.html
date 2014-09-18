@@ -61,7 +61,7 @@ $(document).ready(function() {
 
     var tableColHTML = "";
     for (i = 0; i < k; i++) { 
-        tableColHTML += "<th>Topic #" + (i + 1) + "</th>";
+        tableColHTML += "<th width=\"" + (100.0 / k) + "%\">Topic #" + (i + 1) + "</th>";
     }
     $('#example thead tr').html(tableColHTML);
 
@@ -88,7 +88,7 @@ $(document).ready(function() {
         }, 
 
         "ajax": {
-            "url": "http://" + host + "/topic/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&wordnum=" + wordNum,
+            "url": "http://" + host + "/topic/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&wordnum=" + wordNum,
             "dataType": "jsonp",
             cache: true,
             jsonpCallback: "jsonpcallback",
@@ -147,7 +147,6 @@ $(document).ready(function() {
             <tr>
             </tr>
         </thead>
- 
     </table>
 </div>
 

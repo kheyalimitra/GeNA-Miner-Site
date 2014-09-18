@@ -70,7 +70,7 @@ $(document).ready(function() {
 
         $("input[name='host']").val(host);
 
-        $('#from').val(1900);
+        $('#from').val(new Date().getFullYear() - 10);
         $('#to').val(new Date().getFullYear() - 1);
 
         $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");

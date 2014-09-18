@@ -113,7 +113,7 @@ $(document).ready(function() {
 
         "serverSide": true,
         "ajax": {
-            "url": "http://" + host + "/main/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo,
+            "url": "http://" + host + "/main/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo,
             "dataType": "jsonp",
             cache: true,
             jsonpCallback: "jsonpcallback_main",

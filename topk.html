@@ -80,7 +80,7 @@ $(document).ready(function() {
         }, 
 
         "ajax": {
-            "url": "http://" + host + "/topk/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
+            "url": "http://" + host + "/topk/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
             "dataType": "jsonp",
             cache: true,
             jsonpCallback: "jsonpcallback",

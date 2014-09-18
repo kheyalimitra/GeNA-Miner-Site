@@ -44,7 +44,7 @@ $(document).ready(function() {
     if (!interval) {
         interval = 5;
     }
-    var img = query.replace(' ', '+') + "_" + yearFrom + "-" + yearTo + "_interval=" + interval + ".svg";
+    var img = query.replace(/ /g, '+') + "_" + yearFrom + "-" + yearTo + "_interval=" + interval + ".svg";
 ;
 
     document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- #Publication Trend (Year Interval = " + interval + ")";
@@ -74,7 +74,7 @@ $(document).ready(function() {
         }, 
 
         "ajax": {
-            "url": "http://" + host + "/trend/load?query=" + query.replace(" ", "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval + "&plot=true",
+            "url": "http://" + host + "/trend/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval + "&plot=true",
             "dataType": "jsonp",
             cache: true,
             jsonpCallback: "jsonpcallback",

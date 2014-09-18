@@ -94,7 +94,7 @@ $(document).ready(function() {
         jsonpCallback: "jsonpcallback",
         url: "http://" + host + "/theme/load", 
         data: { 
-            "query" : query.replace(" ", "+"), 
+            "query" : query.replace(/ /g, "+"), 
             "from" : yearFrom, 
             "to" : yearTo,
             "name" : fileName
