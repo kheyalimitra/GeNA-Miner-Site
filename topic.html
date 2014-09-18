@@ -61,7 +61,7 @@ $(document).ready(function() {
 
     var tableColHTML = "";
     for (i = 0; i < k; i++) { 
-        tableColHTML += "<th width=\"" + (100.0 / k) + "%\">Topic #" + (i + 1) + "</th>";
+        tableColHTML += "<th style=\"min-width:100px;\">Topic #" + (i + 1) + "</th>";
     }
     $('#example thead tr').html(tableColHTML);
 
@@ -105,7 +105,7 @@ $(document).ready(function() {
         "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
         "ordering": false
 	});
-    new $.fn.dataTable.FixedHeader( table );
+    //new $.fn.dataTable.FixedHeader( table );
 
     $(".DTTT_container").addClass("btn-group");
     $(".DTTT_container a").removeClass("DTTT_button");
@@ -125,7 +125,7 @@ $(document).ready(function() {
             $( table.cells().nodes() ).removeClass( 'highlight' );
         } );
 
-    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'});
 });
 </script>
 </head>
@@ -137,12 +137,12 @@ $(document).ready(function() {
 </ol>
 
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
-<div class="main">
+<div class="main" style="width:100%;">
 <h3>
 </h3>
 
-<div class="block" style="width:100%;">
-    <table id="example" class="table" cellspacing="0" width="100%">
+<div class="block">
+    <table id="example" class="table" cellspacing="0">
         <thead>
             <tr>
             </tr>
