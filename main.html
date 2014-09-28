@@ -71,6 +71,11 @@ tr.group {
 #example_filter input:focus {
     width: 300px;
 }
+
+em {
+    background-color: rgba(255,255,140,0.5);
+    font-style: normal;
+}
 </style>
 
 <script type="text/javascript" class="init">
@@ -116,7 +121,10 @@ $(document).ready(function() {
             "url": "http://" + host + "/main/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo,
             "dataType": "jsonp",
             cache: true,
-            jsonpCallback: "jsonpcallback_main",
+            jsonpCallback: "jsonpcallback_main", 
+            "error": function(reason) {
+                alert("Error occurred !");
+            }
         },
 
         "processing": true,
@@ -212,10 +220,42 @@ $(document).ready(function() {
     var filterValue = ""
     function search() {
         filterValue = $("#example_filter input").val();
-        table.search(filterValue).draw();
-        $("#example_filter").addClass("has-success");
+
+        var columnRegex = /(\w+):/g;
+        var match = columnRegex.exec(filterValue);
+        while (match != null) {
+            if (!(match[1] in {"year":"", "id":"", "title":"", "source":"", "authors":"", "abstract":"", "keywords":""})) {
+                showAlert("Please check your inputs.<br/><br/>Wrong column name(s).", "danger");
+                $("#example_filter input").tooltip("show");
+                return;
+            }
+
+            match = columnRegex.exec(filterValue);
+        }
+
+        $.ajax({
+            dataType: "jsonp",
+            jsonpCallback: "jsonpcallback_validate",
+            cache: true,
+            url: "http://" + host + "/main/load/validate?query=" + query.replace(/ /g, "+") + "&search=" + filterValue, 
+            success: function(j) {
+                if (j.valid) {
+                    $('#example_filter').addClass("has-success");
+                    $('#example_filter').removeClass("has-error");
+
+                    table.search(filterValue).draw();
+                }
+                else {
+                    $('#example_filter').removeClass("has-success");
+                    $('#example_filter').addClass("has-error");
+
+                    showAlert("Please check your inputs.<br/><br/>Wrong query syntax.", "danger");
+                    $("#example_filter input").tooltip("show");
+                }
+            }
+        });
+
     }
-    $("#example_filter").addClass("has-success");
     $('#example_filter input').unbind();
     $('#example_filter input').bind('keyup', function(e) {
         if(e.keyCode == 13) {
@@ -229,6 +269,7 @@ $(document).ready(function() {
     });
 
     $("#example_length select").attr("title", "Show all entries may freeze your browser");
+    $("#example_filter input").attr("title", "Query Syntax: <br/><b>keyword</b> -- <b>keyword</b> on any columns<br/><i>col</i>:<b>keyword</b> -- <b>keyword</b> on column <i>col</i><br/><b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on any columns<br/><i>col</i>:<b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on column <i>col</i><br/>AND, OR, (...) -- boolean expressions<br/><br/>Column Names: <br/>id, title, year, source, authors, abstract, keywords");
     $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'});
 
     table.on('draw.dt', function () {
@@ -427,7 +468,7 @@ $(document).ready(function() {
     <div id="form_divmask" style="position:absolute; z-index: 1000; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); "></div>
     <table id="form_table" style="width:100%; ">
         <col width="400px">
-        <col width="600px">
+        <col>
         <tr>
             <td>
                 <div style="display:inline-block;">
@@ -505,10 +546,8 @@ $(document).ready(function() {
                         <input type="hidden" name="to"></input>
                         <label class="control-label">k: </label>
                         <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
-                        <label class="control-label">Min. Len.: </label>
-                        <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1<br/>Less than or equal to Max. Len."></input>
-                        <label class="control-label">Max. Len.: </label>
-                        <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1<br/>Greater than or equal Min. Len."></input>
+                        <label class="control-label">#Word per Phrase: </label>
+                        <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1"></input> - <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1"></input>
                         <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Top-k Co-occurrences</button>
                     </form>
                 </div>

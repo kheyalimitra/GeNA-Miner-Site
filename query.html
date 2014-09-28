@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
+<head>
 <title>
     GeNA Miner
 </title>
-<head>
 <script src="static/js/jquery.min.js"></script>
 
 <script src="static/js/jquery.cookie.js"></script>
@@ -30,7 +30,7 @@
 <script src="js/main.js"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
-<script type="text/javascript" class="init">
+<script type="text/javascript">
 $(document).ready(function() {
     $.getJSON("hosts.json", function(hosts) {
         var host = hosts[0]["host"];
@@ -49,12 +49,11 @@ $(document).ready(function() {
 
             "columns": [
                 { 
-                    "width": "50%", 
                     "data": "query",
                     "orderable": false
                 },
                 {
-                    "width": "50%", 
+                    "width": "100px", 
                     "data": "stat",
                     "orderable": false 
                 }
@@ -109,7 +108,7 @@ $(document).ready(function() {
                 return;
             }
         } );
-        new $.fn.dataTable.FixedHeader( table );
+        //new $.fn.dataTable.FixedHeader( table );
 
         var dateRegex = /\b(?:jan|feb|mar|apr|may|jun|jul|aug|sept?|oct|nov|dec)\s+\d{1,2}\s*(?:st|nd|rd|th)?\s*,?\s+\d{4}\b/i;
         $.ajax({
@@ -137,7 +136,7 @@ $(document).ready(function() {
                 closeButton: false,
                 buttons: {
                     ok: {
-                        label: "<span class=\"glyphicon glyphicon-heart\"></span> Got It",
+                        label: "<span class=\"glyphicon glyphicon-heart\"><\/span> Got It",
                         className: "btn-success"
                     }
                 }
@@ -173,41 +172,36 @@ $(document).ready(function() {
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="main" style="margin-top:36px;">
     <h3>GeNA Miner <small>-- From GeNA Lab</small></h3>
-<div style="width:600px;">
+<div style="max-width:600px;">
     <div class="block">
         <form class="form-inline" id="query_form" action="main.html" method="get">
-            <input type="hidden" name="host"></input>
+            <input type="hidden" name="host">
             <label class="control-label">Query: </label>
-            <input class="form-control input-sm" id="query" style="width:200px;" name="query" title="At least one keyword"></input>
+            <input class="form-control input-sm" id="query" style="width:200px;" name="query" title="At least one keyword">
             <label class="control-label">Year: </label>
-            <input class="form-control input-sm" id="from" style="width:50px;" maxlength="4" name="from" title="Greater than or equal to 1900"></input> - <input class="form-control input-sm" id="to" style="width:50px;" maxlength="4" name="to" title="Less than or equal to "></input>
+            <input class="form-control input-sm" id="from" style="width:50px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm" id="to" style="width:50px;" maxlength="4" name="to" title="Less than or equal to ">
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
         </form>
     </div>
     <div class="block">
         <label class="control-label">Indexed Query: </label>
-        <table id="example" class="table table-hover" cellspacing="0" width="100%">
-            <col width="75%">
-            <col width="25%">
+        <table id="example" class="table table-hover" style="width:100%;">
             <thead>
                 <tr>
                     <th>Query</th>
                     <th>Indexed</th>
                 </tr>
             </thead>
-
         </table>
     </div>
     <div style="padding: 10px;">
         <table id="form_table" style="width:100%; ">
-            <col width="60%">
-            <col width="40%">
             <tr>
                 <td>
                     <button class="btn btn-success btn-xs" id="about"><span class="glyphicon glyphicon-user"></span> About</button>
                     <button class="btn btn-info btn-xs" id="updates"><span class="glyphicon glyphicon-wrench"></span> Updates</button>
                 </td>
-                <td align="right">
+                <td style="text-align:right;">
                     © GeNA Lab
                 </td>
             </tr>
