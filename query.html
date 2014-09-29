@@ -118,9 +118,10 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
 
         $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");
 
+        $(".dataTables_scroll").attr("title", "Scroll to see more entries").attr("data-trigger", "manual");
         $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
         table.on('draw.dt', function () {
-            $(".dataTables_scrollBody table").tooltip("show");
+            $(".dataTables_scroll").tooltip("show");
         } );
 
         $("#query").on("input", function() {
@@ -241,7 +242,7 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
     </div>
     <div class="block">
         <label class="control-label">Indexed Query: </label>
-        <table id="example" class="table table-hover" style="width:100%;"  title="Scroll to see more entries" data-trigger="manual">
+        <table id="example" class="table table-hover" style="width:100%;" >
             <thead>
                 <tr>
                     <th>Query</th>
