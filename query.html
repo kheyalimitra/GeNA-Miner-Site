@@ -63,7 +63,7 @@ $(document).ready(function() {
                 {
                     "width": "50px", 
                     "orderable": false,
-                    "defaultContent": "<button class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button>"
+                    "defaultContent": "<a class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</a>"
                 }
             ]
         });
@@ -118,7 +118,10 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
 
         $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");
 
-        $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'});
+        $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        table.on('draw.dt', function () {
+            $(".dataTables_scrollBody table").tooltip("show");
+        } );
 
         $("#query").on("input", function() {
             if (this.value !== table.$("tr.active").val()) {
@@ -213,11 +216,11 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
 </script>
 
 <style>
-.table tr td button { 
+.table tr td a { 
     opacity:0;
 }
-.table tr:hover td button { 
-    opacity:100;
+.table tr:hover td a { 
+    opacity:1;
 }
 </style>
 </head>
@@ -238,7 +241,7 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
     </div>
     <div class="block">
         <label class="control-label">Indexed Query: </label>
-        <table id="example" class="table table-hover" style="width:100%;">
+        <table id="example" class="table table-hover" style="width:100%;"  title="Scroll to see more entries" data-trigger="manual">
             <thead>
                 <tr>
                     <th>Query</th>
@@ -246,6 +249,8 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
                     <th></th>
                 </tr>
             </thead>
+            <tbody>
+            </tbody>
         </table>
     </div>
     <div style="padding: 10px;">

@@ -43,10 +43,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-top: 0px;
   margin-bottom: 10px; }
 
-.tooltip-inner {
-  white-space: pre-wrap;
-  max-width: 400px;
-  text-align: left; }
+.tooltip {
+  opacity: .85 !important; }
+  .tooltip .tooltip-inner {
+    white-space: pre-wrap;
+    max-width: 400px;
+    text-align: left; }
 
 .btn, .paginate_button a {
   transition: background linear 200ms; }
