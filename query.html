@@ -223,30 +223,40 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="main" style="margin-top:36px;">
     <h3>GeNA Miner <small>-- From GeNA Lab</small></h3>
-<div style="max-width:600px;">
-    <div class="block">
-        <form class="form-inline" id="query_form" action="main.html" method="get">
-            <input type="hidden" name="host">
-            <label class="control-label">Query: </label>
-            <input class="form-control input-sm" id="query" style="width:250px;" name="query" title="At least one keyword">
-            <label class="control-label">Year: </label>
-            <input class="form-control input-sm" id="from" style="width:50px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm" id="to" style="width:50px;" maxlength="4" name="to" title="Less than or equal to ">
-            <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
-        </form>
+    <div style="width:40%; float:left; ">
+        <div class="block">
+            <label class="control-label">Indexed Query: </label>
+            <table id="example" class="table table-hover" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Query</th>
+                        <th>Indexed</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
-    <div class="block">
-        <label class="control-label">Indexed Query: </label>
-        <table id="example" class="table table-hover" style="width:100%;">
-            <thead>
-                <tr>
-                    <th>Query</th>
-                    <th>Indexed</th>
-                    <th></th>
-                </tr>
-            </thead>
-        </table>
+    <div style="float:left; ">
+        <div class="block" align="left" style="position: fixed;">
+            <form class="form-inline" id="query_form" action="main.html" method="get">
+                <input type="hidden" name="host">
+                <label class="control-label">Query: </label>
+                <input class="form-control input-sm" id="query" style="width:250px;" name="query" title="At least one keyword">
+                <br/>
+                <br/>
+                <label class="control-label">Year: </label>
+                <input class="form-control input-sm" id="from" style="width:50px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm" id="to" style="width:50px;" maxlength="4" name="to" title="Less than or equal to ">
+                <br/>
+                <br/>
+                <div style="text-align:right;">
+                <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div style="padding: 10px;">
+
+    <div style="padding: 10px; width:40%; clear:both;">
         <table id="form_table" style="width:100%; ">
             <tr>
                 <td>
@@ -259,8 +269,6 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
             </tr>
         </table>
     </div>
-</div>
-
 </div>
 </body>
 </html>
