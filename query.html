@@ -63,7 +63,7 @@ $(document).ready(function() {
                 {
                     "width": "50px", 
                     "orderable": false,
-                    "defaultContent": "<a class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</a>"
+                    "defaultContent": "<button class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button>"
                 }
             ]
         });
@@ -217,10 +217,10 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
 </script>
 
 <style>
-.table tr td a { 
+.table tr td button { 
     opacity:0;
 }
-.table tr:hover td a { 
+.table tr:hover td button { 
     opacity:1;
 }
 </style>
