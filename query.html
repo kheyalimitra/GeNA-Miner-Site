@@ -238,7 +238,8 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
         </div>
     </div>
     <div style="float:left; ">
-        <div class="block" align="left" style="position: fixed;">
+        <div style="position: fixed;">
+        <div class="block" align="left">
             <form class="form-inline" id="query_form" action="main.html" method="get">
                 <input type="hidden" name="host">
                 <label class="control-label">Query: </label>
@@ -254,21 +255,22 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
                 </div>
             </form>
         </div>
+        <div style="padding: 10px; ">
+            <table id="form_table" style="width:100%; ">
+                <tr>
+                    <td>
+                        <button class="btn btn-success btn-xs" id="about"><span class="glyphicon glyphicon-user"></span> About</button>
+                        <button class="btn btn-info btn-xs" id="updates"><span class="glyphicon glyphicon-wrench"></span> Updates</button>
+                    </td>
+                    <td style="text-align:right;">
+                        © GeNA Lab
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </div>
     </div>
 
-    <div style="padding: 10px; width:40%; clear:both;">
-        <table id="form_table" style="width:100%; ">
-            <tr>
-                <td>
-                    <button class="btn btn-success btn-xs" id="about"><span class="glyphicon glyphicon-user"></span> About</button>
-                    <button class="btn btn-info btn-xs" id="updates"><span class="glyphicon glyphicon-wrench"></span> Updates</button>
-                </td>
-                <td style="text-align:right;">
-                    © GeNA Lab
-                </td>
-            </tr>
-        </table>
-    </div>
 </div>
 </body>
 </html>
