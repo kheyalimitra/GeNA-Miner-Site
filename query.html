@@ -48,7 +48,8 @@ $(document).ready(function() {
             "ordering": false,
 
             "columns": [
-                { 
+                {
+                    "width": "250px", 
                     "data": "query",
                     "orderable": false
                 },
@@ -56,15 +57,56 @@ $(document).ready(function() {
                     "width": "100px", 
                     "data": "stat",
                     "orderable": false 
+                },
+                {
+                    "width": "50px", 
+                    "orderable": false,
+                    "defaultContent": "<button class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button>"
                 }
             ]
         });
 
         $('#example tbody').on('click', 'tr', function () {
-            table.$('tr.active').removeClass("active");
+            $('tr.active').removeClass("active");
             $(this).addClass('active');
 
-            $("#query").val(table.row(".active").data()["query"]);
+            $("#query").val(table.row($(this)).data()["query"]);
+        });
+
+        $('#example tbody').on('click', 'button', function () {
+            var data = table.row($(this).parents('tr')).data();
+            var query = data["query"];
+            bootbox.dialog({
+message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br/><br/>Enter the exact query name to confirm.<div class=\"form-inline\"><label class=\"control-label\">Query:</label> <input id=\"deleteConfirm\"type=\"text\" class=\"form-control input-sm\" style=\"width:250px\"></input></div>",
+                title: "Confirm",
+                onEscape: function() {},
+                buttons: {
+                    cancel: {
+                        label: "Cancel",
+                        className: "btn-default"
+                    },
+                    danger: {
+                        label: "<span class=\"glyphicon glyphicon-trash\"></span> Delete",
+                        className: "btn-danger",
+                        callback: function() {
+                            if ($("input#deleteConfirm").val() != query) {
+                                showAlert("You did not enter the correct indexed query name.", "warning");
+                            }
+                            else {
+                                $.getJSON("http://" + host + "/history/delete?callback=?", 
+                                    {
+                                        "query": query
+                                    }, 
+                                    function(j){
+                                        table.ajax.reload();
+                                        showAlert("Indexed query <b>"+ query + "</b> has been deleted.", "info");
+                                    }
+                                );
+                            }
+                        }
+                    }
+                }
+            });
         });
 
         $("input[name='host']").val(host);
@@ -167,6 +209,15 @@ $(document).ready(function() {
     });
 });
 </script>
+
+<style>
+.table tr td button { 
+    opacity:0;
+}
+.table tr:hover td button { 
+    opacity:100;
+}
+</style>
 </head>
 <body>
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
@@ -177,7 +228,7 @@ $(document).ready(function() {
         <form class="form-inline" id="query_form" action="main.html" method="get">
             <input type="hidden" name="host">
             <label class="control-label">Query: </label>
-            <input class="form-control input-sm" id="query" style="width:200px;" name="query" title="At least one keyword">
+            <input class="form-control input-sm" id="query" style="width:250px;" name="query" title="At least one keyword">
             <label class="control-label">Year: </label>
             <input class="form-control input-sm" id="from" style="width:50px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm" id="to" style="width:50px;" maxlength="4" name="to" title="Less than or equal to ">
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
@@ -190,6 +241,7 @@ $(document).ready(function() {
                 <tr>
                     <th>Query</th>
                     <th>Indexed</th>
+                    <th></th>
                 </tr>
             </thead>
         </table>
