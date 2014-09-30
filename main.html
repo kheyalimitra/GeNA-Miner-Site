@@ -40,36 +40,15 @@ tr.group {
     background-color: #dddddd !important;
 }
 
-.btn-file {
-    position: relative;
-    overflow: hidden;
-}
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    opacity: 0;
-    outline: none;
-    background: none;
-    cursor: inherit;
-    display: block;
-}
-
 #form_table th,td {
     padding: 5px;
 }
 
 #example_filter input {
-    transition-duration: 200ms;
-    transition-property: width, background;
-    transition-timing-function: linear;
-
-    width: 200px;
+    width: 250px;
 }
 #example_filter input:focus {
-    width: 300px;
+    width: 400px;
 }
 
 em {
@@ -200,7 +179,7 @@ $(document).ready(function() {
             api.column(3, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group) {
                     $(rows).eq( i ).before(
-                        '<tr class="group"><td colspan="10">'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
+                        '<tr class="group"><td colspan="10"><b>Year: </b>'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
                     );
  
                     last = group;
@@ -216,6 +195,14 @@ $(document).ready(function() {
     $(".DTTT_container a").addClass("btn btn-default btn-sm");
     $(".dataTables_length label").addClass("control-label");
     $(".dataTables_filter label").addClass("control-label");
+
+    $('#example_filter input').css("transition", $('#example_filter input').css("transition") + ", width .2s");
+    $('#example_filter input').unbind();
+    $('#example_filter input').bind('keyup', function(e) {
+        if(e.keyCode == 13) {
+            search();
+        }
+    });
 
     var filterValue = ""
     function search() {
@@ -256,12 +243,7 @@ $(document).ready(function() {
         });
 
     }
-    $('#example_filter input').unbind();
-    $('#example_filter input').bind('keyup', function(e) {
-        if(e.keyCode == 13) {
-            search();
-        }
-    });
+
     $("#example_filter").addClass("has-feedback");
     $("#example_filter input").after("<span id=\"example_filter_searchicon\" class=\"glyphicon glyphicon-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
     $("#example_filter_searchicon").click(function() {
@@ -269,8 +251,8 @@ $(document).ready(function() {
     });
 
     $("#example_length select").attr("title", "Show all entries may freeze your browser");
-    $("#example_filter input").attr("title", "Query Syntax: <br/><b>keyword</b> -- <b>keyword</b> on any columns<br/><i>col</i>:<b>keyword</b> -- <b>keyword</b> on column <i>col</i><br/><b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on any columns<br/><i>col</i>:<b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on column <i>col</i><br/>AND, OR, (...) -- boolean expressions<br/><br/>Column Names: <br/>id, title, year, source, authors, abstract, keywords");
-    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'});
+    $("#example_filter input").attr("title", "Query Syntax: <br/><b>keyword</b> -- <b>keyword</b> on any columns<br/><i>col</i>:<b>keyword</b> -- <b>keyword</b> on column <i>col</i><br/><b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on any columns<br/><i>col</i>:<b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on column <i>col</i><br/>AND, OR, (...) -- boolean expressions<br/><br/>Column Names: <br/>id, title, year, source, authors, abstract, keywords").attr("data-trigger", "focus").attr("data-delay", '{"show": 200, "hide": 0}');
+    $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
 
     table.on('draw.dt', function () {
         $("#form_divmask").hide();
@@ -492,7 +474,7 @@ $(document).ready(function() {
                             <input type="hidden" name="from"></input>
                             <input type="hidden" name="to"></input>
                             <label class="control-label">Dictionary: </label>
-                            <select class="form-control input-sm" id="theme_list" name="name" style="width:200px;"></select>
+                            <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
                             <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Load</button>
                         </form>
                     </div>
