@@ -49,6 +49,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     max-width: 400px; }
 
 .popover {
+  opacity: .85 !important;
   font-size: 12px; }
 
 .btn, .paginate_button a {
