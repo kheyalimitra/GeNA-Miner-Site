@@ -103,6 +103,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     background: none;
     background-color: rgba(255, 255, 255, 0);
     z-index: 1000; }
+  .dataTables_wrapper td.control:before {
+    transition: background linear .2s; }
   .dataTables_wrapper .clear {
     clear: both;
     height: 0; }
