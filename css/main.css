@@ -103,8 +103,21 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     background: none;
     background-color: rgba(255, 255, 255, 0);
     z-index: 1000; }
-  .dataTables_wrapper td.control:before {
-    transition: background linear .2s; }
+  .dataTables_wrapper tr td.control:before {
+    transition: background linear .2s, color linear .2s;
+    border: 1px solid #adadad !important;
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+    color: #000000 !important; }
+  .dataTables_wrapper tr:hover td.control:before {
+    background-color: #5bc0de !important;
+    color: #ffffff !important; }
+  .dataTables_wrapper tr.parent td.control:before {
+    background-color: #d9534f !important;
+    color: #ffffff !important; }
+  .dataTables_wrapper tr.parent:hover td.control:before {
+    background-color: #d9534f !important;
+    color: #ffffff !important; }
   .dataTables_wrapper .clear {
     clear: both;
     height: 0; }

@@ -133,9 +133,26 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         z-index: 1000;
     }
 
-    td.control:before {
-        transition: background linear .2s;
+    tr td.control:before {
+        transition: background linear .2s, color linear .2s;
+        border: 1px solid #adadad !important;
+        box-shadow: none !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
     }
+    tr:hover td.control:before {
+        background-color: #5bc0de !important;
+        color: #ffffff !important;
+    }
+    tr.parent td.control:before {
+        background-color: #d9534f !important;
+        color: #ffffff !important;
+    }
+    tr.parent:hover td.control:before {
+        background-color: #d9534f !important;
+        color: #ffffff !important;
+    }
+
 
     .clear {
         clear: both;
