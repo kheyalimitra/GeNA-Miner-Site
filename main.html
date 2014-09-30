@@ -251,7 +251,7 @@ $(document).ready(function() {
     });
 
     $("#example_length select").attr("title", "Show all entries may freeze your browser");
-    $("#example_filter input").attr("title", "Query Syntax: <br/><b>keyword</b> -- <b>keyword</b> on any columns<br/><i>col</i>:<b>keyword</b> -- <b>keyword</b> on column <i>col</i><br/><b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on any columns<br/><i>col</i>:<b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on column <i>col</i><br/>AND, OR, (...) -- boolean expressions<br/><br/>Column Names: <br/>id, title, year, source, authors, abstract, keywords").attr("data-trigger", "focus").attr("data-delay", '{"show": 200, "hide": 0}');
+    $("#example_filter input").attr("title", "Query Syntax: <br/><b>keyword</b> -- <b>keyword</b> on any columns<br/><i>col</i>:<b>keyword</b> -- <b>keyword</b> on column <i>col</i><br/><b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on any columns<br/><i>col</i>:<b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on column <i>col</i><br/>?, * -- Wildchar<br/><i>col</i>:[a TO b] -- Range from a to b on column <i>col</i><br/>AND, OR, NOT, (...) -- boolean expression<br/><br/>Column Name: <br/>id, title, year, source, authors, abstract, keywords").attr("data-trigger", "focus").attr("data-delay", '{"show": 200, "hide": 0}');
     $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
 
     table.on('draw.dt', function () {
