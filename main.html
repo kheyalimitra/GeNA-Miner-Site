@@ -56,7 +56,6 @@ em {
 }
 
 .popover {
-    margin-left: .5em;
     min-width: 400px;
     max-width: 400px;
 }
@@ -113,7 +112,8 @@ $(document).ready(function() {
 
         "processing": true,
         "language": {
-            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
+            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>", 
+            "search": "Search: "
         },
         "deferRender": true,
         "pageLength": 25,
@@ -201,7 +201,6 @@ $(document).ready(function() {
     $(".dataTables_length label").addClass("control-label");
     $(".dataTables_filter label").addClass("control-label");
 
-    $('#example_filter input').css("transition", $('#example_filter input').css("transition") + ", width linear .2s");
     $('#example_filter input').unbind();
     $('#example_filter input').bind('keyup', function(e) {
         if(e.keyCode == 13) {
@@ -259,7 +258,7 @@ $(document).ready(function() {
     $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
 
     var popoverShown = false;
-    $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 2000, "hide": 0}').attr("data-content", 
+    $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content", 
         '\
         <h5><small>Column Name</small></h5>\
         <p><span class="btn-group"><a class="btn btn-clipboard btn-xs">title:</a><a class="btn btn-clipboard btn-xs">year:</a><a class="btn btn-clipboard btn-xs">source:</a><a class="btn btn-clipboard btn-xs">authors:</a><a class="btn btn-clipboard btn-xs">abstract:</a><a class="btn btn-clipboard btn-xs">keywords:</a><a class="btn btn-clipboard btn-xs">id:</a></span></p>\
@@ -278,39 +277,38 @@ $(document).ready(function() {
         <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match from <b>a</b> to <b>b</b></p>\
         <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="glyphicon glyphicon-book"></span> Reference</a></p>\
         '
-    ).popover({placement: "bottom", html: true, container: 'body'}).focus(function() {
+    ).popover({
+        placement: "bottom", html: true, container: 'body'
+    }).focus(function() {
         if (!popoverShown) {
-            $("#example_filter input").css("width", "400px");
-            setTimeout(function() {
-                if (!popoverShown) {
-                    $("#example_filter input").popover("show");
-                    popoverShown = true;
-                }
-            }, 200);
-        }
-    }).blur(function() {
-        if (!popoverShown) {
-            $("#example_filter input").css("width", "250px");
+            popoverShown = true;
+            $(this).animate({
+                "width": "400px"
+            }, 200, function() {
+                $(this).popover("show");
+            });
         }
     });
     $(document).on('click', function(e) {
         if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
             if (popoverShown) {
-                $("#example_filter input").css("width", "250px");
-                $('#example_filter input').popover('hide');
                 popoverShown = false;
+                $('#example_filter input').popover('hide').animate({
+                    "width": "250px"
+                }, 200);
             }
         }
-    }).keydown(function(e){
-       if (e.keyCode === 27)
+    }).keydown(function(e) {
+        if (e.keyCode === 27) {
             if (popoverShown) {
-                $("#example_filter input").css("width", "250px");
-                $('#example_filter input').popover('hide');
                 popoverShown = false;
+                $('#example_filter input').popover('hide').animate({
+                    "width": "250px"
+                }, 200);
             }
+        }
     }).on("click", ".popover a.btn", function() {
-        $("#example_filter input").replaceSelectedText($(this).text());
-        $("#example_filter input").focus();
+        $("#example_filter input").focus().replaceSelectedText($(this).text());
     });
 
     table.on('draw.dt', function () {
