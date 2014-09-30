@@ -21,6 +21,7 @@
     "purl": "~2.3.1",
     "typeahead.js": "~0.10.5",
     "jquery-highlighttextarea": "~3.1.0",
-    "rangyinputs": "~1.1.4"
+    "rangyinputs": "~1.1.4",
+    "bootstrap-switch": "~3.0.2"
   }
 }

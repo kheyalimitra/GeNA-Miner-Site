@@ -63,7 +63,7 @@ $(document).ready(function() {
                 {
                     "width": "50px", 
                     "orderable": false,
-                    "defaultContent": "<button class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button>"
+                    "defaultContent": "<button style=\"display: none;\" class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button>"
                 }
             ]
         });
@@ -210,18 +210,24 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
                     });
                 }
             });
+        });
 
+        $("#manage").change(function() {
+            if (this.checked) {
+                $(".table tr td button").fadeIn(400);
+            }
+            else {
+                $(".table tr td button").fadeOut(400);
+            }
         });
     });
 });
 </script>
 
 <style>
-.table tr td button { 
-    opacity:0;
-}
-.table tr:hover td button { 
-    opacity:1;
+.table tr td {
+    vertical-align: middle;
+    height: 22px;
 }
 </style>
 </head>
@@ -241,7 +247,18 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
         </form>
     </div>
     <div class="block">
-        <label class="control-label">Indexed Query: </label>
+        <table style="width:100%; ">
+            <tr>
+                <td>
+                    <label class="control-label">Indexed Query: </label>
+                </td>
+                <td style="text-align:right;">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit<input type="checkbox" id="manage"></label>
+                    </div>
+                </td>
+            </tr>
+        </table>
         <table id="example" class="table table-hover" style="width:100%;" >
             <thead>
                 <tr>
