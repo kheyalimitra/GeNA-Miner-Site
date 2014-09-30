@@ -260,21 +260,19 @@ $(document).ready(function() {
     var popoverShown = false;
     $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content", 
         '\
-        <h5><small>Column Name</small></h5>\
+        <h5><small>Column</small></h5>\
         <p><span class="btn-group"><a class="btn btn-clipboard btn-xs">title:</a><a class="btn btn-clipboard btn-xs">year:</a><a class="btn btn-clipboard btn-xs">source:</a><a class="btn btn-clipboard btn-xs">authors:</a><a class="btn btn-clipboard btn-xs">abstract:</a><a class="btn btn-clipboard btn-xs">keywords:</a><a class="btn btn-clipboard btn-xs">id:</a></span></p>\
         <h5><small>Boolean Operator</small></h5>\
         <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></td><td style="width:20px;"></td><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">(</a><a class="btn btn-xs disabled">...</a><a class="btn btn-clipboard btn-xs">)</a></span></td></tr></table></p>\
         <h5><small>Basic</small></h5>\
-        <p><code><b>keyword</b></code> -- Match <b>keyword</b> on any columns</p>\
-        <p><code><u>col</u>:<b>keyword</b></code> -- Match <b>keyword</b> on column <u>col</u></p>\
-        <h5><small>Phrase</small></h5>\
-        <p><code>"<b>keyword phrase</b>"</code> -- Match <b>keyword phrase</b> as phrase</p>\
-        <h5><small>Wildchar</small></h5>\
-        <p><code><b>keywo</b>?<b>d</b></code>, <code><b>keywor</b>*</code> -- Match <b>keyword</b> with wildchar</p>\
-        <h5><small>Fuzziness</small></h5>\
-        <p><code><b>keyword</b>~</code> -- Match <b>keyword</b> with fuzziness</p>\
+        <p><code><b>word</b></code> -- Match <b>word</b> as keyword</p>\
+        <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase</p>\
+        <p><code><u>col</u>:<b>query</b></code> -- Match <b>query</b> (any type) on column <u>col</u></p>\
+        <h5><small>Wildchar and Fuzziness</small></h5>\
+        <p><code><b>wo</b>?<b>d</b></code>, <code><b>wor</b>*</code> -- Match <b>word</b> with wildchar</p>\
+        <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
         <h5><small>Range</small></h5>\
-        <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match from <b>a</b> to <b>b</b></p>\
+        <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match range from <b>a</b> to <b>b</b></p>\
         <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="glyphicon glyphicon-book"></span> Reference</a></p>\
         '
     ).popover({
