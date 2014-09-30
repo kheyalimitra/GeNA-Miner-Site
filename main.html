@@ -32,6 +32,8 @@
 <script src="static/js/dataTables.fixedHeader.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.css">
 
+<script src="static/js/rangyinputs-jquery.js"></script>
+
 <script src="js/main.js"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
@@ -47,13 +49,16 @@ tr.group {
 #example_filter input {
     width: 250px;
 }
-#example_filter input:focus {
-    width: 400px;
-}
 
 em {
     background-color: rgba(255,255,0,0.5);
     font-style: normal;
+}
+
+.popover {
+    margin-left: .5em;
+    min-width: 400px;
+    max-width: 400px;
 }
 </style>
 
@@ -196,7 +201,7 @@ $(document).ready(function() {
     $(".dataTables_length label").addClass("control-label");
     $(".dataTables_filter label").addClass("control-label");
 
-    $('#example_filter input').css("transition", $('#example_filter input').css("transition") + ", width .2s");
+    $('#example_filter input').css("transition", $('#example_filter input').css("transition") + ", width linear .2s");
     $('#example_filter input').unbind();
     $('#example_filter input').bind('keyup', function(e) {
         if(e.keyCode == 13) {
@@ -251,8 +256,62 @@ $(document).ready(function() {
     });
 
     $("#example_length select").attr("title", "Show all entries may freeze your browser");
-    $("#example_filter input").attr("title", "Query Syntax: <br/><b>keyword</b> -- <b>keyword</b> on any columns<br/><i>col</i>:<b>keyword</b> -- <b>keyword</b> on column <i>col</i><br/><b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on any columns<br/><i>col</i>:<b>\"keyword phrase\"</b> -- <b>\"keyword phrase\"</b> on column <i>col</i><br/>?, * -- Wildchar<br/><i>col</i>:[a TO b] -- Range from a to b on column <i>col</i><br/>AND, OR, NOT, (...) -- boolean expression<br/><br/>Column Name: <br/>id, title, year, source, authors, abstract, keywords").attr("data-trigger", "focus").attr("data-delay", '{"show": 200, "hide": 0}');
     $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+
+    var popoverShown = false;
+    $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 2000, "hide": 0}').attr("data-content", 
+        '\
+        <h5><small>Column Name</small></h5>\
+        <p><span class="btn-group"><a class="btn btn-clipboard btn-xs">title:</a><a class="btn btn-clipboard btn-xs">year:</a><a class="btn btn-clipboard btn-xs">source:</a><a class="btn btn-clipboard btn-xs">authors:</a><a class="btn btn-clipboard btn-xs">abstract:</a><a class="btn btn-clipboard btn-xs">keywords:</a><a class="btn btn-clipboard btn-xs">id:</a></span></p>\
+        <h5><small>Boolean Operator</small></h5>\
+        <p><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></p>\
+        <h5><small>Basic</small></h5>\
+        <p><code><b>keyword</b></code> -- Match <b>keyword</b> on any columns</p>\
+        <p><code><u>col</u>:<b>keyword</b></code> -- Match <b>keyword</b> on column <u>col</u></p>\
+        <h5><small>Phrase</small></h5>\
+        <p><code>"<b>keyword phrase</b>"</code> -- Match <b>keyword phrase</b> as phrase</p>\
+        <h5><small>Wildchar</small></h5>\
+        <p><code><b>keywo</b>?<b>d</b></code>, <code><b>keywor</b>*</code> -- Match <b>keyword</b> with wildchar</p>\
+        <h5><small>Fuzziness</small></h5>\
+        <p><code><b>keyword</b>~</code> -- Match <b>keyword</b> with fuzziness</p>\
+        <h5><small>Range</small></h5>\
+        <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match from <b>a</b> to <b>b</b></p>\
+        <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="glyphicon glyphicon-book"></span> Reference</a></p>\
+        '
+    ).popover({placement: "bottom", html: true, container: 'body'}).focus(function() {
+        if (!popoverShown) {
+            $("#example_filter input").css("width", "400px");
+            setTimeout(function() {
+                if (!popoverShown) {
+                    $("#example_filter input").popover("show");
+                    popoverShown = true;
+                }
+            }, 200);
+        }
+    }).blur(function() {
+        if (!popoverShown) {
+            $("#example_filter input").css("width", "250px");
+        }
+    });
+    $(document).on('click', function(e) {
+        if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
+            if (popoverShown) {
+                $("#example_filter input").css("width", "250px");
+                $('#example_filter input').popover('hide');
+                popoverShown = false;
+            }
+        }
+    }).keydown(function(e){
+       if (e.keyCode === 27)
+            if (popoverShown) {
+                $("#example_filter input").css("width", "250px");
+                $('#example_filter input').popover('hide');
+                popoverShown = false;
+            }
+    }).on("click", ".popover a.btn", function() {
+        $("#example_filter input").replaceSelectedText($(this).text());
+        $("#example_filter input").focus();
+    });
 
     table.on('draw.dt', function () {
         $("#form_divmask").hide();

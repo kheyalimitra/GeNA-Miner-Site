@@ -46,12 +46,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .tooltip {
   opacity: .85 !important; }
   .tooltip .tooltip-inner {
-    white-space: pre-wrap;
-    max-width: 400px;
-    text-align: left; }
+    max-width: 400px; }
+
+.popover {
+  font-size: 12px; }
 
 .btn, .paginate_button a {
-  transition: background linear 200ms; }
+  transition: background linear .2s, color linear .2s; }
 
 .dataTables_wrapper {
   overflow: hidden; }
@@ -135,5 +136,14 @@ div.fixedHeader th, div.fixedHeader td {
     background: none;
     cursor: inherit;
     display: block; }
+
+.btn-clipboard {
+  color: #333;
+  background-color: #fff;
+  border-color: #563d7c; }
+
+.btn-clipboard:hover {
+  color: #fff;
+  background-color: #563d7c; }
 
 /*# sourceMappingURL=main.css.map */
