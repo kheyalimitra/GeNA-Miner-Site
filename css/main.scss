@@ -79,9 +79,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .dataTables_wrapper {
     overflow: hidden;
 
-    .dataTables_length {
+    .expandAll {
         float: left;
         margin-left: 0px;
+        margin-right: 10px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .dataTables_length {
+        float: left;
+        margin-left: 10px;
         margin-right: 10px;
         margin-top: 0px;
         margin-bottom: 0px;

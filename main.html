@@ -78,7 +78,7 @@ $(document).ready(function() {
     $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
 
 	var table = $('#example').DataTable( {
-        dom: 'lfTrtip',
+        dom: '<"expandAll">lfTrtip',
         tableTools: {
             "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
             "aButtons": [
@@ -193,6 +193,23 @@ $(document).ready(function() {
         }
 
 	});
+    $("div.expandAll").html('\
+        <div class="btn-group" data-toggle="buttons">\
+            <label class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
+        </div>\
+    ');
+
+    function expandAll(flag) {
+        $('#example tbody tr[role="row"].parent').trigger("click");
+        if (flag) {
+            $('#example tbody tr[role="row"]').trigger("click");
+        }
+    }
+
+    $('#expandAll').change(function() {
+        expandAll(this.checked);
+    });
+
     new $.fn.dataTable.FixedHeader( table );
 
     $(".DTTT_container").addClass("btn-group");
@@ -311,6 +328,8 @@ $(document).ready(function() {
 
     table.on('draw.dt', function () {
         $("#form_divmask").hide();
+
+        expandAll($("#expandAll").prop("checked"));
     } );
 
     $("input[name='host']").val(host);
