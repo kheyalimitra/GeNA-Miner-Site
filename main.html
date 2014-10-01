@@ -299,7 +299,7 @@ $(document).ready(function() {
             popoverShown = true;
             $(this).animate({
                 "width": "400px"
-            }, 200, function() {
+            }, 200, "linear", function() {
                 $(this).popover("show");
             });
         }
@@ -549,7 +549,7 @@ $(document).ready(function() {
                             <input type="hidden" name="to"></input>
                             <label class="control-label">Dictionary: </label>
                             <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
-                            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Load</button>
+                            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Visualize</button>
                         </form>
                     </div>
                     <div style="display:inline-block;">
@@ -589,7 +589,7 @@ $(document).ready(function() {
                         <input class="form-control input-sm" id="topic_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
                         <label class="control-label">#Word per Topic: </label>
                         <input class="form-control input-sm" id="topic_wordnum" style="width:50px;" name="wordnum" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Top-k Topics</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th-list"></span> Top-k Topics</button>
                     </form>
                 </div>
             </td>
@@ -604,7 +604,7 @@ $(document).ready(function() {
                         <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
                         <label class="control-label">#Word per Phrase: </label>
                         <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1"></input> - <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Top-k Co-occurrences</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th-list"></span> Top-k Co-occurrences</button>
                     </form>
                 </div>
             </td>
