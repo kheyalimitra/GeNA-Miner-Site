@@ -52,6 +52,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     margin-bottom: 10px;
 }
 
+.help-block {
+    margin: 0px;
+    font-size: 12px;
+}
+
 .tooltip {
     opacity: .9 !important;
 
@@ -72,6 +77,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     opacity: .9 !important;
 
     font-size: 12px;
+}
+
+.panel {
+    margin: 0px;
+
+    .panel-heading, .panel-body, .panel-footer {
+        padding: 10px;
+    }
 }
 
 .btn, .paginate_button a  {
@@ -172,33 +185,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     .clear {
         clear: both;
         height: 0;
-    }
-}
-
-.tt-dropdown-menu {
-    width: 400px;
-    margin-top: 5px;
-    padding: 5px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-
-    z-index: 200 !important;
-
-    .tt-hint {
-        color: #ccc;
-    }
-
-    .tt-suggestion {
-        padding: 5px;
-
-        p {
-            margin: 0;
-        }
-    }
-
-    .tt-suggestion.tt-cursor {
-        color: #fff;
-        background-color: #08C;
     }
 }
 

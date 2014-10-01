@@ -43,6 +43,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-top: 0px;
   margin-bottom: 10px; }
 
+.help-block {
+  margin: 0px;
+  font-size: 12px; }
+
 .tooltip {
   opacity: .9 !important;
   font-size: 12px; }
@@ -55,6 +59,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .popover {
   opacity: .9 !important;
   font-size: 12px; }
+
+.panel {
+  margin: 0px; }
+  .panel .panel-heading, .panel .panel-body, .panel .panel-footer {
+    padding: 10px; }
 
 .btn, .paginate_button a {
   transition: background linear .2s, color linear .2s; }
@@ -133,23 +142,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   .dataTables_wrapper .clear {
     clear: both;
     height: 0; }
-
-.tt-dropdown-menu {
-  width: 400px;
-  margin-top: 5px;
-  padding: 5px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  z-index: 200 !important; }
-  .tt-dropdown-menu .tt-hint {
-    color: #ccc; }
-  .tt-dropdown-menu .tt-suggestion {
-    padding: 5px; }
-    .tt-dropdown-menu .tt-suggestion p {
-      margin: 0; }
-  .tt-dropdown-menu .tt-suggestion.tt-cursor {
-    color: #fff;
-    background-color: #08C; }
 
 div.fixedHeader th, div.fixedHeader td {
   background-color: rgba(255, 255, 255, 0.85) !important; }

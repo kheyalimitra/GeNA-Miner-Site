@@ -79,7 +79,19 @@ $(document).ready(function() {
             var data = table.row($(this).parents('tr')).data();
             var query = data["query"];
             bootbox.dialog({
-message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br/><br/>Enter the exact query name to confirm.<div class=\"form-inline\"><label class=\"control-label\">Query:</label> <input id=\"deleteConfirm\"type=\"text\" class=\"form-control input-sm\" style=\"width:250px\"></input></div>",
+                message: '\
+                    Are you sure you want to delete indexed query <b>' + query + '</b>?<br/><br/>\
+                    <div class="panel panel-default">\
+                        <div class="panel-body">\
+                            <div class="form-inline">\
+                                <label class="control-label">Query:</label> <input id="deleteConfirm"type="text" class="form-control input-sm" style="width:250px"></input>\
+                            </div>\
+                        </div>\
+                        <div class="panel-footer">\
+                            <span class="help-block">Enter the exact query name to confirm. </span>\
+                        </div>\
+                    </div>\
+                    ',
                 title: "Confirm",
                 onEscape: function() {},
                 buttons: {
@@ -184,7 +196,7 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
                 closeButton: false,
                 buttons: {
                     ok: {
-                        label: "<span class=\"fa fa-heart\"><\/span> Got It",
+                        label: "<span class=\"fa fa-heart-o\"><\/span> Got It",
                         className: "btn-success"
                     }
                 }
@@ -234,7 +246,7 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
 <body>
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="main" style="margin-top:36px;">
-    <h3>GeNA Miner <small>-- From GeNA Lab</small></h3>
+    <h3>GeNA Miner <small>-- Made by GeNA Lab</small></h3>
 <div style="max-width:600px;">
     <div class="block">
         <form class="form-inline" id="query_form" action="main.html" method="get">
@@ -275,7 +287,7 @@ message: 'Are you sure you want to delete indexed query <b>' + query + "</b>?<br
         <table id="form_table" style="width:100%; ">
             <tr>
                 <td>
-                    <button class="btn btn-success btn-xs" id="about"><span class="fa fa-users"></span> About</button>
+                    <button class="btn btn-success btn-xs" id="about"><span class="fa fa-user"></span> About</button>
                     <button class="btn btn-info btn-xs" id="updates"><span class="fa fa-wrench"></span> Updates</button>
                 </td>
                 <td style="text-align:right;">
