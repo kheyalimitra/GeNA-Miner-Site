@@ -266,7 +266,7 @@ $(document).ready(function() {
     }
 
     $("#example_filter").addClass("has-feedback");
-    $("#example_filter input").after("<span id=\"example_filter_searchicon\" class=\"glyphicon glyphicon-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
+    $("#example_filter input").after("<span id=\"example_filter_searchicon\" class=\"fa fa-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
     $("#example_filter_searchicon").click(function() {
         search();
     });
@@ -290,7 +290,7 @@ $(document).ready(function() {
         <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
         <h5><small>Range</small></h5>\
         <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match range from <b>a</b> to <b>b</b></p>\
-        <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="glyphicon glyphicon-book"></span> Reference</a></p>\
+        <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="fa fa-book"></span> Reference</a></p>\
         '
     ).popover({
         placement: "bottom", html: true, container: 'body'
@@ -449,7 +449,7 @@ $(document).ready(function() {
                     className: "btn-default"
                 },
                 danger: {
-                    label: "<span class=\"glyphicon glyphicon-trash\"></span> Delete",
+                    label: "<span class=\"fa fa-trash-o\"></span> Delete",
                     className: "btn-danger",
                     callback: function() {
                         $.getJSON("http://" + host + "/theme/file/delete?callback=?", 
@@ -509,7 +509,7 @@ $(document).ready(function() {
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="query.html"><span class="glyphicon glyphicon-home" title="Home"></span></a></li>
+    <li><a href="query.html"><span class="fa fa-home" title="Home"></span></a></li>
     <li class="active">Records</li>
 </ol>
 
@@ -535,7 +535,7 @@ $(document).ready(function() {
                         <input type="hidden" name="to"></input>
                         <label class="control-label">Year Interval: </label>
                         <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Trend</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
                     </form>
                 </div>
             </td>
@@ -549,24 +549,24 @@ $(document).ready(function() {
                             <input type="hidden" name="to"></input>
                             <label class="control-label">Dictionary: </label>
                             <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
-                            <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Load</button>
+                            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Load</button>
                         </form>
                     </div>
                     <div style="display:inline-block;">
                         |
                         <div id="theme_othersdiv" style="display: inline-block;">
-                            <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="glyphicon glyphicon-download"></span> View</button>
-                            <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                            <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="fa fa-download"></span> View</button>
+                            <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="fa fa-trash-o"></span> Delete</button>
                         </div>
-                        <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="glyphicon glyphicon-upload"></span> New</button>
+                        <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="fa fa-upload"></span> New</button>
                         <div id="theme_uploaddiv" style="display: inline-block;">
                             <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
                             <form class="form-inline" id="theme_uploadform" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
                                 <input id="theme_uploadstatus" type="hidden" name="root"></input>
                                 <div class="btn-group">
-                                    <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+                                    <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="fa fa-upload"></span> Upload</button>
                                     <span class="btn btn-default btn-sm btn-file" title="CSV file only">
-                                        Browse...
+                                        Browse ...
                                         <input id="theme_uploadinput" type="file" name="file" accept=".csv" tabindex="0"></input>
                                     </span>
                                     <span class="btn btn-sm disabled" id="theme_uploadfile"></span>
@@ -589,7 +589,7 @@ $(document).ready(function() {
                         <input class="form-control input-sm" id="topic_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
                         <label class="control-label">#Word per Topic: </label>
                         <input class="form-control input-sm" id="topic_wordnum" style="width:50px;" name="wordnum" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Top-k Topics</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Top-k Topics</button>
                     </form>
                 </div>
             </td>
@@ -604,7 +604,7 @@ $(document).ready(function() {
                         <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
                         <label class="control-label">#Word per Phrase: </label>
                         <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1"></input> - <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Top-k Co-occurrences</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Top-k Co-occurrences</button>
                     </form>
                 </div>
             </td>
