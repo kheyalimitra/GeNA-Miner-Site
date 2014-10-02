@@ -113,7 +113,11 @@ $(document).ready(function() {
         "processing": true,
         "language": {
             "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>", 
-            "search": "Search: "
+            "search": "", 
+            "paginate": {
+                "previous": '<span class="fa fa-chevron-left"></span>', 
+                "next": '<span class="fa fa-chevron-right"></span>'
+            }
         },
         "deferRender": true,
         "pageLength": 25,
@@ -218,8 +222,7 @@ $(document).ready(function() {
     $(".dataTables_length label").addClass("control-label");
     $(".dataTables_filter label").addClass("control-label");
 
-    $('#example_filter input').unbind();
-    $('#example_filter input').bind('keyup', function(e) {
+    $('#example_filter input').unbind().bind('keyup', function(e) {
         if(e.keyCode == 13) {
             search();
         }
@@ -266,7 +269,7 @@ $(document).ready(function() {
     }
 
     $("#example_filter").addClass("has-feedback");
-    $("#example_filter input").after("<span id=\"example_filter_searchicon\" class=\"fa fa-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
+    $("#example_filter input").attr("placeholder", "Search").after("<span id=\"example_filter_searchicon\" class=\"fa fa-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
     $("#example_filter_searchicon").click(function() {
         search();
     });
