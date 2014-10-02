@@ -130,10 +130,11 @@ $(document).ready(function() {
 
         $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");
 
-        $(".dataTables_scroll").attr("title", "Scroll to see more entries").attr("data-trigger", "manual");
         $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
         table.on('draw.dt', function () {
-            $(".dataTables_scroll").tooltip("show");
+            if ($("div.dataTables_scrollBody").prop("scrollHeight") > $("div.dataTables_scrollBody").height()) {
+                $(".dataTables_scroll").attr("title", "Scroll to see more entries").attr("data-trigger", "manual").tooltip({placement: "bottom", html: true, container: 'body'}).tooltip("show");
+            }
         } );
 
         $("#query").on("input", function() {
