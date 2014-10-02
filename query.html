@@ -174,7 +174,7 @@ $(document).ready(function() {
         var dateRegex = /\b(?:jan|feb|mar|apr|may|jun|jul|aug|sept?|oct|nov|dec)\s+\d{1,2}\s*(?:st|nd|rd|th)?\s*,?\s+\d{4}\b/i;
         $.ajax({
             dataType: "html",
-            cache: false,
+            cache: true,
             url: "updates.html", 
             success: function(j) {
                 var updateHtml = j;
@@ -207,7 +207,7 @@ $(document).ready(function() {
         $("#about").click(function() {
             $.ajax({
                 dataType: "html",
-                cache: false,
+                cache: true,
                 url: "about.html", 
                 success: function(html) {
                     bootbox.dialog({
