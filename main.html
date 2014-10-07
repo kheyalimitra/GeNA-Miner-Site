@@ -288,9 +288,10 @@ $(document).ready(function() {
         <p><code><b>word</b></code> -- Match <b>word</b> as keyword</p>\
         <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase</p>\
         <p><code><u>col</u>:<b>query</b></code> -- Match <b>query</b> (any type) on column <u>col</u></p>\
-        <h5><small>Wildchar and Fuzziness</small></h5>\
+        <h5><small>Wildchar, Fuzziness, and Distance</small></h5>\
         <p><code><b>wo</b>?<b>d</b></code>, <code><b>wor</b>*</code> -- Match <b>word</b> with wildchar</p>\
         <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
+        <p><code>"<b>word1 word2 ...</b>"~<i>d</i></code> -- Match <b>word1 word2 ...</b> with at most <i>d</i> words between each other<</p>\
         <h5><small>Range</small></h5>\
         <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match range from <b>a</b> to <b>b</b></p>\
         <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="fa fa-book"></span> Reference</a></p>\
