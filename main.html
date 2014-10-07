@@ -222,12 +222,6 @@ $(document).ready(function() {
     $(".dataTables_length label").addClass("control-label");
     $(".dataTables_filter label").addClass("control-label");
 
-    $('#example_filter input').unbind().bind('keyup', function(e) {
-        if(e.keyCode == 13) {
-            search();
-        }
-    });
-
     var filterValue = ""
     function search() {
         filterValue = $("#example_filter input").val();
@@ -266,16 +260,20 @@ $(document).ready(function() {
                     $('#example_filter').addClass("has-error");
 
                     showAlert("Please check your inputs.<br/><br/>Wrong query syntax.", "danger");
-                    $("#example_filter input").tooltip("show");
                 }
             }
         });
 
     }
 
-    $("#example_filter").addClass("has-feedback");
-    $("#example_filter input").attr("placeholder", "Search").after("<span id=\"example_filter_searchicon\" class=\"fa fa-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
+    $("#example_filter").addClass("has-feedback").attr("placeholder", "Search");
     $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:30px;"><span class="fa fa-remove "></span> Clear</span>');
+    $("#example_filter input").after("<span id=\"example_filter_searchicon\" class=\"fa fa-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
+    $('#example_filter input').unbind().bind('keyup', function(e) {
+        if(e.keyCode == 13) {
+            search();
+        }
+    });
     $("#example_filter_searchicon").click(function() {
         search();
     });
