@@ -251,7 +251,12 @@ $(document).ready(function() {
             url: "http://" + host + "/main/load/validate?query=" + query.replace(/ /g, "+") + "&search=" + filterValue, 
             success: function(j) {
                 if (j.valid) {
-                    $('#example_filter').addClass("has-success");
+                    if ($("#example_filter input").val() != "") {
+                        $('#example_filter').addClass("has-success");
+                    }
+                    else {
+                        $('#example_filter').removeClass("has-success");
+                    }
                     $('#example_filter').removeClass("has-error");
 
                     table.search(filterValue).draw();
@@ -270,7 +275,12 @@ $(document).ready(function() {
 
     $("#example_filter").addClass("has-feedback");
     $("#example_filter input").attr("placeholder", "Search").after("<span id=\"example_filter_searchicon\" class=\"fa fa-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
+    $("#example_filter input").before('<a id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:30px;"><span class="fa fa-remove "></span> Clear</a>');
     $("#example_filter_searchicon").click(function() {
+        search();
+    });
+    $("#example_filter_clear").click(function() {
+        $("#example_filter input").val("");
         search();
     });
 
@@ -306,6 +316,16 @@ $(document).ready(function() {
             }, 200, "linear", function() {
                 $(this).popover("show");
             });
+            if ($(this).val() != "") {
+                $("#example_filter_clear").fadeIn(200);
+            }
+        }
+    }).on("input", function(e) {
+        if ($(this).val() != "") {
+            $("#example_filter_clear").fadeIn(200);
+        }
+        else {
+            $("#example_filter_clear").fadeOut(200);
         }
     });
     $(document).on('click', function(e) {
@@ -315,6 +335,7 @@ $(document).ready(function() {
                 $('#example_filter input').popover('hide').animate({
                     "width": "250px"
                 }, 200);
+                $("#example_filter_clear").fadeOut(200);
             }
         }
     }).keydown(function(e) {
@@ -324,10 +345,12 @@ $(document).ready(function() {
                 $('#example_filter input').popover('hide').animate({
                     "width": "250px"
                 }, 200);
+                $("#example_filter_clear").fadeOut(200);
             }
         }
     }).on("click", ".popover a.btn", function() {
         $("#example_filter input").focus().replaceSelectedText($(this).text());
+        $("#example_filter_clear").fadeIn(200);
     });
 
     table.on('draw.dt', function () {
