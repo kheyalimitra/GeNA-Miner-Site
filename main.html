@@ -315,17 +315,17 @@ $(document).ready(function() {
                 "width": "400px"
             }, 200, "linear", function() {
                 $(this).popover("show");
+                if ($(this).val() != "") {
+                    $("#example_filter_clear").show();
+                }
             });
-            if ($(this).val() != "") {
-                $("#example_filter_clear").fadeIn(200);
-            }
         }
     }).on("input", function(e) {
         if ($(this).val() != "") {
-            $("#example_filter_clear").fadeIn(200);
+            $("#example_filter_clear").show();
         }
         else {
-            $("#example_filter_clear").fadeOut(200);
+            $("#example_filter_clear").hide();
         }
     });
     $(document).on('click', function(e) {
@@ -335,7 +335,7 @@ $(document).ready(function() {
                 $('#example_filter input').popover('hide').animate({
                     "width": "250px"
                 }, 200);
-                $("#example_filter_clear").fadeOut(200);
+                $("#example_filter_clear").hide();
             }
         }
     }).keydown(function(e) {
@@ -345,12 +345,12 @@ $(document).ready(function() {
                 $('#example_filter input').popover('hide').animate({
                     "width": "250px"
                 }, 200);
-                $("#example_filter_clear").fadeOut(200);
+                $("#example_filter_clear").hide();
             }
         }
     }).on("click", ".popover a.btn", function() {
         $("#example_filter input").focus().replaceSelectedText($(this).text());
-        $("#example_filter_clear").fadeIn(200);
+        $("#example_filter_clear").show();
     });
 
     table.on('draw.dt', function () {
