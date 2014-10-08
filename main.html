@@ -266,9 +266,9 @@ $(document).ready(function() {
 
     }
 
-    $("#example_filter").addClass("has-feedback").attr("placeholder", "Search");
-    $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:30px;"><span class="fa fa-remove "></span> Clear</span>');
-    $("#example_filter input").after("<span id=\"example_filter_searchicon\" class=\"fa fa-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
+    $("#example_filter").addClass("input-group");
+    $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;"><span class="fa fa-remove"></span> Clear</span>');
+    $("#example_filter input").after("<span class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></span>").attr("placeholder", "Search");
     $('#example_filter input').unbind().bind('keyup', function(e) {
         if(e.keyCode == 13) {
             search();
