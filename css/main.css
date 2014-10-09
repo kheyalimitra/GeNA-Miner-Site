@@ -56,6 +56,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     max-width: 400px;
     background-color: #444; }
 
+input:hover {
+  border: 1px solid #888;
+  transition: border linear 0.2s; }
+
+select:hover {
+  border: 1px solid #888;
+  transition: border linear 0.2s; }
+
 .popover {
   opacity: .9 !important;
   font-size: 12px; }
