@@ -29,7 +29,7 @@
         top: 20px;
         width: 150px;
         height: 30px;
-        background-color: rgba(255, 234, 148, 0.85);
+        background-color: rgba(255, 234, 148, 0.9);
 
         a {
             font-family:'Lucida Console';
@@ -52,22 +52,68 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     margin-bottom: 10px;
 }
 
-.tooltip-inner {
-    white-space: pre-wrap;
-    max-width: 400px;
-    text-align: left;
+.help-block {
+    margin: 0px;
+    font-size: 12px;
+}
+
+.tooltip {
+    opacity: .9 !important;
+
+    font-size: 12px;
+
+    .tooltip-arrow {
+        border-bottom-color: #444 !important;
+    }
+
+    .tooltip-inner {
+        max-width: 400px;
+
+        background-color: #444;
+    }
+}
+
+input:hover {
+    border: 1px solid #888;
+    transition: border linear .2s
+}
+
+select:hover {
+    border: 1px solid #888;
+    transition: border linear .2s
+}
+
+.popover {
+    opacity: .9 !important;
+
+    font-size: 12px;
+}
+
+.panel {
+    margin: 0px;
+
+    .panel-heading, .panel-body, .panel-footer {
+        padding: 10px;
+    }
 }
 
 .btn, .paginate_button a  {
-    transition: background linear 200ms;
+    transition: background linear .2s, color linear .2s;
 }
 
 .dataTables_wrapper {
-    overflow: auto;
+    overflow: hidden;
 
-    .dataTables_length {
+    .expandAll {
         float: left;
         margin-left: 0px;
+        margin-right: 10px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .dataTables_length {
+        float: left;
+        margin-left: 10px;
         margin-right: 10px;
         margin-top: 0px;
         margin-bottom: 0px;
@@ -78,6 +124,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         margin-right: 10px;
         margin-top: 0px;
         margin-bottom: 0px;
+
+        input {
+            vertical-align: middle !important;
+            margin-left: 0px !important;
+        }
     }
     .DTTT_container {
         float: right;
@@ -114,6 +165,32 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         z-index: 1000;
     }
 
+    tr td.control {
+        vertical-align: middle;
+    }
+    tr td.control:before {
+        transition: background linear .2s, color linear .2s;
+        border: 1px solid #adadad !important;
+        box-shadow: none !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        height: 14px !important;
+        width: 14px !important;
+        line-height: 12px !important;
+    }
+    tr:hover td.control:before {
+        background-color: #5bc0de !important;
+        color: #ffffff !important;
+    }
+    tr.parent td.control:before {
+        background-color: #d9534f !important;
+        color: #ffffff !important;
+    }
+    tr.parent:hover td.control:before {
+        background-color: #d9534f !important;
+        color: #ffffff !important;
+    }
+
     .clear {
         clear: both;
         height: 0;
@@ -121,5 +198,34 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 div.fixedHeader th, div.fixedHeader td {
-    background-color: rgba(255, 255, 255, 0.85) !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+
+    input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        opacity: 0;
+        outline: none;
+        background: none;
+        cursor: inherit;
+        display: block;
+    }
+}
+
+.btn-clipboard {
+    color: #333;
+    background-color: #fff;
+
+    border-color: #563d7c;
+}
+.btn-clipboard:hover {
+    color: #fff;
+    background-color: #563d7c;
 }

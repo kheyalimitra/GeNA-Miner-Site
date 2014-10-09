@@ -18,6 +18,7 @@
     "datatables": "~1.10.2",
     "fontawesome": "~4.2.0",
     "jquery-cookie": "~1.4.1",
-    "purl": "~2.3.1"
+    "purl": "~2.3.1",
+    "rangyinputs": "~1.1.4"
   }
 }

@@ -32,6 +32,8 @@
 <script src="static/js/dataTables.fixedHeader.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.css">
 
+<script src="static/js/rangyinputs-jquery.js"></script>
+
 <script src="js/main.js"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
@@ -40,36 +42,22 @@ tr.group {
     background-color: #dddddd !important;
 }
 
-.btn-file {
-    position: relative;
-    overflow: hidden;
-}
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    opacity: 0;
-    outline: none;
-    background: none;
-    cursor: inherit;
-    display: block;
-}
-
-#form_table th,td {
+#form_table th, #form_table td {
     padding: 5px;
 }
 
 #example_filter input {
-    transition-duration: 200ms;
-    transition-property: width, background;
-    transition-timing-function: linear;
-
-    width: 200px;
+    width: 250px;
 }
-#example_filter input:focus {
-    width: 300px;
+
+em {
+    background-color: rgba(255,255,0,0.5);
+    font-style: normal;
+}
+
+.popover {
+    min-width: 400px;
+    max-width: 400px;
 }
 </style>
 
@@ -90,7 +78,7 @@ $(document).ready(function() {
     $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
 
 	var table = $('#example').DataTable( {
-        dom: 'lfTrtip',
+        dom: '<"expandAll">lfTrtip',
         tableTools: {
             "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
             "aButtons": [
@@ -116,12 +104,20 @@ $(document).ready(function() {
             "url": "http://" + host + "/main/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo,
             "dataType": "jsonp",
             cache: true,
-            jsonpCallback: "jsonpcallback_main",
+            jsonpCallback: "jsonpcallback_main", 
+            "error": function(reason) {
+                alert("Error occurred !");
+            }
         },
 
         "processing": true,
         "language": {
-            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
+            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>", 
+            "search": "", 
+            "paginate": {
+                "previous": '<span class="fa fa-chevron-left"></span>', 
+                "next": '<span class="fa fa-chevron-right"></span>'
+            }
         },
         "deferRender": true,
         "pageLength": 25,
@@ -192,7 +188,7 @@ $(document).ready(function() {
             api.column(3, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group) {
                     $(rows).eq( i ).before(
-                        '<tr class="group"><td colspan="10">'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
+                        '<tr class="group"><td colspan="10"><b>Year: </b>'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
                     );
  
                     last = group;
@@ -201,6 +197,23 @@ $(document).ready(function() {
         }
 
 	});
+    $("div.expandAll").html('\
+        <div class="btn-group" data-toggle="buttons">\
+            <label class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
+        </div>\
+    ');
+
+    function expandAll(flag) {
+        $('#example tbody tr[role="row"].parent').trigger("click");
+        if (flag) {
+            $('#example tbody tr[role="row"]').trigger("click");
+        }
+    }
+
+    $('#expandAll').change(function() {
+        expandAll(this.checked);
+    });
+
     new $.fn.dataTable.FixedHeader( table );
 
     $(".DTTT_container").addClass("btn-group");
@@ -212,27 +225,136 @@ $(document).ready(function() {
     var filterValue = ""
     function search() {
         filterValue = $("#example_filter input").val();
-        table.search(filterValue).draw();
-        $("#example_filter").addClass("has-success");
+
+        var columnRegex = /(\w+):/g;
+        var match = columnRegex.exec(filterValue);
+        while (match != null) {
+            if (!(match[1] in {"year":"", "id":"", "title":"", "source":"", "authors":"", "abstract":"", "keywords":""})) {
+                showAlert("Please check your inputs.<br/><br/>Wrong column name(s).", "danger");
+                $("#example_filter input").tooltip("show");
+                return;
+            }
+
+            match = columnRegex.exec(filterValue);
+        }
+
+        $.ajax({
+            dataType: "jsonp",
+            jsonpCallback: "jsonpcallback_validate",
+            cache: true,
+            url: "http://" + host + "/main/load/validate?query=" + query.replace(/ /g, "+") + "&search=" + filterValue, 
+            success: function(j) {
+                if (j.valid) {
+                    if ($("#example_filter input").val() != "") {
+                        $('#example_filter').addClass("has-success");
+                    }
+                    else {
+                        $('#example_filter').removeClass("has-success");
+                    }
+                    $('#example_filter').removeClass("has-error");
+
+                    table.search(filterValue).draw();
+                }
+                else {
+                    $('#example_filter').removeClass("has-success");
+                    $('#example_filter').addClass("has-error");
+
+                    showAlert("Please check your inputs.<br/><br/>Wrong query syntax.", "danger");
+                }
+            }
+        });
+
     }
-    $("#example_filter").addClass("has-success");
-    $('#example_filter input').unbind();
-    $('#example_filter input').bind('keyup', function(e) {
+
+    $("#example_filter").addClass("input-group");
+    $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;"><span class="fa fa-remove"></span> Clear</span>');
+    $("#example_filter input").after("<span class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></span>").attr("placeholder", "Search");
+    $('#example_filter input').unbind().bind('keyup', function(e) {
         if(e.keyCode == 13) {
             search();
         }
     });
-    $("#example_filter").addClass("has-feedback");
-    $("#example_filter input").after("<span id=\"example_filter_searchicon\" class=\"glyphicon glyphicon-search form-control-feedback\" style=\"cursor: pointer;\"></span>");
     $("#example_filter_searchicon").click(function() {
+        search();
+    });
+    $("#example_filter_clear").click(function() {
+        $("#example_filter input").val("");
         search();
     });
 
     $("#example_length select").attr("title", "Show all entries may freeze your browser");
-    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'});
+    $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+
+    var popoverShown = false;
+    $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content", 
+        '\
+        <h5><small>Column</small></h5>\
+        <p><span class="btn-group"><a class="btn btn-clipboard btn-xs">title:</a><a class="btn btn-clipboard btn-xs">year:</a><a class="btn btn-clipboard btn-xs">source:</a><a class="btn btn-clipboard btn-xs">authors:</a><a class="btn btn-clipboard btn-xs">abstract:</a><a class="btn btn-clipboard btn-xs">keywords:</a><a class="btn btn-clipboard btn-xs">id:</a></span></p>\
+        <h5><small>Boolean Operator</small></h5>\
+        <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></td><td style="width:20px;"></td><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">(</a><a class="btn btn-xs disabled">...</a><a class="btn btn-clipboard btn-xs">)</a></span></td></tr></table></p>\
+        <h5><small>Basic</small></h5>\
+        <p><code><b>word</b></code> -- Match <b>word</b> as keyword</p>\
+        <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase</p>\
+        <p><code><u>col</u>:<b>query</b></code> -- Match <b>query</b> (any type) on column <u>col</u></p>\
+        <h5><small>Wildchar, Fuzziness, and Distance</small></h5>\
+        <p><code><b>wo</b>?<b>d</b></code>, <code><b>wor</b>*</code> -- Match <b>word</b> with wildchar</p>\
+        <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
+        <p><code>"<b>word1 word2 ...</b>"~<i>d</i></code> -- Match <b>word1 word2 ...</b> with at most <i>d</i> words between each other</p>\
+        <h5><small>Range</small></h5>\
+        <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match range from <b>a</b> to <b>b</b></p>\
+        <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="fa fa-book"></span> Reference</a></p>\
+        '
+    ).popover({
+        placement: "bottom", html: true, container: 'body'
+    }).focus(function() {
+        if (!popoverShown) {
+            popoverShown = true;
+            $(this).animate({
+                "width": "400px"
+            }, 200, "linear", function() {
+                $(this).popover("show");
+                if ($(this).val() != "") {
+                    $("#example_filter_clear").show();
+                }
+            });
+        }
+    }).on("input", function(e) {
+        if ($(this).val() != "") {
+            $("#example_filter_clear").show();
+        }
+        else {
+            $("#example_filter_clear").hide();
+        }
+    });
+    $(document).on('click', function(e) {
+        if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
+            if (popoverShown) {
+                popoverShown = false;
+                $('#example_filter input').popover('hide').animate({
+                    "width": "250px"
+                }, 200);
+                $("#example_filter_clear").hide();
+            }
+        }
+    }).keydown(function(e) {
+        if (e.keyCode === 27) {
+            if (popoverShown) {
+                popoverShown = false;
+                $('#example_filter input').popover('hide').animate({
+                    "width": "250px"
+                }, 200);
+                $("#example_filter_clear").hide();
+            }
+        }
+    }).on("click", ".popover a.btn", function() {
+        $("#example_filter input").focus().replaceSelectedText($(this).text());
+        $("#example_filter_clear").show();
+    });
 
     table.on('draw.dt', function () {
         $("#form_divmask").hide();
+
+        expandAll($("#expandAll").prop("checked"));
     } );
 
     $("input[name='host']").val(host);
@@ -352,7 +474,7 @@ $(document).ready(function() {
                     className: "btn-default"
                 },
                 danger: {
-                    label: "<span class=\"glyphicon glyphicon-trash\"></span> Delete",
+                    label: "<span class=\"fa fa-trash-o\"></span> Delete",
                     className: "btn-danger",
                     callback: function() {
                         $.getJSON("http://" + host + "/theme/file/delete?callback=?", 
@@ -412,7 +534,7 @@ $(document).ready(function() {
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="query.html"><span class="glyphicon glyphicon-home" title="Home"></span></a></li>
+    <li><a href="query.html"><span class="fa fa-home" title="Home"></span></a></li>
     <li class="active">Records</li>
 </ol>
 
@@ -427,7 +549,7 @@ $(document).ready(function() {
     <div id="form_divmask" style="position:absolute; z-index: 1000; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); "></div>
     <table id="form_table" style="width:100%; ">
         <col width="400px">
-        <col width="600px">
+        <col>
         <tr>
             <td>
                 <div style="display:inline-block;">
@@ -438,7 +560,7 @@ $(document).ready(function() {
                         <input type="hidden" name="to"></input>
                         <label class="control-label">Year Interval: </label>
                         <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Trend</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
                     </form>
                 </div>
             </td>
@@ -451,25 +573,25 @@ $(document).ready(function() {
                             <input type="hidden" name="from"></input>
                             <input type="hidden" name="to"></input>
                             <label class="control-label">Dictionary: </label>
-                            <select class="form-control input-sm" id="theme_list" name="name" style="width:200px;"></select>
-                            <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Load</button>
+                            <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
+                            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Visualize</button>
                         </form>
                     </div>
                     <div style="display:inline-block;">
                         |
                         <div id="theme_othersdiv" style="display: inline-block;">
-                            <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="glyphicon glyphicon-download"></span> View</button>
-                            <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                            <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="fa fa-download"></span> View</button>
+                            <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="fa fa-trash-o"></span> Delete</button>
                         </div>
-                        <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="glyphicon glyphicon-upload"></span> New</button>
+                        <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="fa fa-upload"></span> New</button>
                         <div id="theme_uploaddiv" style="display: inline-block;">
                             <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
                             <form class="form-inline" id="theme_uploadform" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
                                 <input id="theme_uploadstatus" type="hidden" name="root"></input>
                                 <div class="btn-group">
-                                    <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+                                    <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="fa fa-upload"></span> Upload</button>
                                     <span class="btn btn-default btn-sm btn-file" title="CSV file only">
-                                        Browse...
+                                        Browse ...
                                         <input id="theme_uploadinput" type="file" name="file" accept=".csv" tabindex="0"></input>
                                     </span>
                                     <span class="btn btn-sm disabled" id="theme_uploadfile"></span>
@@ -492,7 +614,7 @@ $(document).ready(function() {
                         <input class="form-control input-sm" id="topic_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
                         <label class="control-label">#Word per Topic: </label>
                         <input class="form-control input-sm" id="topic_wordnum" style="width:50px;" name="wordnum" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Top-k Topics</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th-list"></span> Top-k Topics</button>
                     </form>
                 </div>
             </td>
@@ -505,11 +627,9 @@ $(document).ready(function() {
                         <input type="hidden" name="to"></input>
                         <label class="control-label">k: </label>
                         <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
-                        <label class="control-label">Min. Len.: </label>
-                        <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1<br/>Less than or equal to Max. Len."></input>
-                        <label class="control-label">Max. Len.: </label>
-                        <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1<br/>Greater than or equal Min. Len."></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="glyphicon glyphicon-stats"></span> Top-k Co-occurrences</button>
+                        <label class="control-label">#Word per Phrase: </label>
+                        <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1"></input> - <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1"></input>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th-list"></span> Top-k Co-occurrences</button>
                     </form>
                 </div>
             </td>
