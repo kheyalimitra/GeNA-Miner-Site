@@ -1,6 +1,6 @@
 [
     {
         "name": "PubMed", 
-        "host": "d142-58-33-151.burnaby.sfu.ca:5000"
+        "host": "0.0.0.0:5000"
     }
 ]

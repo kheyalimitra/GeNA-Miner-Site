@@ -169,26 +169,17 @@ select:hover {
         vertical-align: middle;
     }
     tr td.control:before {
-        transition: background linear .2s, color linear .2s;
+        transition: background linear .2s, color linear .2s, opacity linear .2s;
         border: 1px solid #adadad !important;
         box-shadow: none !important;
-        background-color: #ffffff !important;
-        color: #000000 !important;
+        background-color: #5cb85c !important;
+        color: #ffffff !important;
         height: 14px !important;
         width: 14px !important;
         line-height: 12px !important;
     }
-    tr:hover td.control:before {
-        background-color: #5bc0de !important;
-        color: #ffffff !important;
-    }
     tr.parent td.control:before {
         background-color: #d9534f !important;
-        color: #ffffff !important;
-    }
-    tr.parent:hover td.control:before {
-        background-color: #d9534f !important;
-        color: #ffffff !important;
     }
 
     .clear {

@@ -130,23 +130,16 @@ select:hover {
   .dataTables_wrapper tr td.control {
     vertical-align: middle; }
   .dataTables_wrapper tr td.control:before {
-    transition: background linear .2s, color linear .2s;
+    transition: background linear .2s, color linear .2s, opacity linear .2s;
     border: 1px solid #adadad !important;
     box-shadow: none !important;
-    background-color: #ffffff !important;
-    color: #000000 !important;
+    background-color: #5cb85c !important;
+    color: #ffffff !important;
     height: 14px !important;
     width: 14px !important;
     line-height: 12px !important; }
-  .dataTables_wrapper tr:hover td.control:before {
-    background-color: #5bc0de !important;
-    color: #ffffff !important; }
   .dataTables_wrapper tr.parent td.control:before {
-    background-color: #d9534f !important;
-    color: #ffffff !important; }
-  .dataTables_wrapper tr.parent:hover td.control:before {
-    background-color: #d9534f !important;
-    color: #ffffff !important; }
+    background-color: #d9534f !important; }
   .dataTables_wrapper .clear {
     clear: both;
     height: 0; }
