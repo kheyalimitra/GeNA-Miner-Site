@@ -13,6 +13,9 @@
 
 <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
 
+<script src="static/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/bootstrap-datepicker.css">
+
 <script src="static/js/jquery.bootstrap-growl.min.js"></script>
 
 <script src="static/js/bootbox.js"></script>
@@ -140,6 +143,7 @@ $(document).ready(function() {
 
         $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");
 
+        $(".input-date").tooltip({placement: "top", html: true, container: 'body'});
         $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
         table.on('draw.dt', function () {
             if ($("div.dataTables_scrollBody").prop("scrollHeight") > $("div.dataTables_scrollBody").height()) {
@@ -155,7 +159,7 @@ $(document).ready(function() {
 
         $('#query_form').submit( function(e) {
             if (!isNotEmpty($('#query').val())) {
-                showAlert("Please check your inputs.", "danger");
+                showAlert("Please check your <b>query</b> input.", "danger");
                 $("#query").tooltip("show");
                 $("#query_form").addClass("has-error");
                 e.preventDefault();
@@ -164,15 +168,24 @@ $(document).ready(function() {
             else {
                 $("#query").tooltip("hide");
             }
+
             if (!isIntWithMinVal($('#from').val(), 1900)) {
-                showAlert("Please check your inputs.", "danger");
+                showAlert("Please check your <b>start year</b> input.", "danger");
                 $("#from").tooltip("show");
                 $("#query_form").addClass("has-error");
                 e.preventDefault();
                 return;
             }
             if (!isIntWithMaxVal($('#to').val(), new Date().getFullYear() - 1)) {
-                showAlert("Please check your inputs.", "danger");
+                showAlert("Please check your <b>end year</b> input.", "danger");
+                $("#to").tooltip("show");
+                $("#query_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+            if (parseInt($('#from').val()) > parseInt($('#to').val())) {
+                showAlert("Please check your <b>start year</b> and <b>end year</b> inputs.", "danger");
+                $("#from").tooltip("show");
                 $("#to").tooltip("show");
                 $("#query_form").addClass("has-error");
                 e.preventDefault();
@@ -188,6 +201,13 @@ $(document).ready(function() {
             else {
                 $(".table tr td button").fadeOut(200);
             }
+        });
+
+        $(".input-date").datepicker({
+            format: "yyyy",
+            startView: 2,
+            minViewMode: 2,
+            autoclose: true
         });
     });
 });
@@ -216,7 +236,7 @@ $(document).ready(function() {
             <label class="control-label">Query: </label>
             <input class="form-control input-sm" id="query" style="width:250px;" name="query" title="At least one keyword">
             <label class="control-label">Year: </label>
-            <input class="form-control input-sm" id="from" style="width:50px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm" id="to" style="width:50px;" maxlength="4" name="to" title="Less than or equal to ">
+            <input class="form-control input-sm input-date" id="from" style="width:50px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm input-date" id="to" style="width:50px;" maxlength="4" name="to" title="Less than or equal to ">
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
         </form>
     </div>
