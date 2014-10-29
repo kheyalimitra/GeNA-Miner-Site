@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>
-    GeNA Miner
-</title>
 <script src="static/js/jquery.min.js"></script>
+
+<script src="static/js/purl.js"></script>
 
 <script src="static/js/jquery.cookie.js"></script>
 
@@ -33,11 +32,22 @@
 <script type="text/javascript">
 $(document).ready(function() {
     $.getJSON("hosts.json", function(hosts) {
-        var host = hosts[0]["host"];
+        var token = $.cookie("token");
+
+        var db = $.url().param('db');
+        if (db == null) {
+            window.location.href = 'index.html';
+        }
+
+        var host = hosts[db].host;
+        var dbName = hosts[db].name;
+
+        $("#dbName").text("-- " + dbName);
+        document.title = "GeNA Miner -- " + dbName;
 
         var table = $("#example").DataTable( {
             "ajax": {
-                "url": "http://" + host + "/history/load",
+                "url": "http://" + host + "/history/load?token=" + token,
                 "dataType": "jsonp",
                 "jsonpCallback": "jsonpcallback",
             },
@@ -107,7 +117,7 @@ $(document).ready(function() {
                                 showAlert("You did not enter the correct indexed query name.", "warning");
                             }
                             else {
-                                $.getJSON("http://" + host + "/history/delete?callback=?", 
+                                $.getJSON("http://" + host + "/history/delete?callback=?&token=" + token, 
                                     {
                                         "query": query
                                     }, 
@@ -123,7 +133,7 @@ $(document).ready(function() {
             });
         });
 
-        $("input[name='host']").val(host);
+        $("input[name='db']").val(db);
 
         $('#from').val(new Date().getFullYear() - 10);
         $('#to').val(new Date().getFullYear() - 1);
@@ -171,60 +181,6 @@ $(document).ready(function() {
         } );
         //new $.fn.dataTable.FixedHeader( table );
 
-        var dateRegex = /\b(?:jan|feb|mar|apr|may|jun|jul|aug|sept?|oct|nov|dec)\s+\d{1,2}\s*(?:st|nd|rd|th)?\s*,?\s+\d{4}\b/i;
-        $.ajax({
-            dataType: "html",
-            cache: true,
-            url: "updates.html", 
-            success: function(j) {
-                var updateHtml = j;
-                var updateDate = dateRegex.exec(updateHtml);
-                var updateCookieName = "updated_" + updateDate.toString().toLowerCase();
-
-                if (!$.cookie(updateCookieName)) {
-                    showUpdates(updateDate, updateHtml);
-                    $.cookie(updateCookieName, 'true');
-                }
-                $("#updates").click(function() {
-                    showUpdates(updateDate, updateHtml);
-                });
-            }
-        });
-        function showUpdates(date, html) {
-            bootbox.dialog({
-                message: html,
-                title: "Updates",
-                closeButton: false,
-                buttons: {
-                    ok: {
-                        label: "<span class=\"fa fa-heart-o\"><\/span> Got It",
-                        className: "btn-success"
-                    }
-                }
-            });
-        }
-
-        $("#about").click(function() {
-            $.ajax({
-                dataType: "html",
-                cache: true,
-                url: "about.html", 
-                success: function(html) {
-                    bootbox.dialog({
-                        message: html,
-                        title: "About",
-                        onEscape: function() {},
-                        buttons: {
-                            ok: {
-                                label: "OK",
-                                className: "btn-default"
-                            }
-                        }
-                    });
-                }
-            });
-        });
-
         $("#manage").change(function() {
             if (this.checked) {
                 $(".table tr td button").fadeIn(200);
@@ -245,13 +201,18 @@ $(document).ready(function() {
 </style>
 </head>
 <body>
+<ol class="breadcrumb">
+    <li><a href="index.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li class="active">Query</li>
+</ol>
+
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
-<div class="main" style="margin-top:36px;">
-    <h3>GeNA Miner <small>-- Made by GeNA Lab</small></h3>
-<div style="max-width:600px;">
+<div class="main">
+    <h3>GeNA Miner <small id="dbName"></small></h3>
+<div style="max-width:660px;">
     <div class="block">
         <form class="form-inline" id="query_form" action="main.html" method="get">
-            <input type="hidden" name="host">
+            <input type="hidden" name="db">
             <label class="control-label">Query: </label>
             <input class="form-control input-sm" id="query" style="width:250px;" name="query" title="At least one keyword">
             <label class="control-label">Year: </label>
@@ -282,19 +243,6 @@ $(document).ready(function() {
             </thead>
             <tbody>
             </tbody>
-        </table>
-    </div>
-    <div style="padding: 10px;">
-        <table id="form_table" style="width:100%; ">
-            <tr>
-                <td>
-                    <button class="btn btn-success btn-xs" id="about"><span class="fa fa-user"></span> About</button>
-                    <button class="btn btn-info btn-xs" id="updates"><span class="fa fa-bell-o"></span> Updates</button>
-                </td>
-                <td style="text-align:right;">
-                    © GeNA Lab
-                </td>
-            </tr>
         </table>
     </div>
 </div>

@@ -7,6 +7,8 @@
 
 <script src="static/js/purl.js"></script>
 
+<script src="static/js/jquery.cookie.js"></script>
+
 <script src="static/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
 <!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
@@ -30,89 +32,99 @@
 
 <script type="text/javascript" class="init">
 $(document).ready(function() {
-    var host = $.url().param('host');
-    var query = $.url().param('query');
-    var yearFrom = $.url().param('from');
-    if (!yearFrom) {
-        yearFrom = 1900;
-    }
-    var yearTo = $.url().param('to');
-    if (!yearTo) {
-        yearTo = new Date().getFullYear() - 1;
-    }
-    var interval = $.url().param('interval');
-    if (!interval) {
-        interval = 5;
-    }
-    var img = query.replace(/ /g, '+') + "_" + yearFrom + "-" + yearTo + "_interval=" + interval + ".svg";
-;
+    $.getJSON("hosts.json", function(hosts) {
+        var token = $.cookie("token");
 
-    document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- #Publication Trend (Year Interval = " + interval + ")";
-    $("#parentPage").attr("href", "main.html?host=" + host + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
-    $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- #Publication Trend (Year Interval = " + interval + ")</small>");
+        var db = $.url().param('db');
+        var host = hosts[db].host;
+        var dbName = hosts[db].name;
 
-	var table = $('#example').DataTable( {
-        dom: 'lfTrtip',
-        tableTools: {
-            "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
-            "aButtons": [
-                {
-                    "sExtends": "copy",
-                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
-                    "oSelectorOpts": {
-                        page: 'current'
+        $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
+
+        var query = $.url().param('query');
+        var yearFrom = $.url().param('from');
+        if (!yearFrom) {
+            yearFrom = 1900;
+        }
+        var yearTo = $.url().param('to');
+        if (!yearTo) {
+            yearTo = new Date().getFullYear() - 1;
+        }
+        var interval = $.url().param('interval');
+        if (!interval) {
+            interval = 5;
+        }
+        var img = query.replace(/ /g, '+') + "_" + yearFrom + "-" + yearTo + "_interval=" + interval + ".svg";
+    ;
+
+        document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- #Publication Trend (Year Interval = " + interval + ")";
+        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- #Publication Trend (Year Interval = " + interval + ")</small>");
+
+        var table = $('#example').DataTable( {
+            dom: 'lfTrtip',
+            tableTools: {
+                "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
+                "aButtons": [
+                    {
+                        "sExtends": "copy",
+                        "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
+                    },
+                    {
+                        "sExtends": "csv",
+                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
                     }
+                ]
+            }, 
+
+            "ajax": {
+                "url": "http://" + host + "/trend/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval + "&plot=true",
+                "dataType": "jsonp",
+                cache: true,
+                jsonpCallback: "jsonpcallback",
+            },
+
+            "deferRender": true,
+            "searching": false,
+            "paging": false, 
+
+            "columns": [
+                { 
+                    "width": "70%", 
+                    "data": "range",
                 },
-                {
-                    "sExtends": "csv",
-                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
-                    "oSelectorOpts": {
-                        page: 'current'
-                    }
-                }
-            ]
-        }, 
+                { 
+                    "width": "30%", 
+                    "data": "count",
+                },
+            ],
+            "order": [[ 0, "asc" ]]
+        });
+        new $.fn.dataTable.FixedHeader( table );
 
-        "ajax": {
-            "url": "http://" + host + "/trend/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval + "&plot=true",
-            "dataType": "jsonp",
-            cache: true,
-            jsonpCallback: "jsonpcallback",
-        },
+        $(".DTTT_container").addClass("btn-group");
+        $(".DTTT_container a").removeClass("DTTT_button");
+        $(".DTTT_container a").addClass("btn btn-default btn-sm");
 
-        "deferRender": true,
-        "searching": false,
-        "paging": false, 
+        table.on( 'draw.dt', function () {
+            $("#trendimg").attr("src", "http://" + host + "/static/trend/" + img); 
+        } );
 
-        "columns": [
-            { 
-                "width": "70%", 
-                "data": "range",
-            },
-            { 
-                "width": "30%", 
-                "data": "count",
-            },
-        ],
-        "order": [[ 0, "asc" ]]
-	});
-    new $.fn.dataTable.FixedHeader( table );
-
-    $(".DTTT_container").addClass("btn-group");
-    $(".DTTT_container a").removeClass("DTTT_button");
-    $(".DTTT_container a").addClass("btn btn-default btn-sm");
-
-    table.on( 'draw.dt', function () {
-        $("#trendimg").attr("src", "http://" + host + "/static/trend/" + img); 
-    } );
-
-    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+        $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+    });
 });
 </script>
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="query.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="index.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="query.html" id="queryPage">Query</a></li>
     <li><a id="parentPage">Records</a></li>
     <li class="active">Trend</li>
 </ol>

@@ -7,6 +7,8 @@
 
 <script src="static/js/purl.js"></script>
 
+<script src="static/js/jquery.cookie.js"></script>
+
 <script src="static/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
 <!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
@@ -40,102 +42,112 @@ td.highlight {
 
 <script type="text/javascript" class="init">
 $(document).ready(function() {
-    var host = $.url().param('host');
-    var query = $.url().param('query');
-    var yearFrom = $.url().param('from');
-    if (!yearFrom) {
-        yearFrom = 1900;
-    }
-    var yearTo = $.url().param('to');
-    if (!yearTo) {
-        yearTo = new Date().getFullYear() - 1;
-    }
-    var k = $.url().param('k');
-    if (!k) {
-        k = 5;
-    }
-    var wordNum = $.url().param('wordnum');
-    if (!wordNum) {
-        wordNum = 10;
-    }
+    $.getJSON("hosts.json", function(hosts) {
+        var token = $.cookie("token");
 
-    document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Top-" + k + " Topics (#Word per Topic = " + wordNum + ")";
-    $("#parentPage").attr("href", "main.html?host=" + host + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
-    $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Top-" + k + " Topics (#Word per Topic = " + wordNum + ")</small>");
+        var db = $.url().param('db');
+        var host = hosts[db].host;
+        var dbName = hosts[db].name;
 
-    var tableColHTML = "";
-    for (i = 0; i < k; i++) { 
-        tableColHTML += "<th style=\"min-width:100px;\">Topic #" + (i + 1) + "</th>";
-    }
-    $('#example thead tr').html(tableColHTML);
+        $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
 
-	var table = $('#example').DataTable( {
-        dom: 'lfTrtip',
-        tableTools: {
-            "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
-            "aButtons": [
-                {
-                    "sExtends": "copy",
-                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
-                    "oSelectorOpts": {
-                        page: 'current'
+        var query = $.url().param('query');
+        var yearFrom = $.url().param('from');
+        if (!yearFrom) {
+            yearFrom = 1900;
+        }
+        var yearTo = $.url().param('to');
+        if (!yearTo) {
+            yearTo = new Date().getFullYear() - 1;
+        }
+        var k = $.url().param('k');
+        if (!k) {
+            k = 5;
+        }
+        var wordNum = $.url().param('wordnum');
+        if (!wordNum) {
+            wordNum = 10;
+        }
+
+        document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Top-" + k + " Topics (#Word per Topic = " + wordNum + ")";
+        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Top-" + k + " Topics (#Word per Topic = " + wordNum + ")</small>");
+
+        var tableColHTML = "";
+        for (i = 0; i < k; i++) { 
+            tableColHTML += "<th style=\"min-width:100px;\">Topic #" + (i + 1) + "</th>";
+        }
+        $('#example thead tr').html(tableColHTML);
+
+        var table = $('#example').DataTable( {
+            dom: 'lfTrtip',
+            tableTools: {
+                "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
+                "aButtons": [
+                    {
+                        "sExtends": "copy",
+                        "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
+                    },
+                    {
+                        "sExtends": "csv",
+                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
                     }
-                },
-                {
-                    "sExtends": "csv",
-                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
-                    "oSelectorOpts": {
-                        page: 'current'
-                    }
+                ]
+            }, 
+
+            "ajax": {
+                "url": "http://" + host + "/topic/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&wordnum=" + wordNum,
+                "dataType": "jsonp",
+                cache: true,
+                jsonpCallback: "jsonpcallback",
+            },
+
+            "processing": true,
+            "language": {
+                "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
+            },
+            "deferRender": true,
+            "searching": false,
+            "paging": false, 
+            "pagingType": "full_numbers",
+            "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            "ordering": false
+        });
+        //new $.fn.dataTable.FixedHeader( table );
+
+        $(".DTTT_container").addClass("btn-group");
+        $(".DTTT_container a").removeClass("DTTT_button");
+        $(".DTTT_container a").addClass("btn btn-default btn-sm");
+
+        var lastIdx = null;
+        $('#example tbody')
+            .on( 'mouseover', 'td', function () {
+                var colIdx = table.cell(this).index().column;
+     
+                if ( colIdx !== lastIdx ) {
+                    $( table.cells().nodes() ).removeClass( 'highlight' );
+                    $( table.column( colIdx ).nodes() ).addClass( 'highlight' );
                 }
-            ]
-        }, 
-
-        "ajax": {
-            "url": "http://" + host + "/topic/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&wordnum=" + wordNum,
-            "dataType": "jsonp",
-            cache: true,
-            jsonpCallback: "jsonpcallback",
-        },
-
-        "processing": true,
-        "language": {
-            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
-        },
-        "deferRender": true,
-        "searching": false,
-        "paging": false, 
-        "pagingType": "full_numbers",
-        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-        "ordering": false
-	});
-    //new $.fn.dataTable.FixedHeader( table );
-
-    $(".DTTT_container").addClass("btn-group");
-    $(".DTTT_container a").removeClass("DTTT_button");
-    $(".DTTT_container a").addClass("btn btn-default btn-sm");
-
-    var lastIdx = null;
-    $('#example tbody')
-        .on( 'mouseover', 'td', function () {
-            var colIdx = table.cell(this).index().column;
- 
-            if ( colIdx !== lastIdx ) {
+            } )
+            .on( 'mouseleave', function () {
                 $( table.cells().nodes() ).removeClass( 'highlight' );
-                $( table.column( colIdx ).nodes() ).addClass( 'highlight' );
-            }
-        } )
-        .on( 'mouseleave', function () {
-            $( table.cells().nodes() ).removeClass( 'highlight' );
-        } );
+            } );
 
-    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'});
+        $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'});
+    });
 });
 </script>
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="query.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="index.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="query.html" id="queryPage">Query</a></li>
     <li><a id="parentPage">Records</a></li>
     <li class="active">Topics</li>
 </ol>

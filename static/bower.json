@@ -19,6 +19,8 @@
     "fontawesome": "~4.2.0",
     "jquery-cookie": "~1.4.1",
     "purl": "~2.3.1",
-    "rangyinputs": "~1.1.4"
+    "rangyinputs": "~1.1.4",
+    "phpjs": "*",
+    "datatables-plugins": "*"
   }
 }

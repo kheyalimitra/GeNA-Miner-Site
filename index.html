@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+    GeNA Miner
+</title>
+<script src="static/js/jquery.min.js"></script>
+
+<script src="static/js/jquery.cookie.js"></script>
+
+<script src="static/js/sha1.js"></script>
+
+<script src="static/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
+
+<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+
+<script src="static/js/jquery.bootstrap-growl.min.js"></script>
+
+<script src="static/js/bootbox.js"></script>
+
+<script src="static/js/jquery.dataTables.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
+
+<script src="static/js/dataTables.bootstrap.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.css">
+
+<script src="static/js/dataTables.fixedHeader.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.css">
+
+<script src="js/main.js"></script>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $.getJSON("hosts.json", function(hosts) {
+        function setLock(db, lock) {
+            if (lock) {
+                $("#" + db).addClass("dbbtn-locked");
+                $("#" + db + " span.fa").removeClass("fa-unlock");
+                $("#" + db + " span.fa").addClass("fa-lock");
+            }
+            else {
+                $("#" + db).removeClass("dbbtn-locked");
+                $("#" + db + " span.fa").addClass("fa-unlock");
+                $("#" + db + " span.fa").removeClass("fa-lock");
+            }
+        }
+
+        function checkToken(token) {
+            $.each(hosts, function(db, v) {
+                var host = hosts[db].host;
+
+                $.getJSON("http://" + host + "/auth/verify?callback=?", 
+                    {
+                        "token": token
+                    }, 
+                    function(j) {
+                        setLock(db, !j.auth);
+                    }
+                );
+            });
+        }
+
+        if ($.cookie("token")) {
+            $("#codeStatus").text("Using saved access code");
+            checkToken($.cookie("token"));
+        }
+
+        $('#codeBtn').click(function () {
+            bootbox.dialog({
+                message: '\
+                    <div class="panel panel-default">\
+                        <div class="panel-body">\
+                            <div class="form-inline">\
+                                <label class="control-label">Access Code:</label> <input id="codeInput" type="text" class="form-control input-sm" style="width:250px"></input>\
+                            </div>\
+                        </div>\
+                        <div class="panel-footer">\
+                            <span class="help-block">Enter your access code here. It will also be saved for future. </span>\
+                        </div>\
+                    </div>\
+                    ',
+                title: "Enter Access Code",
+                onEscape: function() {},
+                buttons: {
+                    cancel: {
+                        label: "Cancel",
+                        className: "btn-default"
+                    },
+                    warning: {
+                        label: "<span class=\"fa fa-key\"></span> Enter",
+                        className: "btn-warning",
+                        callback: function() {
+                            var code = $("#codeInput").val();
+                            if (code == "") {
+                                showAlert("Access code cannot be empty.", "danger");
+                                return;
+                            }
+
+                            var token = sha1(code);
+                            $.cookie("token", token);
+                            $("#codeStatus").text("Using entered access code");
+
+                            checkToken(token);
+                        }
+                    }
+                }
+            });
+        });
+
+        var dateRegex = /\b(?:jan|feb|mar|apr|may|jun|jul|aug|sept?|oct|nov|dec)\s+\d{1,2}\s*(?:st|nd|rd|th)?\s*,?\s+\d{4}\b/i;
+        $.ajax({
+            dataType: "html",
+            cache: false,
+            url: "updates.html", 
+            success: function(j) {
+                var updateHtml = j;
+                var updateDate = dateRegex.exec(updateHtml);
+                var updateCookieName = "updated_" + updateDate.toString().toLowerCase();
+
+                if (!$.cookie(updateCookieName)) {
+                    showUpdates(updateDate, updateHtml);
+                    $.cookie(updateCookieName, 'true');
+                }
+                $("#updates").click(function() {
+                    showUpdates(updateDate, updateHtml);
+                });
+            }
+        });
+        function showUpdates(date, html) {
+            bootbox.dialog({
+                message: html,
+                title: "Updates",
+                closeButton: false,
+                buttons: {
+                    ok: {
+                        label: "<span class=\"fa fa-heart-o\"><\/span> Got It",
+                        className: "btn-success"
+                    }
+                }
+            });
+        }
+
+        $("#about").click(function() {
+            $.ajax({
+                dataType: "html",
+                cache: false,
+                url: "about.html", 
+                success: function(html) {
+                    bootbox.dialog({
+                        message: html,
+                        title: "About",
+                        onEscape: function() {},
+                        buttons: {
+                            ok: {
+                                label: "OK",
+                                className: "btn-default"
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(".dbbtn").click(function(e) {
+            if ($(this).hasClass("dbbtn-locked")) {
+                showAlert("You do not have access to this database.", "danger");
+            }
+            else {
+                window.location.href = 'query.html?db=' + $(this).attr("data-db");
+            }
+        });
+
+        $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+    });
+});
+</script>
+
+<style>
+.dbbtn {
+    position:relative;
+    width: 210px;
+}
+.dbbtn img {
+    max-height: 40px;
+
+    transition: opacity linear .4s, filter linear .4s;
+    -webkit-transition: -webkit-filter linear .4s;
+    -moz-transition: -moz-filter linear .4s;
+    -ms-transition: -ms-filter linear .4s;
+    -o-transition: -o-filter linear .4s;
+    filter: grayscale(0%);
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    -ms-filter: grayscale(0%);
+    -o-filter: grayscale(0%);
+    opacity: 1.0;
+}
+.dbbtn-locked img {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+
+    opacity: 0.5;
+}
+.dbbtn .comingIcon {
+    font-size: 10px;
+    position:absolute;
+    top:5px;
+    right:5px;
+    margin:0;
+    padding:0px;
+}
+.dbbtn .lockIcon {
+    position:absolute;
+    bottom:5px;
+    right:5px;
+    margin:0;
+    padding:0px;
+}
+</style>
+</head>
+<body>
+
+<div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
+<div class="main" style="margin-top:36px;">
+    <h3>GeNA Miner <small>-- Made by GeNA Lab</small></h3>
+<div style="max-width:660px;">
+    <div class="block">
+        <div style="display:block">
+            <label class="control-label">Access Code: </label>
+            <br/>
+            <div class="btn-group">
+                <button class="btn btn-warning btn-sm" id="codeBtn"><span class="fa fa-key"></span> Enter Access Code</button>
+                <span class="btn btn-sm disabled" id="codeStatus">No access code in Use</span>
+            </div>
+        </div>
+        <br/>
+        <div style="display:block">
+            <label class="control-label">Connect to: </label>
+            <br/>
+            <div>
+                <a class="btn btn-default dbbtn dbbtn-locked" id="pubmed" data-db="pubmed" title="PubMed"><img src="img/pubmed.png"></img><span class="fa fa-lock lockIcon"></span></a>
+                <a class="btn btn-default dbbtn dbbtn-locked" id="twitter" data-db="twitter" title="Twitter (Public Stream)"><img src="img/twitter.png"></img><span class="comingIcon">Coming Soon</span><span class="fa fa-lock lockIcon"></span></a>
+                <!--<a class="btn btn-default dbbtn dbbtn-locked" id="dblp" data-db="dblp" title="The DBLP Computer Science Bibliography"><img src="img/dblp.png"></img><span class="comingIcon">Coming Later</span><span class="fa fa-lock lockIcon"></span></a>-->
+            </div>
+        </div>
+    </div>
+    <div style="padding: 10px;">
+        <table id="form_table" style="width:100%; ">
+            <tr>
+                <td>
+                    <button class="btn btn-success btn-xs" id="about"><span class="fa fa-user"></span> About</button>
+                    <button class="btn btn-info btn-xs" id="updates"><span class="fa fa-bell-o"></span> Updates</button>
+                </td>
+                <td style="text-align:right;">
+                    © GeNA Lab
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</div>
+</body>
+</html>
+

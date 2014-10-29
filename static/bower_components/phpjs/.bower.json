@@ -1,0 +1,13 @@
+{
+  "name": "phpjs",
+  "homepage": "https://github.com/kvz/phpjs",
+  "_release": "d94f3cc5b6",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "d94f3cc5b6ec3df0f2d6652d2295eea3f3716c4c"
+  },
+  "_source": "git://github.com/kvz/phpjs.git",
+  "_target": "*",
+  "_originalSource": "phpjs"
+}

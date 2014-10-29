@@ -7,6 +7,8 @@
 
 <script src="static/js/purl.js"></script>
 
+<script src="static/js/jquery.cookie.js"></script>
+
 <script src="static/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
 <!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
@@ -63,469 +65,478 @@ em {
 
 <script type="text/javascript" class="init">
 $(document).ready(function() {
-    var host = $.url().param('host');
-    var query = $.url().param('query');
-    var yearFrom = $.url().param('from');
-    if (!yearFrom) {
-        yearFrom = 1900;
-    }
-    var yearTo = $.url().param('to');
-    if (!yearTo) {
-        yearTo = new Date().getFullYear() - 1;
-    }
+    $.getJSON("hosts.json", function(hosts) {
+        var token = $.cookie("token");
 
-    document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo;
-    $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
+        var db = $.url().param('db');
+        var host = hosts[db].host;
+        var dbName = hosts[db].name;
 
-	var table = $('#example').DataTable( {
-        dom: '<"expandAll">lfTrtip',
-        tableTools: {
-            "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
-            "aButtons": [
-                {
-                    "sExtends": "copy",
-                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
-                    "oSelectorOpts": {
-                        page: 'current'
+        $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
+
+        var query = $.url().param('query');
+        var yearFrom = $.url().param('from');
+        if (!yearFrom) {
+            yearFrom = 1900;
+        }
+        var yearTo = $.url().param('to');
+        if (!yearTo) {
+            yearTo = new Date().getFullYear() - 1;
+        }
+
+        document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo;
+        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
+
+        var table = $('#example').DataTable( {
+            dom: '<"expandAll">lfTrtip',
+            tableTools: {
+                "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
+                "aButtons": [
+                    {
+                        "sExtends": "copy",
+                        "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
+                    },
+                    {
+                        "sExtends": "csv",
+                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
                     }
+                ]
+            }, 
+
+            "serverSide": true,
+            "ajax": {
+                "url": "http://" + host + "/main/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo,
+                "dataType": "jsonp",
+                cache: true,
+                jsonpCallback: "jsonpcallback_main", 
+                "error": function(reason) {
+                    alert("Error occurred !");
+                }
+            },
+
+            "processing": true,
+            "language": {
+                "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>", 
+                "search": "", 
+                "paginate": {
+                    "previous": '<span class="fa fa-chevron-left"></span>', 
+                    "next": '<span class="fa fa-chevron-right"></span>'
+                }
+            },
+            "deferRender": true,
+            "pageLength": 25,
+            "pagingType": "simple_numbers",
+            "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+
+            "responsive": {
+                details: { 
+                    type: 'column', 
+                    target: 'tr'
+                }
+            },
+
+            "columns": [
+                {
+                    "data": null,
+                    "defaultContent": '',
+                    "orderable": false,
+                    className: 'control',
+                    targets: 0
                 },
-                {
-                    "sExtends": "csv",
-                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
-                    "oSelectorOpts": {
-                        page: 'current'
+                { 
+                    "data": "id",
+                    "orderable": false
+                },
+                { 
+                    "width": "50%", 
+                    "data": "title",
+                    "orderable": false 
+                },
+                { 
+                    "data": "year" 
+                },
+                { 
+                    "width": "30%", 
+                    "data": "source",
+                    "orderable": false 
+                },
+                { 
+                    "width": "20%", 
+                    "data": "abbrAuthors",
+                    "orderable": false 
+                },
+                { 
+                    "data": "authors",
+                    "orderable": false 
+                },
+                { 
+                    "data": "abstract",
+                    "orderable": false 
+                },
+                { 
+                    "data": "keywords",
+                    "orderable": false 
+                },
+                { 
+                    "data": "url",
+                    "orderable": false 
+                }
+            ],
+            "order": [[ 3, "desc" ]], 
+
+            "drawCallback": function ( settings ) {
+                var api = this.api();
+                var rows = api.rows( {page:'current'} ).nodes();
+                var last=null;
+     
+                api.column(3, {page:'current'} ).data().each( function ( group, i ) {
+                    if ( last !== group) {
+                        $(rows).eq( i ).before(
+                            '<tr class="group"><td colspan="10"><b>Year: </b>'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
+                        );
+     
+                        last = group;
                     }
+                } );
+            }
+
+        });
+        $("div.expandAll").html('\
+            <div class="btn-group" data-toggle="buttons">\
+                <label class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
+            </div>\
+        ');
+
+        function expandAll(flag) {
+            $('#example tbody tr[role="row"].parent').trigger("click");
+            if (flag) {
+                $('#example tbody tr[role="row"]').trigger("click");
+            }
+        }
+
+        $('#expandAll').change(function() {
+            expandAll(this.checked);
+        });
+
+        new $.fn.dataTable.FixedHeader( table );
+
+        $(".DTTT_container").addClass("btn-group");
+        $(".DTTT_container a").removeClass("DTTT_button");
+        $(".DTTT_container a").addClass("btn btn-default btn-sm");
+        $(".dataTables_length label").addClass("control-label");
+        $(".dataTables_filter label").addClass("control-label");
+
+        var filterValue = ""
+        function search() {
+            filterValue = $("#example_filter input").val();
+
+            var columnRegex = /(\w+):/g;
+            var match = columnRegex.exec(filterValue);
+            while (match != null) {
+                if (!(match[1] in {"year":"", "id":"", "title":"", "source":"", "authors":"", "abstract":"", "keywords":""})) {
+                    showAlert("Please check your inputs.<br/><br/>Wrong column name(s).", "danger");
+                    $("#example_filter input").tooltip("show");
+                    return;
                 }
-            ]
-        }, 
 
-        "serverSide": true,
-        "ajax": {
-            "url": "http://" + host + "/main/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo,
-            "dataType": "jsonp",
-            cache: true,
-            jsonpCallback: "jsonpcallback_main", 
-            "error": function(reason) {
-                alert("Error occurred !");
-            }
-        },
-
-        "processing": true,
-        "language": {
-            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>", 
-            "search": "", 
-            "paginate": {
-                "previous": '<span class="fa fa-chevron-left"></span>', 
-                "next": '<span class="fa fa-chevron-right"></span>'
-            }
-        },
-        "deferRender": true,
-        "pageLength": 25,
-        "pagingType": "simple_numbers",
-        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-
-        "responsive": {
-            details: { 
-                type: 'column', 
-                target: 'tr'
-            }
-        },
-
-        "columns": [
-            {
-                "data": null,
-                "defaultContent": '',
-                "orderable": false,
-                className: 'control',
-                targets: 0
-            },
-            { 
-                "data": "id",
-                "orderable": false
-            },
-            { 
-                "width": "50%", 
-                "data": "title",
-                "orderable": false 
-            },
-            { 
-                "data": "year" 
-            },
-            { 
-                "width": "30%", 
-                "data": "source",
-                "orderable": false 
-            },
-            { 
-                "width": "20%", 
-                "data": "abbrAuthors",
-                "orderable": false 
-            },
-            { 
-                "data": "authors",
-                "orderable": false 
-            },
-            { 
-                "data": "abstract",
-                "orderable": false 
-            },
-            { 
-                "data": "keywords",
-                "orderable": false 
-            },
-            { 
-                "data": "url",
-                "orderable": false 
-            }
-        ],
-        "order": [[ 3, "desc" ]], 
-
-        "drawCallback": function ( settings ) {
-            var api = this.api();
-            var rows = api.rows( {page:'current'} ).nodes();
-            var last=null;
- 
-            api.column(3, {page:'current'} ).data().each( function ( group, i ) {
-                if ( last !== group) {
-                    $(rows).eq( i ).before(
-                        '<tr class="group"><td colspan="10"><b>Year: </b>'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
-                    );
- 
-                    last = group;
-                }
-            } );
-        }
-
-	});
-    $("div.expandAll").html('\
-        <div class="btn-group" data-toggle="buttons">\
-            <label class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
-        </div>\
-    ');
-
-    function expandAll(flag) {
-        $('#example tbody tr[role="row"].parent').trigger("click");
-        if (flag) {
-            $('#example tbody tr[role="row"]').trigger("click");
-        }
-    }
-
-    $('#expandAll').change(function() {
-        expandAll(this.checked);
-    });
-
-    new $.fn.dataTable.FixedHeader( table );
-
-    $(".DTTT_container").addClass("btn-group");
-    $(".DTTT_container a").removeClass("DTTT_button");
-    $(".DTTT_container a").addClass("btn btn-default btn-sm");
-    $(".dataTables_length label").addClass("control-label");
-    $(".dataTables_filter label").addClass("control-label");
-
-    var filterValue = ""
-    function search() {
-        filterValue = $("#example_filter input").val();
-
-        var columnRegex = /(\w+):/g;
-        var match = columnRegex.exec(filterValue);
-        while (match != null) {
-            if (!(match[1] in {"year":"", "id":"", "title":"", "source":"", "authors":"", "abstract":"", "keywords":""})) {
-                showAlert("Please check your inputs.<br/><br/>Wrong column name(s).", "danger");
-                $("#example_filter input").tooltip("show");
-                return;
+                match = columnRegex.exec(filterValue);
             }
 
-            match = columnRegex.exec(filterValue);
-        }
+            $.ajax({
+                dataType: "jsonp",
+                jsonpCallback: "jsonpcallback_validate",
+                cache: true,
+                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + query.replace(/ /g, "+") + "&search=" + filterValue, 
+                success: function(j) {
+                    if (j.valid) {
+                        if ($("#example_filter input").val() != "") {
+                            $('#example_filter').addClass("has-success");
+                        }
+                        else {
+                            $('#example_filter').removeClass("has-success");
+                        }
+                        $('#example_filter').removeClass("has-error");
 
-        $.ajax({
-            dataType: "jsonp",
-            jsonpCallback: "jsonpcallback_validate",
-            cache: true,
-            url: "http://" + host + "/main/load/validate?query=" + query.replace(/ /g, "+") + "&search=" + filterValue, 
-            success: function(j) {
-                if (j.valid) {
-                    if ($("#example_filter input").val() != "") {
-                        $('#example_filter').addClass("has-success");
+                        table.search(filterValue).draw();
                     }
                     else {
                         $('#example_filter').removeClass("has-success");
+                        $('#example_filter').addClass("has-error");
+
+                        showAlert("Please check your inputs.<br/><br/>Wrong query syntax.", "danger");
                     }
-                    $('#example_filter').removeClass("has-error");
-
-                    table.search(filterValue).draw();
                 }
-                else {
-                    $('#example_filter').removeClass("has-success");
-                    $('#example_filter').addClass("has-error");
+            });
 
-                    showAlert("Please check your inputs.<br/><br/>Wrong query syntax.", "danger");
+        }
+
+        $("#example_filter").addClass("input-group");
+        $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;"><span class="fa fa-remove"></span> Clear</span>');
+        $("#example_filter input").after("<span class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></span>").attr("placeholder", "Search");
+        $('#example_filter input').unbind().bind('keyup', function(e) {
+            if(e.keyCode == 13) {
+                search();
+            }
+        });
+        $("#example_filter_searchicon").click(function() {
+            search();
+        });
+        $("#example_filter_clear").click(function() {
+            $("#example_filter input").val("");
+            search();
+        });
+
+        $("#example_length select").attr("title", "Show all entries may freeze your browser");
+        $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+
+        var popoverShown = false;
+        $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content", 
+            '\
+            <h5><small>Column</small></h5>\
+            <p><span class="btn-group"><a class="btn btn-clipboard btn-xs">title:</a><a class="btn btn-clipboard btn-xs">year:</a><a class="btn btn-clipboard btn-xs">source:</a><a class="btn btn-clipboard btn-xs">authors:</a><a class="btn btn-clipboard btn-xs">abstract:</a><a class="btn btn-clipboard btn-xs">keywords:</a><a class="btn btn-clipboard btn-xs">id:</a></span></p>\
+            <h5><small>Boolean Operator</small></h5>\
+            <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></td><td style="width:20px;"></td><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">(</a><a class="btn btn-xs disabled">...</a><a class="btn btn-clipboard btn-xs">)</a></span></td></tr></table></p>\
+            <h5><small>Basic</small></h5>\
+            <p><code><b>word</b></code> -- Match <b>word</b> as keyword</p>\
+            <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase</p>\
+            <p><code><u>col</u>:<b>query</b></code> -- Match <b>query</b> (any type) on column <u>col</u></p>\
+            <h5><small>Wildchar, Fuzziness, and Distance</small></h5>\
+            <p><code><b>wo</b>?<b>d</b></code>, <code><b>wor</b>*</code> -- Match <b>word</b> with wildchar</p>\
+            <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
+            <p><code>"<b>word1 word2 ...</b>"~<i>d</i></code> -- Match <b>word1 word2 ...</b> with at most <i>d</i> words between each other</p>\
+            <h5><small>Range</small></h5>\
+            <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match range from <b>a</b> to <b>b</b></p>\
+            <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="fa fa-book"></span> Reference</a></p>\
+            '
+        ).popover({
+            placement: "bottom", html: true, container: 'body'
+        }).focus(function() {
+            if (!popoverShown) {
+                popoverShown = true;
+                $(this).animate({
+                    "width": "400px"
+                }, 200, "linear", function() {
+                    $(this).popover("show");
+                    if ($(this).val() != "") {
+                        $("#example_filter_clear").show();
+                    }
+                });
+            }
+        }).on("input", function(e) {
+            if ($(this).val() != "") {
+                $("#example_filter_clear").show();
+            }
+            else {
+                $("#example_filter_clear").hide();
+            }
+        });
+        $(document).on('click', function(e) {
+            if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
+                if (popoverShown) {
+                    popoverShown = false;
+                    $('#example_filter input').popover('hide').animate({
+                        "width": "250px"
+                    }, 200);
+                    $("#example_filter_clear").hide();
                 }
+            }
+        }).keydown(function(e) {
+            if (e.keyCode === 27) {
+                if (popoverShown) {
+                    popoverShown = false;
+                    $('#example_filter input').popover('hide').animate({
+                        "width": "250px"
+                    }, 200);
+                    $("#example_filter_clear").hide();
+                }
+            }
+        }).on("click", ".popover a.btn", function() {
+            $("#example_filter input").focus().replaceSelectedText($(this).text());
+            $("#example_filter_clear").show();
+        });
+
+        table.on('draw.dt', function () {
+            $("#form_divmask").hide();
+
+            expandAll($("#expandAll").prop("checked"));
+        } );
+
+        $("input[name='db']").val(db);
+        $("input[name='query']").val(query);
+        $("input[name='from']").val(yearFrom);
+        $("input[name='to']").val(yearTo);
+
+        $('#trend_interval').val(5);
+        $('#trend_form').submit( function (e) {
+            if (!isIntWithMinVal($('#trend_interval').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#trend_interval").tooltip("show");
+                $("#trend_form").addClass("has-error");
+                e.preventDefault();
+                return;
             }
         });
 
-    }
+        $('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload?token=" + token);
+        $('#theme_uploadstatus').val($.url().attr("protocol") + "://" + $.url().attr("host") + ":" + $.url().attr("port") + "/theme_upload.html");
 
-    $("#example_filter").addClass("input-group");
-    $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;"><span class="fa fa-remove"></span> Clear</span>');
-    $("#example_filter input").after("<span class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></span>").attr("placeholder", "Search");
-    $('#example_filter input').unbind().bind('keyup', function(e) {
-        if(e.keyCode == 13) {
-            search();
-        }
-    });
-    $("#example_filter_searchicon").click(function() {
-        search();
-    });
-    $("#example_filter_clear").click(function() {
-        $("#example_filter input").val("");
-        search();
-    });
+        $('#topk_k').val(10);
+        $('#topk_minlen').val(1);
+        $('#topk_maxlen').val(5);
 
-    $("#example_length select").attr("title", "Show all entries may freeze your browser");
-    $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        $('#topk_form').submit( function (e) {
+            if (!isIntWithMinVal($('#topk_k').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topk_k").tooltip("show");
+                $("#topk_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+            if (!isIntWithMinVal($('#topk_minlen').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topk_minlen").tooltip("show");
+                $("#topk_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+            if (!isIntWithMinVal($('#topk_maxlen').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topk_maxlen").tooltip("show");
+                $("#topk_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+            if ($('#topk_minlen').val() > $('#topk_maxlen').val()) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topk_minlen").tooltip("show");
+                $("#topk_maxlen").tooltip("show");
+                $("#topk_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+        });
 
-    var popoverShown = false;
-    $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content", 
-        '\
-        <h5><small>Column</small></h5>\
-        <p><span class="btn-group"><a class="btn btn-clipboard btn-xs">title:</a><a class="btn btn-clipboard btn-xs">year:</a><a class="btn btn-clipboard btn-xs">source:</a><a class="btn btn-clipboard btn-xs">authors:</a><a class="btn btn-clipboard btn-xs">abstract:</a><a class="btn btn-clipboard btn-xs">keywords:</a><a class="btn btn-clipboard btn-xs">id:</a></span></p>\
-        <h5><small>Boolean Operator</small></h5>\
-        <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></td><td style="width:20px;"></td><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">(</a><a class="btn btn-xs disabled">...</a><a class="btn btn-clipboard btn-xs">)</a></span></td></tr></table></p>\
-        <h5><small>Basic</small></h5>\
-        <p><code><b>word</b></code> -- Match <b>word</b> as keyword</p>\
-        <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase</p>\
-        <p><code><u>col</u>:<b>query</b></code> -- Match <b>query</b> (any type) on column <u>col</u></p>\
-        <h5><small>Wildchar, Fuzziness, and Distance</small></h5>\
-        <p><code><b>wo</b>?<b>d</b></code>, <code><b>wor</b>*</code> -- Match <b>word</b> with wildchar</p>\
-        <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
-        <p><code>"<b>word1 word2 ...</b>"~<i>d</i></code> -- Match <b>word1 word2 ...</b> with at most <i>d</i> words between each other</p>\
-        <h5><small>Range</small></h5>\
-        <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match range from <b>a</b> to <b>b</b></p>\
-        <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="fa fa-book"></span> Reference</a></p>\
-        '
-    ).popover({
-        placement: "bottom", html: true, container: 'body'
-    }).focus(function() {
-        if (!popoverShown) {
-            popoverShown = true;
-            $(this).animate({
-                "width": "400px"
-            }, 200, "linear", function() {
-                $(this).popover("show");
-                if ($(this).val() != "") {
-                    $("#example_filter_clear").show();
+        $('#topic_k').val(5);
+        $('#topic_wordnum').val(10);
+
+        $('#topic_form').submit( function (e) {
+            if (!isIntWithMinVal($('#topic_k').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topic_k").tooltip("show");
+                $("#topic_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+            if (!isIntWithMinVal($('#topic_wordnum').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topic_wordnum").tooltip("show");
+                $("#topic_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+        });
+
+        function updateThemeList() {
+            $.ajax({
+                dataType: "jsonp",
+                jsonpCallback: "jsonpcallback_themelist",
+                url: "http://" + host + "/theme/file/list?token=" + token, 
+                success: function(j) {
+                    list = j.data;
+                    var options = '';
+
+                    toggleDisabled($("#theme_form button, #theme_othersdiv button"), list.length == 0);
+                    if (list.length > 0) {
+                        for (var i = 0; i < list.length; i++) {
+                            options += '<option value="' + list[i] + '">' + list[i] + '</option>';
+                        }
+                    }
+                    $("select#theme_list").html(options);
                 }
             });
         }
-    }).on("input", function(e) {
-        if ($(this).val() != "") {
-            $("#example_filter_clear").show();
+        function getThemeListSelected() {
+            return $('#theme_list').find(":selected").text()
         }
-        else {
-            $("#example_filter_clear").hide();
-        }
-    });
-    $(document).on('click', function(e) {
-        if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
-            if (popoverShown) {
-                popoverShown = false;
-                $('#example_filter input').popover('hide').animate({
-                    "width": "250px"
-                }, 200);
-                $("#example_filter_clear").hide();
-            }
-        }
-    }).keydown(function(e) {
-        if (e.keyCode === 27) {
-            if (popoverShown) {
-                popoverShown = false;
-                $('#example_filter input').popover('hide').animate({
-                    "width": "250px"
-                }, 200);
-                $("#example_filter_clear").hide();
-            }
-        }
-    }).on("click", ".popover a.btn", function() {
-        $("#example_filter input").focus().replaceSelectedText($(this).text());
-        $("#example_filter_clear").show();
-    });
 
-    table.on('draw.dt', function () {
-        $("#form_divmask").hide();
-
-        expandAll($("#expandAll").prop("checked"));
-    } );
-
-    $("input[name='host']").val(host);
-    $("input[name='query']").val(query);
-    $("input[name='from']").val(yearFrom);
-    $("input[name='to']").val(yearTo);
-
-    $('#trend_interval').val(5);
-    $('#trend_form').submit( function (e) {
-        if (!isIntWithMinVal($('#trend_interval').val(), 1)) {
-            showAlert("Please check your inputs.", "danger");
-            $("#trend_interval").tooltip("show");
-            $("#trend_form").addClass("has-error");
-            e.preventDefault();
-            return;
-        }
-    });
-
-    $('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload");
-    $('#theme_uploadstatus').val($.url().attr("protocol") + "://" + $.url().attr("host") + ":" + $.url().attr("port") + "/theme_upload.html");
-
-    $('#topk_k').val(10);
-    $('#topk_minlen').val(1);
-    $('#topk_maxlen').val(5);
-
-    $('#topk_form').submit( function (e) {
-        if (!isIntWithMinVal($('#topk_k').val(), 1)) {
-            showAlert("Please check your inputs.", "danger");
-            $("#topk_k").tooltip("show");
-            $("#topk_form").addClass("has-error");
-            e.preventDefault();
-            return;
-        }
-        if (!isIntWithMinVal($('#topk_minlen').val(), 1)) {
-            showAlert("Please check your inputs.", "danger");
-            $("#topk_minlen").tooltip("show");
-            $("#topk_form").addClass("has-error");
-            e.preventDefault();
-            return;
-        }
-        if (!isIntWithMinVal($('#topk_maxlen').val(), 1)) {
-            showAlert("Please check your inputs.", "danger");
-            $("#topk_maxlen").tooltip("show");
-            $("#topk_form").addClass("has-error");
-            e.preventDefault();
-            return;
-        }
-        if ($('#topk_minlen').val() > $('#topk_maxlen').val()) {
-            showAlert("Please check your inputs.", "danger");
-            $("#topk_minlen").tooltip("show");
-            $("#topk_maxlen").tooltip("show");
-            $("#topk_form").addClass("has-error");
-            e.preventDefault();
-            return;
-        }
-    });
-
-    $('#topic_k').val(5);
-    $('#topic_wordnum').val(10);
-
-    $('#topic_form').submit( function (e) {
-        if (!isIntWithMinVal($('#topic_k').val(), 1)) {
-            showAlert("Please check your inputs.", "danger");
-            $("#topic_k").tooltip("show");
-            $("#topic_form").addClass("has-error");
-            e.preventDefault();
-            return;
-        }
-        if (!isIntWithMinVal($('#topic_wordnum').val(), 1)) {
-            showAlert("Please check your inputs.", "danger");
-            $("#topic_wordnum").tooltip("show");
-            $("#topic_form").addClass("has-error");
-            e.preventDefault();
-            return;
-        }
-    });
-
-    function updateThemeList() {
-        $.ajax({
-            dataType: "jsonp",
-            jsonpCallback: "jsonpcallback_themelist",
-            url: "http://" + host + "/theme/file/list", 
-            success: function(j) {
-                list = j.data;
-                var options = '';
-
-                toggleDisabled($("#theme_form button, #theme_othersdiv button"), list.length == 0);
-                if (list.length > 0) {
-                    for (var i = 0; i < list.length; i++) {
-                        options += '<option value="' + list[i] + '">' + list[i] + '</option>';
-                    }
-                }
-                $("select#theme_list").html(options);
-            }
-        });
-    }
-    function getThemeListSelected() {
-        return $('#theme_list').find(":selected").text()
-    }
-
-    updateThemeList();
-
-    $('#theme_view').click( function () {
-        var file = getThemeListSelected();
-        showAlert("Dictionary <b>" + file + "</b> has been downloaded.", "info");
-        window.location.href = "http://" + host + "/theme/file/view?name=" + file;
-    });
-    $('#theme_delete').click( function () {
-        var file = getThemeListSelected();
-        bootbox.dialog({
-            message: 'Are you sure you want to delete dictionary <b>' + file + "</b>?",
-            title: "Confirm",
-            onEscape: function() {},
-            buttons: {
-                cancel: {
-                    label: "Cancel",
-                    className: "btn-default"
-                },
-                danger: {
-                    label: "<span class=\"fa fa-trash-o\"></span> Delete",
-                    className: "btn-danger",
-                    callback: function() {
-                        $.getJSON("http://" + host + "/theme/file/delete?callback=?", 
-                            {
-                                "name": file
-                            }, 
-                            function(j){
-                                updateThemeList();
-                                showAlert("Dictionary <b>"+ file + "</b> has been deleted.", "info");
-                            }
-                        );
-                    }
-                }
-            }
-        });
-    });
-    $("#theme_uploaddiv").hide();
-    $('#theme_showupload').click( function () {
-        $("#theme_showupload").hide();
-        $("#theme_uploaddiv").fadeIn(400);
-    });
-    $("#theme_uploadblank").load(function(){
         updateThemeList();
 
-        var currFile = $("#theme_uploadinput").val().split('\\').slice(-1);
-        showAlert("Dictionary <b>" + currFile + "</b> has been uploaded.", "info");
-    });
-    $("#theme_uploadinput").change(function() {
-        var currFile = this.value.split('\\').slice(-1);
-        if (currFile !== "") {
-            $("#theme_uploadfile").html(currFile);
-        }
-        else {
-            $("#theme_uploadfile").html("No file chosen");
-        }
+        $('#theme_view').click( function () {
+            var file = getThemeListSelected();
+            showAlert("Dictionary <b>" + file + "</b> has been downloaded.", "info");
+            window.location.href = "http://" + host + "/theme/file/view?token=" + token + "&name=" + file;
+        });
+        $('#theme_delete').click( function () {
+            var file = getThemeListSelected();
+            bootbox.dialog({
+                message: 'Are you sure you want to delete dictionary <b>' + file + "</b>?",
+                title: "Confirm",
+                onEscape: function() {},
+                buttons: {
+                    cancel: {
+                        label: "Cancel",
+                        className: "btn-default"
+                    },
+                    danger: {
+                        label: "<span class=\"fa fa-trash-o\"></span> Delete",
+                        className: "btn-danger",
+                        callback: function() {
+                            $.getJSON("http://" + host + "/theme/file/delete?token=" + token + "&callback=?", 
+                                {
+                                    "name": file
+                                }, 
+                                function(j){
+                                    updateThemeList();
+                                    showAlert("Dictionary <b>"+ file + "</b> has been deleted.", "info");
+                                }
+                            );
+                        }
+                    }
+                }
+            });
+        });
+        $("#theme_uploaddiv").hide();
+        $('#theme_showupload').click( function () {
+            $("#theme_showupload").hide();
+            $("#theme_uploaddiv").fadeIn(400);
+        });
+        $("#theme_uploadblank").load(function(){
+            updateThemeList();
 
-        toggleDisabled($("#theme_uploadsubmit"), currFile == "");
-        if (currFile == "") {
-            $("#theme_uploadsubmit").tooltip("hide");
-        }
-        else {
-            $("#theme_uploadsubmit").tooltip("show");
-        }
-    });
-    $("#theme_uploadfile").html("No file chosen");
+            var currFile = $("#theme_uploadinput").val().split('\\').slice(-1);
+            showAlert("Dictionary <b>" + currFile + "</b> has been uploaded.", "info");
+        });
+        $("#theme_uploadinput").change(function() {
+            var currFile = this.value.split('\\').slice(-1);
+            if (currFile !== "") {
+                $("#theme_uploadfile").html(currFile);
+            }
+            else {
+                $("#theme_uploadfile").html("No file chosen");
+            }
 
-    table.on('preXhr.dt', function ( e, settings, data ) {
-        $("#example_processing div").fadeIn(800);
-    });
-    table.on('xhr.dt', function ( e, settings, data ) {
-        $( "#example_processing div").hide();
+            toggleDisabled($("#theme_uploadsubmit"), currFile == "");
+            if (currFile == "") {
+                $("#theme_uploadsubmit").tooltip("hide");
+            }
+            else {
+                $("#theme_uploadsubmit").tooltip("show");
+            }
+        });
+        $("#theme_uploadfile").html("No file chosen");
+
+        table.on('preXhr.dt', function ( e, settings, data ) {
+            $("#example_processing div").fadeIn(800);
+        });
+        table.on('xhr.dt', function ( e, settings, data ) {
+            $( "#example_processing div").hide();
+        });
     });
 });
 
@@ -534,7 +545,8 @@ $(document).ready(function() {
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="query.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="index.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="query.html" id="queryPage">Query</a></li>
     <li class="active">Records</li>
 </ol>
 
@@ -554,7 +566,7 @@ $(document).ready(function() {
             <td>
                 <div style="display:inline-block;">
                     <form class="form-inline" id="trend_form" action="trend.html" method="get">
-                        <input type="hidden" name="host"></input>
+                        <input type="hidden" name="db"></input>
                         <input type="hidden" name="query"></input>
                         <input type="hidden" name="from"></input>
                         <input type="hidden" name="to"></input>
@@ -568,7 +580,7 @@ $(document).ready(function() {
                 <div style="display:inline-block;">
                     <div style="display:inline-block;">
                         <form class="form-inline" id="theme_form" action="theme.html" method="get">
-                            <input type="hidden" name="host"></input>
+                            <input type="hidden" name="db"></input>
                             <input type="hidden" name="query"></input>
                             <input type="hidden" name="from"></input>
                             <input type="hidden" name="to"></input>
@@ -606,7 +618,7 @@ $(document).ready(function() {
             <td>
                 <div style="display:inline-block;">
                     <form class="form-inline" id="topic_form" action="topic.html" method="get">
-                        <input type="hidden" name="host"></input>
+                        <input type="hidden" name="db"></input>
                         <input type="hidden" name="query"></input>
                         <input type="hidden" name="from"></input>
                         <input type="hidden" name="to"></input>
@@ -621,7 +633,7 @@ $(document).ready(function() {
             <td>
                 <div style="display:inline-block;">
                     <form class="form-inline" id="topk_form" action="topk.html" method="get">
-                        <input type="hidden" name="host"></input>
+                        <input type="hidden" name="db"></input>
                         <input type="hidden" name="query"></input>
                         <input type="hidden" name="from"></input>
                         <input type="hidden" name="to"></input>

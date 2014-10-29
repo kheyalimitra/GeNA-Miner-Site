@@ -7,6 +7,8 @@
 
 <script src="static/js/purl.js"></script>
 
+<script src="static/js/jquery.cookie.js"></script>
+
 <script src="static/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
 <!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
@@ -30,98 +32,108 @@
 
 <script type="text/javascript" class="init">
 $(document).ready(function() {
-    var host = $.url().param('host');
-    var query = $.url().param('query');
-    var yearFrom = $.url().param('from');
-    if (!yearFrom) {
-        yearFrom = 1900;
-    }
-    var yearTo = $.url().param('to');
-    if (!yearTo) {
-        yearTo = new Date().getFullYear() - 1;
-    }
-    var k = $.url().param('k');
-    if (!k) {
-        k = 10;
-    }
-    var minLen = $.url().param('minlen');
-    if (!minLen) {
-        minLen = 1;
-    }
-    var maxLen = $.url().param('maxlen');
-    if (!maxLen) {
-        maxLen = 5;
-    }
+    $.getJSON("hosts.json", function(hosts) {
+        var token = $.cookie("token");
 
-    document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")";
-    $("#parentPage").attr("href", "main.html?host=" + host + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
-    $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")");
+        var db = $.url().param('db');
+        var host = hosts[db].host;
+        var dbName = hosts[db].name;
 
-	var table = $('#example').DataTable( {
-        dom: 'lfTrtip',
-        tableTools: {
-            "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
-            "aButtons": [
-                {
-                    "sExtends": "copy",
-                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
-                    "oSelectorOpts": {
-                        page: 'current'
+        $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
+
+        var query = $.url().param('query');
+        var yearFrom = $.url().param('from');
+        if (!yearFrom) {
+            yearFrom = 1900;
+        }
+        var yearTo = $.url().param('to');
+        if (!yearTo) {
+            yearTo = new Date().getFullYear() - 1;
+        }
+        var k = $.url().param('k');
+        if (!k) {
+            k = 10;
+        }
+        var minLen = $.url().param('minlen');
+        if (!minLen) {
+            minLen = 1;
+        }
+        var maxLen = $.url().param('maxlen');
+        if (!maxLen) {
+            maxLen = 5;
+        }
+
+        document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")";
+        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")");
+
+        var table = $('#example').DataTable( {
+            dom: 'lfTrtip',
+            tableTools: {
+                "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
+                "aButtons": [
+                    {
+                        "sExtends": "copy",
+                        "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
+                    },
+                    {
+                        "sExtends": "csv",
+                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
                     }
+                ]
+            }, 
+
+            "ajax": {
+                "url": "http://" + host + "/topk/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
+                "dataType": "jsonp",
+                cache: true,
+                jsonpCallback: "jsonpcallback",
+            },
+
+            "processing": true,
+            "language": {
+                "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
+            },
+            "deferRender": true,
+            "searching": false,
+            "paging": false, 
+            "pagingType": "full_numbers",
+            "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+
+            "columns": [
+                { 
+                    "width": "90%", 
+                    "data": "pattern",
+                    "orderable": false
                 },
-                {
-                    "sExtends": "csv",
-                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
-                    "oSelectorOpts": {
-                        page: 'current'
-                    }
-                }
-            ]
-        }, 
+                { 
+                    "width": "10%", 
+                    "data": "count",
+                },
+            ],
+            "order": [[ 1, "desc" ]]
+        });
+        new $.fn.dataTable.FixedHeader( table );
 
-        "ajax": {
-            "url": "http://" + host + "/topk/load?query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
-            "dataType": "jsonp",
-            cache: true,
-            jsonpCallback: "jsonpcallback",
-        },
+        $(".DTTT_container").addClass("btn-group");
+        $(".DTTT_container a").removeClass("DTTT_button");
+        $(".DTTT_container a").addClass("btn btn-default btn-sm");
 
-        "processing": true,
-        "language": {
-            "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>"
-        },
-        "deferRender": true,
-        "searching": false,
-        "paging": false, 
-        "pagingType": "full_numbers",
-        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-
-        "columns": [
-            { 
-                "width": "90%", 
-                "data": "pattern",
-                "orderable": false
-            },
-            { 
-                "width": "10%", 
-                "data": "count",
-            },
-        ],
-        "order": [[ 1, "desc" ]]
-	});
-    new $.fn.dataTable.FixedHeader( table );
-
-    $(".DTTT_container").addClass("btn-group");
-    $(".DTTT_container a").removeClass("DTTT_button");
-    $(".DTTT_container a").addClass("btn btn-default btn-sm");
-
-    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+        $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+    });
 });
 </script>
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="query.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="index.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="query.html" id="queryPage">Query</a></li>
     <li><a id="parentPage">Records</a></li>
     <li class="active">Co-occurrences</li>
 </ol>

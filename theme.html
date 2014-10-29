@@ -7,9 +7,13 @@
 
 <script src="static/js/purl.js"></script>
 
+<script src="static/js/jquery.cookie.js"></script>
+
 <script src="static/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
 <!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
+
+<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
 
 <script src="static/js/d3.min.js"></script>
 
@@ -39,142 +43,152 @@ text.value{
 
 <script>
 $(document).ready(function() {
-    var host = $.url().param('host');
-    var query = $.url().param('query');
-    var yearFrom = $.url().param('from');
-    if (!yearFrom) {
-        yearFrom = 1900;
-    }
-    var yearTo = $.url().param('to');
-    if (!yearTo) {
-        yearTo = new Date().getFullYear() - 1;
-    }
-    var fileName = $.url().param('name');
+    $.getJSON("hosts.json", function(hosts) {
+        var token = $.cookie("token");
 
-    document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Themes (Dict. =  " + fileName + ")";
-    $("#parentPage").attr("href", "main.html?host=" + host + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
-    $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Themes (Dict. = " + fileName + ")</small>");
+        var db = $.url().param('db');
+        var host = hosts[db].host;
+        var dbName = hosts[db].name;
 
-    $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+        $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
 
-    function truncate(str, maxLength, suffix) {
-        if(str.length > maxLength) {
-            str = str.substring(0, maxLength + 1); 
-            str = str.substring(0, Math.min(str.length, str.lastIndexOf(" ")));
-            str = str + suffix;
+        var query = $.url().param('query');
+        var yearFrom = $.url().param('from');
+        if (!yearFrom) {
+            yearFrom = 1900;
         }
-        return str;
-    }
-
-    var margin = {top: 20, right: 200, bottom: 20, left: 20},
-        width = 800,
-        height = 650;
-
-    var c = d3.scale.category20();
-
-    var x = d3.scale.linear()
-        .range([0, width]);
-
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("top");
-
-    var formatYears = d3.format("0000");
-    xAxis.tickFormat(formatYears);
-
-    var svg = d3.select("#plot").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    $.ajax({
-        dataType: "jsonp",
-        cache: true,
-        jsonpCallback: "jsonpcallback",
-        url: "http://" + host + "/theme/load", 
-        data: { 
-            "query" : query.replace(/ /g, "+"), 
-            "from" : yearFrom, 
-            "to" : yearTo,
-            "name" : fileName
-        }, 
-        success: function(raw) {
-            data = raw.data;
-            var start_year = raw.yearFrom;
-            var end_year = raw.yearTo;
-
-            x.domain([start_year, end_year]);
-            var xScale = d3.scale.linear()
-                .domain([start_year, end_year])
-                .range([0, width]);
-
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + 0 + ")")
-                .call(xAxis);
-
-            for (var j = 0; j < data.length; j++) {
-                var g = svg.append("g").attr("class","journal");
-
-                var circles = g.selectAll("circle")
-                    .data(data[j]['articles'])
-                    .enter()
-                    .append("circle");
-
-                var text = g.selectAll("text")
-                    .data(data[j]['articles'])
-                    .enter()
-                    .append("text");
-
-                var rScale = d3.scale.linear()
-                    .domain([0, d3.max(data[j]['articles'], function(d) { return d[1]; })])
-                    .range([2, 9]);
-
-                circles
-                    .attr("cx", function(d, i) { return xScale(d[0]); })
-                    .attr("cy", j*20+20)
-                    .attr("r", function(d) { return rScale(d[1]); })
-                    .style("fill", function(d) { return c(j); });
-
-                text
-                    .attr("y", j*20+25)
-                    .attr("x",function(d, i) { return xScale(d[0])-5; })
-                    .attr("class","value")
-                    .text(function(d){ return d[1]; })
-                    .style("fill", function(d) { return c(j); })
-                    .style("display","none");
-
-                g.append("text")
-                    .attr("y", j*20+25)
-                    .attr("x",width+20)
-                    .attr("class","label")
-                    .text(truncate(data[j]['name'],30,"..."))
-                    .style("fill", function(d) { return c(j); })
-                    .on("mouseover", mouseover)
-                    .on("mouseout", mouseout);
-            };
-
-            function mouseover(p) {
-                var g = d3.select(this).node().parentNode;
-                d3.select(g).selectAll("circle").style("display","none");
-                d3.select(g).selectAll("text.value").style("display","block");
-            }
-
-            function mouseout(p) {
-                var g = d3.select(this).node().parentNode;
-                d3.select(g).selectAll("circle").style("display","block");
-                d3.select(g).selectAll("text.value").style("display","none");
-            }
+        var yearTo = $.url().param('to');
+        if (!yearTo) {
+            yearTo = new Date().getFullYear() - 1;
         }
+        var fileName = $.url().param('name');
+
+        document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Themes (Dict. =  " + fileName + ")";
+        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Themes (Dict. = " + fileName + ")</small>");
+
+        $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+
+        function truncate(str, maxLength, suffix) {
+            if(str.length > maxLength) {
+                str = str.substring(0, maxLength + 1); 
+                str = str.substring(0, Math.min(str.length, str.lastIndexOf(" ")));
+                str = str + suffix;
+            }
+            return str;
+        }
+
+        var margin = {top: 20, right: 200, bottom: 20, left: 20},
+            width = 800,
+            height = 650;
+
+        var c = d3.scale.category20();
+
+        var x = d3.scale.linear()
+            .range([0, width]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("top");
+
+        var formatYears = d3.format("0000");
+        xAxis.tickFormat(formatYears);
+
+        var svg = d3.select("#plot").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        $.ajax({
+            dataType: "jsonp",
+            cache: true,
+            jsonpCallback: "jsonpcallback",
+            url: "http://" + host + "/theme/load?token=" + token, 
+            data: { 
+                "query" : query.replace(/ /g, "+"), 
+                "from" : yearFrom, 
+                "to" : yearTo,
+                "name" : fileName
+            }, 
+            success: function(raw) {
+                data = raw.data;
+                var start_year = raw.yearFrom;
+                var end_year = raw.yearTo;
+
+                x.domain([start_year, end_year]);
+                var xScale = d3.scale.linear()
+                    .domain([start_year, end_year])
+                    .range([0, width]);
+
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + 0 + ")")
+                    .call(xAxis);
+
+                for (var j = 0; j < data.length; j++) {
+                    var g = svg.append("g").attr("class","journal");
+
+                    var circles = g.selectAll("circle")
+                        .data(data[j]['articles'])
+                        .enter()
+                        .append("circle");
+
+                    var text = g.selectAll("text")
+                        .data(data[j]['articles'])
+                        .enter()
+                        .append("text");
+
+                    var rScale = d3.scale.linear()
+                        .domain([0, d3.max(data[j]['articles'], function(d) { return d[1]; })])
+                        .range([2, 9]);
+
+                    circles
+                        .attr("cx", function(d, i) { return xScale(d[0]); })
+                        .attr("cy", j*20+20)
+                        .attr("r", function(d) { return rScale(d[1]); })
+                        .style("fill", function(d) { return c(j); });
+
+                    text
+                        .attr("y", j*20+25)
+                        .attr("x",function(d, i) { return xScale(d[0])-5; })
+                        .attr("class","value")
+                        .text(function(d){ return d[1]; })
+                        .style("fill", function(d) { return c(j); })
+                        .style("display","none");
+
+                    g.append("text")
+                        .attr("y", j*20+25)
+                        .attr("x",width+20)
+                        .attr("class","label")
+                        .text(truncate(data[j]['name'],30,"..."))
+                        .style("fill", function(d) { return c(j); })
+                        .on("mouseover", mouseover)
+                        .on("mouseout", mouseout);
+                };
+
+                function mouseover(p) {
+                    var g = d3.select(this).node().parentNode;
+                    d3.select(g).selectAll("circle").style("display","none");
+                    d3.select(g).selectAll("text.value").style("display","block");
+                }
+
+                function mouseout(p) {
+                    var g = d3.select(this).node().parentNode;
+                    d3.select(g).selectAll("circle").style("display","block");
+                    d3.select(g).selectAll("text.value").style("display","none");
+                }
+            }
+        });
+
     });
-
 });
 </script>
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="query.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="index.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="query.html" id="queryPage">Query</a></li>
     <li><a id="parentPage">Records</a></li>
     <li class="active">Themes</li>
 </ol>
