@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="static/js/jquery.min.js"></script>
 
-<script src="static/js/purl.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!--<script src="static/js/jquery.min.js"></script>-->
 
-<script src="static/js/jquery.cookie.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">-->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<!--<script src="static/js/bootstrap.min.js"></script>-->
 
-<script src="static/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
-<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">-->
 
-<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
+<script src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
+<!--<script src="static/js/jquery.dataTables.min.js"></script>-->
 
-<script src="static/js/bootstrap-datepicker.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/bootstrap-datepicker.css">
+<script src="static/js/purl.min.js"></script>
+
+<script src="static/js/jquery.cookie.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="static/css/bootstrap-datepicker.min.css">
+<script src="static/js/bootstrap-datepicker.min.js"></script>
 
 <script src="static/js/jquery.bootstrap-growl.min.js"></script>
 
-<script src="static/js/bootbox.js"></script>
+<script src="static/js/bootbox.min.js"></script>
 
-<script src="static/js/jquery.dataTables.min.js"></script>
-<!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.min.css">
+<script src="static/js/dataTables.bootstrap.min.js"></script>
 
-<script src="static/js/dataTables.bootstrap.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.css">
-
-<script src="static/js/dataTables.fixedHeader.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.css">
-
-<script src="js/main.js"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<script src="js/main.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -39,7 +41,7 @@ $(document).ready(function() {
 
         var db = $.url().param('db');
         if (db == null) {
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }
 
         var host = hosts[db].host;
@@ -76,7 +78,7 @@ $(document).ready(function() {
                 {
                     "width": "50px", 
                     "orderable": false,
-                    "defaultContent": "<button style=\"display: none;\" class=\"btn btn-danger btn-xs\"><span class=\"fa fa-trash-o\"></span> Delete</button>"
+                    "defaultContent": '<button style="display: none;" class="btn btn-danger btn-xs"><span class="fa fa-trash-o"></span> Delete</button>'
                 }
             ]
         });
@@ -113,7 +115,7 @@ $(document).ready(function() {
                         className: "btn-default"
                     },
                     danger: {
-                        label: "<span class=\"fa fa-trash-o\"></span> Delete",
+                        label: '<span class="fa fa-trash-o"></span> Delete',
                         className: "btn-danger",
                         callback: function() {
                             if ($("input#deleteConfirm").val() != query) {
@@ -143,8 +145,8 @@ $(document).ready(function() {
 
         $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");
 
-        $(".input-date").tooltip({placement: "top", html: true, container: 'body'});
-        $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
         table.on('draw.dt', function () {
             if ($("div.dataTables_scrollBody").prop("scrollHeight") > $("div.dataTables_scrollBody").height()) {
                 $(".dataTables_scroll").attr("title", "Scroll to see more entries").attr("data-trigger", "manual").tooltip({placement: "bottom", html: true, container: 'body'}).tooltip("show");
@@ -192,7 +194,6 @@ $(document).ready(function() {
                 return;
             }
         } );
-        //new $.fn.dataTable.FixedHeader( table );
 
         $("#manage").change(function() {
             if (this.checked) {
@@ -222,7 +223,7 @@ $(document).ready(function() {
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="index.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="/"><span class="fa fa-home" title="Home"></span></a></li>
     <li class="active">Query</li>
 </ol>
 
@@ -235,8 +236,8 @@ $(document).ready(function() {
             <input type="hidden" name="db">
             <label class="control-label">Query: </label>
             <input class="form-control input-sm" id="query" style="width:250px;" name="query" title="At least one keyword">
-            <label class="control-label">Year: </label>
-            <input class="form-control input-sm input-date" id="from" style="width:50px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm input-date" id="to" style="width:50px;" maxlength="4" name="to" title="Less than or equal to ">
+            <label class="control-label">Period: </label>
+            <input class="form-control input-sm input-date" id="from" style="width:100px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm input-date" id="to" style="width:100px;" maxlength="4" name="to" title="Less than or equal to ">
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
         </form>
     </div>

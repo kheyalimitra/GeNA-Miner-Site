@@ -2,5 +2,14 @@
     "pubmed": {
         "host": "0.0.0.0:5000", 
         "name": "PubMed"
+    },
+    "twitter": {
+        "host": "0.0.0.0:5001", 
+        "name": "Twitter (Public Stream)"
+    },
+    "dblp": {
+        "host": "0.0.0.0:5002", 
+        "name": "DBLP", 
+        "hide": true
     }
 }

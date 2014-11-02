@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>
-</title>
-<script src="static/js/jquery.min.js"></script>
 
-<script src="static/js/purl.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!--<script src="static/js/jquery.min.js"></script>-->
 
-<script src="static/js/jquery.cookie.js"></script>
+<script src="static/js/purl.min.js"></script>
 
-<script src="static/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
-<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
+<script src="static/js/jquery.cookie.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">-->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<!--<script src="static/js/bootstrap.min.js"></script>-->
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">-->
 
 <script src="static/js/d3.min.js"></script>
 
-<script src="js/main.js"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<script src="js/main.js"></script>
 
 <style type="text/css">
 div.plot {
@@ -64,10 +66,11 @@ $(document).ready(function() {
         var fileName = $.url().param('name');
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Themes (Dict. =  " + fileName + ")";
-        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Themes (Dict. = " + fileName + ")</small>");
 
-        $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+        $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
 
         function truncate(str, maxLength, suffix) {
             if(str.length > maxLength) {
@@ -187,7 +190,7 @@ $(document).ready(function() {
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="index.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="/"><span class="fa fa-home" title="Home"></span></a></li>
     <li><a href="query.html" id="queryPage">Query</a></li>
     <li><a id="parentPage">Records</a></li>
     <li class="active">Themes</li>

@@ -4,33 +4,28 @@
 <title>
     GeNA Miner
 </title>
-<script src="static/js/jquery.min.js"></script>
 
-<script src="static/js/jquery.cookie.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!--<script src="static/js/jquery.min.js"></script>-->
 
-<script src="static/js/sha1.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">-->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<!--<script src="static/js/bootstrap.min.js"></script>-->
 
-<script src="static/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
-<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">-->
 
-<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+<script src="static/js/jquery.cookie.min.js"></script>
+
+<script src="static/js/sha1.min.js"></script>
 
 <script src="static/js/jquery.bootstrap-growl.min.js"></script>
 
-<script src="static/js/bootbox.js"></script>
+<script src="static/js/bootbox.min.js"></script>
 
-<script src="static/js/jquery.dataTables.min.js"></script>
-<!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
-
-<script src="static/js/dataTables.bootstrap.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.css">
-
-<script src="static/js/dataTables.fixedHeader.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.css">
-
-<script src="js/main.js"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<script src="js/main.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -40,11 +35,19 @@ $(document).ready(function() {
                 $("#" + db).addClass("dbbtn-locked");
                 $("#" + db + " span.fa").removeClass("fa-unlock");
                 $("#" + db + " span.fa").addClass("fa-lock");
+
+                if ($("#" + db).hasClass("dbbtn-hide")) {
+                    $("#" + db).fadeOut(400);
+                }
             }
             else {
                 $("#" + db).removeClass("dbbtn-locked");
                 $("#" + db + " span.fa").addClass("fa-unlock");
                 $("#" + db + " span.fa").removeClass("fa-lock");
+
+                if ($("#" + db).hasClass("dbbtn-hide")) {
+                    $("#" + db).fadeIn(400);
+                }
             }
         }
 
@@ -55,17 +58,36 @@ $(document).ready(function() {
                 $.getJSON("http://" + host + "/auth/verify?callback=?", 
                     {
                         "token": token
-                    }, 
+                    } 
+                ).done(
                     function(j) {
                         setLock(db, !j.auth);
+                    }
+                ).fail(
+                    function() {
+                        setLock(db, true);
+                        $("#" + db).addClass("dbbtn-offline");
+
+                        $("#" + db + " .lockIcon").before('<span class="offlineIcon"><span class="fa fa-plug"></span> Offline</span>');
                     }
                 );
             });
         }
 
+        var dbhtml = "";
+        $.each(hosts, function(db, v) {
+            var dbName = v.name;
+
+            dbhtml += '<a class="btn btn-default dbbtn' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-db="' + db + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-lock lockIcon"></span></a>' + "\n";
+        });
+        $("#dbbtnList").html(dbhtml);
+
         if ($.cookie("token")) {
             $("#codeStatus").text("Using saved access code");
             checkToken($.cookie("token"));
+        }
+        else {
+            checkToken("");
         }
 
         $('#codeBtn').click(function () {
@@ -110,30 +132,24 @@ $(document).ready(function() {
             });
         });
 
-        var dateRegex = /\b(?:jan|feb|mar|apr|may|jun|jul|aug|sept?|oct|nov|dec)\s+\d{1,2}\s*(?:st|nd|rd|th)?\s*,?\s+\d{4}\b/i;
-        $.ajax({
-            dataType: "html",
-            cache: false,
-            url: "updates.html", 
-            success: function(j) {
-                var updateHtml = j;
-                var updateDate = dateRegex.exec(updateHtml);
-                var updateCookieName = "updated_" + updateDate.toString().toLowerCase();
-
-                if (!$.cookie(updateCookieName)) {
-                    showUpdates(updateDate, updateHtml);
-                    $.cookie(updateCookieName, 'true');
-                }
-                $("#updates").click(function() {
-                    showUpdates(updateDate, updateHtml);
-                });
+        $(".dbbtn").click(function(e) {
+            if ($(this).hasClass("dbbtn-locked")) {
+                showAlert("You do not have access to this database.", "danger");
+            }
+            else if ($(this).hasClass("dbbtn-offline")) {
+                showAlert("This database is unavailable right now.", "danger");
+            }
+            else {
+                window.location.href = 'query.html?db=' + $(this).attr("data-db");
             }
         });
+
+        $("[title]").tooltip({placement: "top", html: true, container: 'body'});
+
         function showUpdates(date, html) {
             bootbox.dialog({
                 message: html,
                 title: "Updates",
-                closeButton: false,
                 buttons: {
                     ok: {
                         label: "<span class=\"fa fa-heart-o\"><\/span> Got It",
@@ -142,6 +158,27 @@ $(document).ready(function() {
                 }
             });
         }
+
+        $.ajax({
+            dataType: "html",
+            cache: false,
+            url: "updates.html", 
+            success: function(j) {
+                var updateHtml = j;
+
+                var dateRegex = /\b(?:jan|feb|mar|apr|may|jun|jul|aug|sept?|oct|nov|dec)\s+\d{1,2}\s*(?:st|nd|rd|th)?\s*,?\s+\d{4}\b/i;
+                var updateDate = dateRegex.exec(updateHtml);
+                var updateCookieName = "updated_" + updateDate.toString().toLowerCase();
+
+                if (!$.cookie(updateCookieName)) {
+                    $.cookie(updateCookieName, 'true');
+                    showUpdates(updateDate, updateHtml);
+                }
+                $("#updates").click(function() {
+                    showUpdates(updateDate, updateHtml);
+                });
+            }
+        });
 
         $("#about").click(function() {
             $.ajax({
@@ -163,17 +200,6 @@ $(document).ready(function() {
                 }
             });
         });
-
-        $(".dbbtn").click(function(e) {
-            if ($(this).hasClass("dbbtn-locked")) {
-                showAlert("You do not have access to this database.", "danger");
-            }
-            else {
-                window.location.href = 'query.html?db=' + $(this).attr("data-db");
-            }
-        });
-
-        $("[title]").tooltip({placement: "bottom", html: true, container: 'body'});
     });
 });
 </script>
@@ -205,19 +231,21 @@ $(document).ready(function() {
     -ms-filter: grayscale(100%);
     -o-filter: grayscale(100%);
 
-    opacity: 0.5;
+    opacity: 0.25;
 }
-.dbbtn .comingIcon {
-    font-size: 10px;
+.dbbtn .offlineIcon {
+    font-size: 12px;
+    color: #d9534f;
     position:absolute;
-    top:5px;
+    bottom:5px;
     right:5px;
     margin:0;
     padding:0px;
 }
 .dbbtn .lockIcon {
+    font-size: 12px;
     position:absolute;
-    bottom:5px;
+    top:5px;
     right:5px;
     margin:0;
     padding:0px;
@@ -243,10 +271,7 @@ $(document).ready(function() {
         <div style="display:block">
             <label class="control-label">Connect to: </label>
             <br/>
-            <div>
-                <a class="btn btn-default dbbtn dbbtn-locked" id="pubmed" data-db="pubmed" title="PubMed"><img src="img/pubmed.png"></img><span class="fa fa-lock lockIcon"></span></a>
-                <a class="btn btn-default dbbtn dbbtn-locked" id="twitter" data-db="twitter" title="Twitter (Public Stream)"><img src="img/twitter.png"></img><span class="comingIcon">Coming Soon</span><span class="fa fa-lock lockIcon"></span></a>
-                <!--<a class="btn btn-default dbbtn dbbtn-locked" id="dblp" data-db="dblp" title="The DBLP Computer Science Bibliography"><img src="img/dblp.png"></img><span class="comingIcon">Coming Later</span><span class="fa fa-lock lockIcon"></span></a>-->
+            <div id="dbbtnList">
             </div>
         </div>
     </div>

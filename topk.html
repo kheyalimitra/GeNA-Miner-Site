@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html>
-<title>
-</title>
 <head>
-<script src="static/js/jquery.min.js"></script>
 
-<script src="static/js/purl.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!--<script src="static/js/jquery.min.js"></script>-->
 
-<script src="static/js/jquery.cookie.js"></script>
+<script src="static/js/purl.min.js"></script>
 
-<script src="static/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
-<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.3.2.0.css">-->
+<script src="static/js/jquery.cookie.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">-->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<!--<script src="static/js/bootstrap.min.js"></script>-->
 
-<script src="static/js/jquery.dataTables.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">-->
+
 <!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
+<script src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
+<!--<script src="static/js/jquery.dataTables.min.js"></script>-->
 
-<script src="static/js/dataTables.bootstrap.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.min.css">
+<script src="static/js/dataTables.bootstrap.min.js"></script>
 
-<script src="static/js/dataTables.tableTools.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.tableTools.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.tableTools.min.css">
+<script src="static/js/dataTables.tableTools.min.js"></script>
 
-<script src="static/js/dataTables.fixedHeader.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.min.css">
+<script src="static/js/dataTables.fixedHeader.min.js"></script>
 
-<script src="js/main.js"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<script src="js/main.js"></script>
+
 
 <script type="text/javascript" class="init">
 $(document).ready(function() {
@@ -64,7 +68,7 @@ $(document).ready(function() {
         }
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")";
-        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")");
 
         var table = $('#example').DataTable( {
@@ -125,14 +129,15 @@ $(document).ready(function() {
         $(".DTTT_container a").removeClass("DTTT_button");
         $(".DTTT_container a").addClass("btn btn-default btn-sm");
 
-        $("[title]").attr("data-placement", "bottom").tooltip({html: true, container: 'body'})
+        $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
     });
 });
 </script>
 </head>
 <body>
 <ol class="breadcrumb">
-    <li><a href="index.html"><span class="fa fa-home" title="Home"></span></a></li>
+    <li><a href="/"><span class="fa fa-home" title="Home"></span></a></li>
     <li><a href="query.html" id="queryPage">Query</a></li>
     <li><a id="parentPage">Records</a></li>
     <li class="active">Co-occurrences</li>
