@@ -19,10 +19,9 @@
 
 <script src="static/js/purl.min.js"></script>
 
-<script src="static/js/jquery.cookie.min.js"></script>
+<script src="static/js/moment.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="static/css/bootstrap-datepicker.min.css">
-<script src="static/js/bootstrap-datepicker.min.js"></script>
+<script src="static/js/jquery.cookie.min.js"></script>
 
 <script src="static/js/jquery.bootstrap-growl.min.js"></script>
 
@@ -43,6 +42,8 @@ $(document).ready(function() {
         if (db == null) {
             window.location.href = '/';
         }
+
+        var minPeriod = hosts[db].minPeriod;
 
         var host = hosts[db].host;
         var dbName = hosts[db].name;
@@ -140,10 +141,22 @@ $(document).ready(function() {
 
         $("input[name='db']").val(db);
 
-        $('#from').val(new Date().getFullYear() - 10);
-        $('#to').val(new Date().getFullYear() - 1);
+        if (minPeriod == "year") {
+            $(".input-date").css("width", "50px");
 
-        $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");
+            var momentFormat = "YYYY";
+            $('#from').val(moment().subtract(10, "years").format(momentFormat));
+            $('#to').val(moment().subtract(1, "years").format(momentFormat));
+
+            $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");
+        }
+        else if (minPeriod == "minute") {
+            $(".input-date").css("width", "140px");
+
+            var momentFormat = "MM/DD/YYYY hh:mm A";
+            $('#from').val(moment().startOf('day').subtract(1, "months").format(momentFormat));
+            $('#to').val(moment().endOf('day').subtract(1, "days").format(momentFormat));
+        }
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
         $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
@@ -203,13 +216,6 @@ $(document).ready(function() {
                 $(".table tr td button").fadeOut(200);
             }
         });
-
-        $(".input-date").datepicker({
-            format: "yyyy",
-            startView: 2,
-            minViewMode: 2,
-            autoclose: true
-        });
     });
 });
 </script>
@@ -218,6 +224,11 @@ $(document).ready(function() {
 .table tr td {
     vertical-align: middle;
     height: 22px;
+}
+
+.datetimepicker .active {
+    background: #428bca !important;
+    text-shadow: none !important;
 }
 </style>
 </head>
@@ -230,14 +241,14 @@ $(document).ready(function() {
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="main">
     <h3>GeNA Miner <small id="dbName"></small></h3>
-<div style="max-width:660px;">
+<div style="max-width:800px;">
     <div class="block">
         <form class="form-inline" id="query_form" action="main.html" method="get">
             <input type="hidden" name="db">
             <label class="control-label">Query: </label>
             <input class="form-control input-sm" id="query" style="width:250px;" name="query" title="At least one keyword">
             <label class="control-label">Period: </label>
-            <input class="form-control input-sm input-date" id="from" style="width:100px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm input-date" id="to" style="width:100px;" maxlength="4" name="to" title="Less than or equal to ">
+            <input class="form-control input-sm input-date" id="from" style="width:50px;" maxlength="4" name="from" title="Greater than or equal to 1900"> - <input class="form-control input-sm input-date" id="to" style="width:50px;" maxlength="4" name="to" title="Less than or equal to ">
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
         </form>
     </div>

@@ -1,15 +1,18 @@
 {
     "pubmed": {
         "host": "0.0.0.0:5000", 
-        "name": "PubMed"
+        "name": "PubMed", 
+        "minPeriod": "year"
     },
     "twitter": {
-        "host": "0.0.0.0:5001", 
-        "name": "Twitter (Public Stream)"
+        "host": "0.0.0.0:5000", 
+        "name": "Twitter (Public Stream)", 
+        "minPeriod": "minute"
     },
     "dblp": {
-        "host": "0.0.0.0:5002", 
+        "host": "0.0.0.0:5000", 
         "name": "DBLP", 
+        "minPeriod": "year", 
         "hide": true
     }
 }

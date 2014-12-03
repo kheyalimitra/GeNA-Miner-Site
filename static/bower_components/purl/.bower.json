@@ -22,7 +22,6 @@
     "commit": "24b9f33becd855e1c42895583e3f42799a06fdda"
   },
   "_source": "git://github.com/allmarkedup/purl.git",
-  "_target": "~2.3.1",
-  "_originalSource": "purl",
-  "_direct": true
+  "_target": ">= 2.3.0",
+  "_originalSource": "purl"
 }

@@ -37,7 +37,7 @@ $(document).ready(function() {
                 $("#" + db + " span.fa").addClass("fa-lock");
 
                 if ($("#" + db).hasClass("dbbtn-hide")) {
-                    $("#" + db).fadeOut(400);
+                    $("#" + db).hide();
                 }
             }
             else {
@@ -46,7 +46,7 @@ $(document).ready(function() {
                 $("#" + db + " span.fa").removeClass("fa-lock");
 
                 if ($("#" + db).hasClass("dbbtn-hide")) {
-                    $("#" + db).fadeIn(400);
+                    $("#" + db).show();
                 }
             }
         }
@@ -257,7 +257,7 @@ $(document).ready(function() {
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="main" style="margin-top:36px;">
     <h3>GeNA Miner <small>-- Made by GeNA Lab</small></h3>
-<div style="max-width:660px;">
+<div style="max-width:800px;">
     <div class="block">
         <div style="display:block">
             <label class="control-label">Access Code: </label>

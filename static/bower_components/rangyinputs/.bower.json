@@ -1,6 +1,6 @@
 {
   "name": "rangyinputs",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "homepage": "https://github.com/timdown/rangyinputs",
   "authors": [
     "Tim Down <tim@timdown.co.uk>"
@@ -22,16 +22,16 @@
   "ignore": [
     ".idea",
     ".gitignore",
-    "rangyinputs.jquery.json"
+    "rangyinputs.jquery.json",
+    "bower.json"
   ],
-  "_release": "1.1.4",
+  "_release": "1.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "1.1.4",
-    "commit": "e20529c5a0b8ef3e37c7a47ae712b269f6a39dc3"
+    "tag": "1.2.0",
+    "commit": "cd193ee11ea5c3e7e33b27c081df7a1276e20083"
   },
   "_source": "git://github.com/timdown/rangyinputs.git",
-  "_target": "~1.1.4",
-  "_originalSource": "rangyinputs",
-  "_direct": true
+  "_target": ">= 1.1.0",
+  "_originalSource": "rangyinputs"
 }

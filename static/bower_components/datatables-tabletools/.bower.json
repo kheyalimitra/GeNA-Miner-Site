@@ -17,7 +17,6 @@
     "commit": "a89b03b47f4e9274b1a514030c9597d7e2df472d"
   },
   "_source": "git://github.com/DataTables/TableTools.git",
-  "_target": "~2.2.3",
-  "_originalSource": "datatables-tabletools",
-  "_direct": true
+  "_target": ">= 2.2.0",
+  "_originalSource": "datatables-tabletools"
 }

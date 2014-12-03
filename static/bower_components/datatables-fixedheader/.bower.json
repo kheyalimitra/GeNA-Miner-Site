@@ -17,7 +17,6 @@
     "commit": "1b7ce4cfe953baebf36f8f9389caa393ca14b436"
   },
   "_source": "git://github.com/DataTables/FixedHeader.git",
-  "_target": "~2.1.2",
-  "_originalSource": "datatables-fixedheader",
-  "_direct": true
+  "_target": ">= 2.1.0",
+  "_originalSource": "datatables-fixedheader"
 }
