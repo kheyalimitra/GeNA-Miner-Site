@@ -1,7 +1,7 @@
 {
     "pubmed": {
-        "host": "0.0.0.0:5000", 
-        "name": "PubMed", 
+        "host": "d142-58-33-194.burnaby.sfu.ca:5000", 
+        "name": "PubMed",
         "minPeriod": "year"
     },
     "twitter": {
