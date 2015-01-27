@@ -74,8 +74,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .form-control:hover {
+    transition: border .2s;
     border: 1px solid #888;
-    transition: border .2s
 }
 
 .tooltip, .popover {
@@ -162,10 +162,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
     tr td.control {
         vertical-align: middle;
+        cursor: default !important;
     }
     tr td.control:before {
-        transition: background .2s, color .2s, opacity .2s;
-        border: 1px solid #adadad !important;
+        transition: background .2s, border .2s;
+        border: 1px solid #4cae4c !important;
         box-shadow: none !important;
         background-color: #5cb85c !important;
         color: #ffffff !important;
@@ -173,8 +174,15 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         width: 14px !important;
         line-height: 12px !important;
     }
+    tr td.control:hover:before {
+        background-color: #4cae4c !important;
+    }
     tr.parent td.control:before {
         background-color: #d9534f !important;
+        border: 1px solid #d43f3a !important;
+    }
+    tr.parent td.control:hover:before {
+        background-color: #d43f3a !important;
     }
 
     .clear {
