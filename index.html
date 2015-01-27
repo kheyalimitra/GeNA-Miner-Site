@@ -54,8 +54,9 @@ $(document).ready(function() {
         function checkToken(token) {
             $.each(hosts, function(db, v) {
                 var host = hosts[db].host;
+                var jsonp = hosts[db].jsonp;
 
-                $.getJSON("http://" + host + "/auth/verify?callback=?", 
+                $.getJSON("http://" + host + "/auth/verify" + (jsonp ? "?callback=?" : ""), 
                     {
                         "token": token
                     } 
@@ -133,11 +134,11 @@ $(document).ready(function() {
         });
 
         $(".dbbtn").click(function(e) {
-            if ($(this).hasClass("dbbtn-locked")) {
-                showAlert("You do not have access to this database.", "danger");
-            }
-            else if ($(this).hasClass("dbbtn-offline")) {
+            if ($(this).hasClass("dbbtn-offline")) {
                 showAlert("This database is unavailable right now.", "danger");
+            }
+            else if ($(this).hasClass("dbbtn-locked")) {
+                showAlert("You do not have access to this database.", "danger");
             }
             else {
                 window.location.href = 'query.html?db=' + $(this).attr("data-db");

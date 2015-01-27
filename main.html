@@ -2,19 +2,19 @@
 <html>
 <head>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <!--<script src="static/js/jquery.min.js"></script>-->
 
 <script src="static/js/purl.min.js"></script>
 
 <script src="static/js/jquery.cookie.min.js"></script>
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
 <!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">-->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <!--<script src="static/js/bootstrap.min.js"></script>-->
 
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <!--<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">-->
 
 <script src="static/js/jquery.bootstrap-growl.min.js"></script>
@@ -22,7 +22,7 @@
 <script src="static/js/bootbox.min.js"></script>
 
 <!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
-<script src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
 <!--<script src="static/js/jquery.dataTables.min.js"></script>-->
 
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.min.css">
@@ -55,14 +55,31 @@ tr.group {
     width: 250px;
 }
 
-mark {
-    background-color: rgba(255,255,0,0.5);
-    font-style: normal;
+mark.match {
+    background-color: rgba(243,228,48,0.25);
+    color: inherit;
+}
+mark.hashtag {
+    background-color: rgba(104,85,222,0.25);
+    color: inherit;
+}
+
+a.place, a.url, a.user {
+    cursor:pointer;
 }
 
 .popover {
     min-width: 400px;
     max-width: 400px;
+}
+
+.missing {
+    color: #999;
+}
+
+/* Fix for Firefox */
+.input-group .control-label .form-control, .control-label .input-group-addon, .control-label .input-group-btn {
+    display: inherit;
 }
 </style>
 
@@ -74,6 +91,8 @@ $(document).ready(function() {
         var db = $.url().param('db');
         var host = hosts[db].host;
         var dbName = hosts[db].name;
+
+        var jsonp = hosts[db].jsonp;
 
         $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
 
@@ -89,6 +108,12 @@ $(document).ready(function() {
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo;
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
+
+        var tableHeaderTags = '<th class="all"></th>';
+        for (var i = 0; i < hosts[db].columns.length; i++) {
+            tableHeaderTags += '<th></th>';
+        }
+        $("#example thead tr").html(tableHeaderTags);
 
         var table = $('#example').DataTable( {
             dom: '<"expandAll">lfTrtip',
@@ -114,12 +139,12 @@ $(document).ready(function() {
 
             "serverSide": true,
             "ajax": {
-                "url": "http://" + host + "/main/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo,
-                "dataType": "jsonp",
+                "url": "http://" + host + "/main/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo),
+                "dataType": (jsonp ? "jsonp" : "json"),
                 cache: true,
                 jsonpCallback: "jsonpcallback_main", 
                 "error": function(reason) {
-                    alert("Error occurred !");
+                    alert("Error occurred!");
                 }
             },
 
@@ -140,68 +165,36 @@ $(document).ready(function() {
             "responsive": {
                 details: { 
                     type: 'column', 
+                    /*
                     target: 'tr'
+                    */
                 }
             },
 
-            "columns": [
-                {
-                    "data": null,
-                    "defaultContent": '',
-                    "orderable": false,
-                    className: 'control',
-                    targets: 0
-                },
-                { 
-                    "data": "id",
-                    "orderable": false
-                },
-                { 
-                    "width": "50%", 
-                    "data": "title",
-                    "orderable": false 
-                },
-                { 
-                    "data": "year" 
-                },
-                { 
-                    "width": "30%", 
-                    "data": "source",
-                    "orderable": false 
-                },
-                { 
-                    "width": "20%", 
-                    "data": "abbrAuthors",
-                    "orderable": false 
-                },
-                { 
-                    "data": "authors",
-                    "orderable": false 
-                },
-                { 
-                    "data": "abstract",
-                    "orderable": false 
-                },
-                { 
-                    "data": "keywords",
-                    "orderable": false 
-                },
-                { 
-                    "data": "url",
-                    "orderable": false 
-                }
-            ],
-            "order": [[ 3, "desc" ]], 
+            "columns": [{
+                "data": null,
+                "defaultContent": '',
+                "orderable": false,
+                "class": 'control',
+                targets: 0
+            }].concat(hosts[db].columns),
+            "order": hosts[db].order,
 
             "drawCallback": function ( settings ) {
+                if (!hosts[db].groupby) {
+                    return;
+                }
+
                 var api = this.api();
                 var rows = api.rows( {page:'current'} ).nodes();
                 var last=null;
-     
-                api.column(3, {page:'current'} ).data().each( function ( group, i ) {
+
+                var groupCol = hosts[db].order[0][0];
+
+                api.column(groupCol, {page:'current'} ).data().each( function ( group, i ) {
                     if ( last !== group) {
                         $(rows).eq( i ).before(
-                            '<tr class="group"><td colspan="10"><b>Year: </b>'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
+                            '<tr class="group"><td colspan="10"><b>' + hosts[db].columns[groupCol - 1].title + ': </b>'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
                         );
      
                         last = group;
@@ -217,9 +210,9 @@ $(document).ready(function() {
         ');
 
         function expandAll(flag) {
-            $('#example tbody tr[role="row"].parent').trigger("click");
+            $('#example tbody tr[role="row"].parent td.control').trigger("click");
             if (flag) {
-                $('#example tbody tr[role="row"]').trigger("click");
+                $('#example tbody tr[role="row"] td.control').trigger("click");
             }
         }
 
@@ -239,7 +232,8 @@ $(document).ready(function() {
         function search() {
             filterValue = $("#example_filter input").val();
 
-            var columnRegex = /(\w+):/g;
+            /*
+            var columnRegex = /((?:\w|[_.])+):/g;
             var match = columnRegex.exec(filterValue);
             while (match != null) {
                 if (!(match[1] in {"year":"", "id":"", "title":"", "source":"", "authors":"", "abstract":"", "keywords":""})) {
@@ -250,12 +244,13 @@ $(document).ready(function() {
 
                 match = columnRegex.exec(filterValue);
             }
+            */
 
             $.ajax({
-                dataType: "jsonp",
+                dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback_validate",
                 cache: true,
-                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + query.replace(/ /g, "+") + "&search=" + filterValue, 
+                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query) + "&search=" + encodeURIComponent(filterValue), 
                 success: function(j) {
                     if (j.valid) {
                         if ($("#example_filter input").val() != "") {
@@ -276,30 +271,50 @@ $(document).ready(function() {
                     }
                 }
             });
+        };
 
+        var popoverShown = false;
+        function closePopover() {
+            if (popoverShown) {
+                popoverShown = false;
+                $('#example_filter input').popover('hide').animate({
+                    "width": "250px"
+                }, 200);
+                $("#example_filter_clear").hide();
+            }
         }
 
         $("#example_filter").addClass("input-group");
         $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;"><span class="fa fa-remove"></span> Clear</span>');
-        $("#example_filter input").after("<span class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></span>").attr("placeholder", "Search");
+        $("#example_filter input").after("<div class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></div>").attr("placeholder", "Search");
         $('#example_filter input').unbind().bind('keyup', function(e) {
             if(e.keyCode == 13) {
                 search();
+
+                closePopover();
+                setTimeout(function() {
+                    $('#example_filter button').focus();
+                }, 0);
             }
         });
         $("#example_filter_searchicon").click(function() {
             search();
+
+            closePopover();
         });
         $("#example_filter_clear").click(function() {
             $("#example_filter input").val("");
             search();
+
+            setTimeout(function() {
+                $('#example_filter input').focus();
+            }, 0);
         });
 
         $("#example_length select").attr("title", "Show all entries may freeze your browser");
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
         $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
 
-        var popoverShown = false;
         $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content", 
             '\
             <h5><small>Column</small></h5>\
@@ -325,7 +340,7 @@ $(document).ready(function() {
                 popoverShown = true;
                 $(this).animate({
                     "width": "400px"
-                }, 200, "linear", function() {
+                }, 200, function() {
                     $(this).popover("show");
                     if ($(this).val() != "") {
                         $("#example_filter_clear").show();
@@ -342,34 +357,37 @@ $(document).ready(function() {
         });
         $(document).on('click', function(e) {
             if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
-                if (popoverShown) {
-                    popoverShown = false;
-                    $('#example_filter input').popover('hide').animate({
-                        "width": "250px"
-                    }, 200);
-                    $("#example_filter_clear").hide();
-                }
+                closePopover();
             }
         }).keydown(function(e) {
             if (e.keyCode === 27) {
-                if (popoverShown) {
-                    popoverShown = false;
-                    $('#example_filter input').popover('hide').animate({
-                        "width": "250px"
-                    }, 200);
-                    $("#example_filter_clear").hide();
-                }
+                closePopover();
             }
         }).on("click", ".popover a.btn", function() {
-            $("#example_filter input").focus().replaceSelectedText($(this).text());
-            $("#example_filter_clear").show();
+            var text = $(this).text();
+
+            setTimeout(function() {
+                $("#example_filter input").focus().replaceSelectedText(text);
+            }, 0);
         });
 
         table.on('draw.dt', function () {
             $("#form_divmask").hide();
 
             expandAll($("#expandAll").prop("checked"));
-        } );
+
+            $("a.user, a.place").each(function() {
+                $(this).attr("data-url", $(this).attr("href"));
+            }).removeAttr("href");
+
+            $("a.user, a.place").click(function() {
+                window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
+            });
+
+            $("a.place").html(function() {
+                return $(this).html() + ' <span class="fa fa-map-marker"><\/span>';
+            });
+        });
 
         $("input[name='db']").val(db);
         $("input[name='query']").val(query);
@@ -657,16 +675,6 @@ $(document).ready(function() {
     <table id="example" class="table table-hover" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th class="all"></th>
-                <th class="none">ID</th>
-                <th class="all">Title</th>
-                <th class="all">Year</th>
-                <th class="all">Source</th>
-                <th class="all">Authors</th>
-                <th class="none">Authors</th>
-                <th class="none">Abstract</th>
-                <th class="none">Keywords</th>
-                <th class="none">URL</th>
             </tr>
         </thead>
 

@@ -1,18 +1,155 @@
 {
     "pubmed": {
-        "host": "d142-58-33-194.burnaby.sfu.ca:5000", 
+        "host": "0.0.0.0:5000",
         "name": "PubMed",
-        "minPeriod": "year"
+        "minPeriod": "year",
+        "jsonp": true,
+        "columns": [
+            {
+                "data": "id",
+                "title": "ID",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "width": "50%",
+                "data": "title",
+                "title": "Title",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "year",
+                "title": "Year",
+                "class": "all"
+            },
+            {
+                "width": "30%",
+                "data": "source",
+                "title": "Source",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "width": "20%",
+                "data": "abbrAuthors",
+                "title": "Authors",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "authors",
+                "title": "Authors",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "abstract",
+                "title": "Abstract",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "keywords",
+                "title": "Keywords",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "url",
+                "title": "URL",
+                "class": "none",
+                "orderable": false
+            }
+        ],
+        "order": [[3, "desc"]],
+        "groupby": true
     },
     "twitter": {
-        "host": "0.0.0.0:5000", 
-        "name": "Twitter (Public Stream)", 
-        "minPeriod": "minute"
+        "host": "0.0.0.0:5001",
+        "name": "Twitter (Public Stream)",
+        "minPeriod": "second",
+        "columns": [
+            {
+                "width": "150px",
+                "data": "date_time",
+                "title": "UTC Time",
+                "class": "all"
+            },
+            {
+                "data": "user.screen_name",
+                "title": "User",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "text",
+                "title": "Text",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "id",
+                "title": "ID",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "user.id",
+                "title": "User ID",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "width": "250px",
+                "data": "place",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
+                "title": "Location",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "geo.coordinates",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
+                "title": "Coordinates",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "lang",
+                "title": "Language",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "retweet_count",
+                "defaultContent": "0",
+                "title": "Retweeted",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "favorite_count",
+                "defaultContent": "0",
+                "title": "Favorited",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "source",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
+                "title": "Source",
+                "class": "none",
+                "orderable": false
+            }
+        ],
+        "order": [[1, "desc"]],
+        "groupby": false
     },
     "dblp": {
-        "host": "0.0.0.0:5000", 
-        "name": "DBLP", 
-        "minPeriod": "year", 
+        "host": "0.0.0.0:5002",
+        "name": "DBLP",
+        "minPeriod": "year",
         "hide": true
     }
 }

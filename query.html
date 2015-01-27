@@ -51,10 +51,12 @@ $(document).ready(function() {
         $("#dbName").text("-- " + dbName);
         document.title = "GeNA Miner -- " + dbName;
 
+        var jsonp = hosts[db].jsonp;
+
         var table = $("#example").DataTable( {
             "ajax": {
                 "url": "http://" + host + "/history/load?token=" + token,
-                "dataType": "jsonp",
+                "dataType": (jsonp ? "jsonp" : "json"),
                 "jsonpCallback": "jsonpcallback",
             },
 
