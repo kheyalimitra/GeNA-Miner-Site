@@ -1,3 +1,7 @@
+.container, .container-fluid {
+  margin: 10px;
+  padding: 10px; }
+
 .block {
   position: relative;
   border: 1px solid;
@@ -46,25 +50,18 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   margin: 0px;
   font-size: 12px; }
 
-.tooltip {
-  opacity: .9 !important;
-  font-size: 12px; }
-  .tooltip .tooltip-arrow {
-    border-bottom-color: #444 !important;
-    border-top-color: #444 !important; }
-  .tooltip .tooltip-inner {
-    max-width: 400px;
-    background-color: #444; }
+.tooltip .tooltip-arrow {
+  border-bottom-color: #444 !important;
+  border-top-color: #444 !important; }
+.tooltip .tooltip-inner {
+  max-width: 400px;
+  background-color: #444; }
 
-input:hover {
+.form-control:hover {
   border: 1px solid #888;
-  transition: border linear 0.2s; }
+  transition: border 0.2s; }
 
-select:hover {
-  border: 1px solid #888;
-  transition: border linear 0.2s; }
-
-.popover {
+.tooltip, .popover {
   opacity: .9 !important;
   font-size: 12px; }
 
@@ -74,7 +71,7 @@ select:hover {
     padding: 10px; }
 
 .btn, .paginate_button a {
-  transition: background linear .2s, color linear .2s; }
+  transition: background .2s, color .2s; }
 
 .dataTables_wrapper {
   overflow: hidden; }
@@ -130,7 +127,7 @@ select:hover {
   .dataTables_wrapper tr td.control {
     vertical-align: middle; }
   .dataTables_wrapper tr td.control:before {
-    transition: background linear .2s, color linear .2s, opacity linear .2s;
+    transition: background .2s, color .2s, opacity .2s;
     border: 1px solid #adadad !important;
     box-shadow: none !important;
     background-color: #5cb85c !important;

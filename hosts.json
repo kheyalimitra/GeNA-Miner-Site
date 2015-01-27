@@ -6,12 +6,6 @@
         "jsonp": true,
         "columns": [
             {
-                "data": "id",
-                "title": "ID",
-                "class": "none",
-                "orderable": false
-            },
-            {
                 "width": "50%",
                 "data": "title",
                 "title": "Title",
@@ -35,6 +29,12 @@
                 "data": "abbrAuthors",
                 "title": "Authors",
                 "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "id",
+                "title": "ID",
+                "class": "none",
                 "orderable": false
             },
             {
@@ -62,7 +62,7 @@
                 "orderable": false
             }
         ],
-        "order": [[3, "desc"]],
+        "order": [[2, "desc"]],
         "groupby": true
     },
     "twitter": {
