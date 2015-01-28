@@ -92,7 +92,7 @@ $(document).ready(function() {
         }
 
         $('#codeBtn').click(function () {
-            bootbox.dialog({
+            var box = bootbox.dialog({
                 message: '\
                     <div class="panel panel-default">\
                         <div class="panel-body">\
@@ -130,6 +130,9 @@ $(document).ready(function() {
                         }
                     }
                 }
+            });
+            box.bind('shown.bs.modal',function(){
+                box.find("input").focus();
             });
         });
 
