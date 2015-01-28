@@ -71,7 +71,7 @@
         "minPeriod": "second",
         "columns": [
             {
-                "width": "150px",
+                "width": "120px",
                 "data": "date_time",
                 "title": "Time (UTC)",
                 "class": "all"
@@ -97,7 +97,7 @@
             },
             {
                 "data": "id_str",
-                "title": "ID",
+                "title": "Tweet ID",
                 "class": "none",
                 "orderable": false
             },
@@ -108,7 +108,20 @@
                 "orderable": false
             },
             {
-                "width": "250px",
+                "data": "original_id_str",
+                "title": "Original Tweet ID",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "original_user_id_str",
+                "title": "Original User ID",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
+                "class": "none",
+                "orderable": false
+            },
+            {
                 "data": "place",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "title": "Location",
@@ -132,7 +145,7 @@
                 "data": "source",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "title": "Source",
-                "class": "none",
+                "class": "all",
                 "orderable": false
             }
         ],
