@@ -73,7 +73,7 @@
             {
                 "width": "150px",
                 "data": "date_time",
-                "title": "UTC Time",
+                "title": "Time (UTC)",
                 "class": "all"
             },
             {
@@ -89,13 +89,20 @@
                 "orderable": false
             },
             {
-                "data": "id",
+                "width": "60px",
+                "data": "type",
+                "title": "Type",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "id_str",
                 "title": "ID",
                 "class": "none",
                 "orderable": false
             },
             {
-                "data": "user.id",
+                "data": "user.id_str",
                 "title": "User ID",
                 "class": "none",
                 "orderable": false
@@ -118,20 +125,6 @@
             {
                 "data": "lang",
                 "title": "Language",
-                "class": "none",
-                "orderable": false
-            },
-            {
-                "data": "retweet_count",
-                "defaultContent": "0",
-                "title": "Retweeted",
-                "class": "none",
-                "orderable": false
-            },
-            {
-                "data": "favorite_count",
-                "defaultContent": "0",
-                "title": "Favorited",
                 "class": "none",
                 "orderable": false
             },

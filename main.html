@@ -289,7 +289,7 @@ $(document).ready(function() {
         }
 
         $("#example_filter").addClass("input-group");
-        $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;"><span class="fa fa-remove"></span> Clear</span>');
+        $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;">Clear</span>');
         $("#example_filter input").after("<div class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></div>").attr("placeholder", "Search");
         $('#example_filter input').unbind().bind('keyup', function(e) {
             if(e.keyCode == 13) {
@@ -391,6 +391,20 @@ $(document).ready(function() {
             $("a.place").html(function() {
                 return $(this).html() + ' <span class="fa fa-map-marker"><\/span>';
             });
+
+            if (db == "twitter") {
+                $("#example tbody td:nth-child(5)").each(function() {
+                    if ($(this).html() == "retweet") {
+                        $(this).html('Retweet <span class="fa fa-retweet"><\/span>');
+                    }
+                    else if ($(this).html() == "reply") {
+                        $(this).html('Reply <span class="fa fa-reply"><\/span>');
+                    }
+                    else {
+                        $(this).html("");
+                    }
+                });
+            }
         });
 
         $("input[name='db']").val(db);
@@ -612,7 +626,7 @@ $(document).ready(function() {
                             <input type="hidden" name="to"></input>
                             <label class="control-label">Dictionary: </label>
                             <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
-                            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Visualize</button>
+                            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-pie-chart"></span> Visualize</button>
                         </form>
                     </div>
                     <div style="display:inline-block;">
@@ -652,7 +666,7 @@ $(document).ready(function() {
                         <input class="form-control input-sm" id="topic_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
                         <label class="control-label">#Word per Topic: </label>
                         <input class="form-control input-sm" id="topic_wordnum" style="width:50px;" name="wordnum" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th-list"></span> Top-k Topics</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Topics</button>
                     </form>
                 </div>
             </td>
@@ -667,7 +681,7 @@ $(document).ready(function() {
                         <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
                         <label class="control-label">#Word per Phrase: </label>
                         <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1"></input> - <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th-list"></span> Top-k Co-occurrences</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Co-occurrences</button>
                     </form>
                 </div>
             </td>
