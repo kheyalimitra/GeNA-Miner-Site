@@ -133,6 +133,10 @@ $(document).ready(function() {
             });
             box.bind('shown.bs.modal',function(){
                 box.find("input").focus();
+                box.keypress(function(e){
+                if(e.which == 13){
+                    $('.dbbtn').click();
+                }
             });
         });
 
@@ -147,6 +151,7 @@ $(document).ready(function() {
                 window.location.href = 'query.html?db=' + $(this).attr("data-db");
             }
         });
+    });
 
         $("[title]").tooltip({placement: "top", html: true, container: 'body'});
 
