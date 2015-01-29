@@ -124,6 +124,27 @@ $(document).ready(function() {
                     .domain([start_year, end_year])
                     .range([0, width]);
 
+
+                    var listvals=[];
+                    for (var j=0; j<data.length; j++){
+                        var val = d3.max(data[j]['articles'], function(d) {return d[1];} )
+                        listvals.push(val);
+                    }
+                    console.log(listvals); 
+
+                    var globalMax = d3.max(listvals);
+                    console.log(globalMax);
+
+                    var listvals=[];
+                    for (var j=0; j<data.length; j++){
+                        var val = d3.min(data[j]['articles'], function(d) {return d[1];} )
+                        listvals.push(val);
+                    }
+                    console.log(listvals);
+
+                    var globalMin = d3.min(listvals);
+                    console.log(globalMin);
+
                 svg.append("g")
                     .attr("class", "x axis")
                     .attr("transform", "translate(0," + 0 + ")")
@@ -143,7 +164,7 @@ $(document).ready(function() {
                         .append("text");
 
                     var rScale = d3.scale.linear()
-                        .domain([0, d3.max(data[j]['articles'], function(d) { return d[1]; })])
+                        .domain([globalMin, globalMax ])
                         .range([2, 9]);
 
                     circles
@@ -196,7 +217,7 @@ $(document).ready(function() {
     <li class="active">Themes</li>
 </ol>
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
-<div class="container-fluid">
+<div class="main">
 <h3>
 </h3>
 
