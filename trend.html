@@ -62,7 +62,7 @@ $(document).ready(function() {
     ;
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- #Publication Trend (Year Interval = " + interval + ")";
-        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- #Publication Trend (Year Interval = " + interval + ")</small>");
 
         var table = $('#example').DataTable( {

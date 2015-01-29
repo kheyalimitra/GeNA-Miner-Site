@@ -71,7 +71,7 @@
         "minPeriod": "second",
         "columns": [
             {
-                "width": "120px",
+                "width": "130px",
                 "data": "date_time",
                 "title": "Time (UTC)",
                 "class": "all"
@@ -92,7 +92,21 @@
                 "width": "60px",
                 "data": "type",
                 "title": "Type",
-                "class": "all",
+                "class": "tablet-l desktop",
+                "orderable": false
+            },
+            {
+                "data": "place_desc",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
+                "title": "Location",
+                "class": "desktop",
+                "orderable": false
+            },
+            {
+                "data": "source",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
+                "title": "Source",
+                "class": "desktop",
                 "orderable": false
             },
             {
@@ -122,14 +136,31 @@
                 "orderable": false
             },
             {
-                "data": "place",
-                "defaultContent": "<span class=\"missing\">n/a</span>",
-                "title": "Location",
-                "class": "all",
+                "data": "hashtags",
+                "title": "Hashtags",
+                "class": "none",
                 "orderable": false
             },
             {
-                "data": "geo.coordinates",
+                "data": "mentions",
+                "title": "Mentions",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "urls",
+                "title": "URLs",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "media",
+                "title": "Media",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "coordinates",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "title": "Coordinates",
                 "class": "none",
@@ -139,13 +170,6 @@
                 "data": "lang",
                 "title": "Language",
                 "class": "none",
-                "orderable": false
-            },
-            {
-                "data": "source",
-                "defaultContent": "<span class=\"missing\">n/a</span>",
-                "title": "Source",
-                "class": "all",
                 "orderable": false
             }
         ],

@@ -66,7 +66,7 @@ $(document).ready(function() {
         var fileName = $.url().param('name');
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Themes (Dict. =  " + fileName + ")";
-        $("#parentPage").attr("href", "main.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Themes (Dict. = " + fileName + ")</small>");
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});

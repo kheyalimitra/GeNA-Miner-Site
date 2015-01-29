@@ -20,8 +20,10 @@
     "fontawesome": "*",
     "jquery": "*",
     "jquery-cookie": "*",
+    "moment": "*",
     "purl": "*",
+    "phpjs": "*",
     "rangyinputs": "*",
-    "phpjs": "*"
+    "underscore": "*"
   }
 }

@@ -176,6 +176,7 @@ $(document).ready(function() {
             },
 
             "columns": [{
+                "width": "0px",
                 "data": null,
                 "defaultContent": '',
                 "orderable": false,
@@ -382,11 +383,11 @@ $(document).ready(function() {
 
             $("a.user, a.place").each(function() {
                 $(this).attr("data-url", $(this).attr("href"));
-            }).removeAttr("href");
-
-            $("a.user, a.place").click(function() {
+            }).removeAttr("href").click(function() {
                 window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
             });
+
+            $("a.url").attr("target", "_blank");
 
             $("a.place").html(function() {
                 return $(this).html() + ' <span class="fa fa-map-marker"><\/span>';
@@ -400,11 +401,39 @@ $(document).ready(function() {
                     else if ($(this).html() == "reply") {
                         $(this).html('Reply <span class="fa fa-reply"><\/span>');
                     }
+                    else if ($(this).html() == "mention") {
+                        $(this).html('Mention <span class="fa fa-user-plus"><\/span>');
+                    }
                     else {
                         $(this).html("");
                     }
                 });
+
+                $("a.url[title]").each(function() {
+                    var type = $(this).attr("data-type");
+                    var title = $(this).attr("title");
+                    if (type == "link") {
+                        $(this).attr("title", title + ' <span class="fa fa-chain"><\/span>');
+                    }
+                    else if (type == "media") {
+                        $(this).attr("title", title + ' <span class="fa fa-photo"><\/span>');
+                    }
+                });
+
+                $("#example tbody td:nth-child(7) a").attr("target", "_blank");
             }
+
+            $("a.url[title], a.place[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        }).on('click', 'td.control', function () {
+            setTimeout(function() {
+                $("tr.child a.user, tr.child a.place").each(function() {
+                    $(this).attr("data-url", $(this).attr("href"));
+                }).removeAttr("href").click(function() {
+                    window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
+                });
+
+                $("tr.child a.url").attr("target", "_blank");
+            }, 0);
         });
 
         $("input[name='db']").val(db);
