@@ -99,6 +99,7 @@
                 "orderable": false
             },
             {
+                "width": "120px",
                 "data": "place",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "title": "Place",
@@ -106,6 +107,7 @@
                 "orderable": false
             },
             {
+                "width": "120px",
                 "data": "source",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "title": "Source",
@@ -178,7 +180,7 @@
         ],
         "order": [[1, "desc"]],
         "groupby": false,
-        "buttonGroups": [6, 4, 2, 4]
+        "buttonGroups": [6, 6, 4]
     },
     "dblp": {
         "host": "0.0.0.0:5002",

@@ -69,8 +69,8 @@ a.place, a.url, a.user {
 }
 
 .popover {
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 500px;
+    max-width: 500px;
 }
 
 .missing {
@@ -345,23 +345,25 @@ $(document).ready(function() {
             '\
             <h5><small>Column</small></h5>\
             <p>' + getPopoverButtons() + '</p>\
+            <table><tr><td>\
             <h5><small>Boolean Operator</small></h5>\
-            <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></td><td style="width:20px;"></td><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">(</a><a class="btn btn-xs disabled">...</a><a class="btn btn-clipboard btn-xs">)</a></span></td></tr></table></p>\
+            <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></td><td style="width:10px;"></td><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">(</a><a class="btn btn-xs disabled">...</a><a class="btn btn-clipboard btn-xs">)</a></span></td></tr></table></p>\
+            </td><td style="width:20px;"></td><td>\
             <h5><small>Column Operator</small></h5>\
-            <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">_missing_:</a><a class="btn btn-clipboard btn-xs">_exists_:</a></span></td></tr></table></p>\
+            <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">_exists_:</a><a class="btn btn-clipboard btn-xs">_missing_:</a></span></td></tr></table></p>\
+            </td></tr></table></p>\
             <h5><small>Basic</small></h5>\
             <p><code><b>word</b></code> -- Match <b>word</b> as keyword</p>\
-            <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase</p>\
+            <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase (for query with space)</p>\
             <p><code><u>col</u>:<b>query</b></code> -- Match <b>query</b> (any type) on column <u>col</u></p>\
-            <p><code>_exists_:<u>col</u></code> -- Has any value on column <u>col</u></p>\
-            <p><code>_missing_:<u>col</u></code> -- Does have any value on column <u>col</u></p>\
+            <p><code>_exists_:<u>col</u></code> | <code>_missing_:<u>col</u></code> -- (Has | Does have) any value on column <u>col</u></p>\
             <h5><small>Wildchar, Fuzziness, and Distance</small></h5>\
             <p><code><b>wo</b>?<b>d</b></code>, <code><b>wor</b>*</code> -- Match <b>word</b> with wildchar</p>\
             <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
-            <p><code>"<b>word1 word2 ...</b>"~<i>d</i></code> -- Match <b>word1 word2 ...</b> with at most <i>d</i> words between each other</p>\
+            <p><code>"<b>word1 word2 ...</b>"~<i>d</i></code> -- Match <b>word1 word2 ...</b> with at most <i>d</i> words in between</p>\
             <h5><small>Range</small></h5>\
             <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match range from <b>a</b> to <b>b</b></p>\
-            <br/><p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="fa fa-book"></span> Reference</a></p>\
+            <p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="fa fa-book"></span> Reference</a></p>\
             '
         ).popover({
             placement: "bottom", html: true, container: 'body'
@@ -369,7 +371,7 @@ $(document).ready(function() {
             if (!popoverShown) {
                 popoverShown = true;
                 $(this).animate({
-                    "width": "400px"
+                    "width": "500px"
                 }, 200, function() {
                     $(this).popover("show");
                     if ($(this).val() != "") {
