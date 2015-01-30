@@ -55,7 +55,7 @@ tr.group {
     width: 250px;
 }
 
-mark.match {
+mark {
     background-color: rgba(243,228,48,0.25);
     color: inherit;
 }
@@ -82,6 +82,9 @@ a.place, a.url, a.user {
     display: inherit;
 }
 
+tr.child span.dtr-title {
+    width: 120px !important;
+}
 tr.child span.dtr-data {
     white-space: initial !important;
 }
@@ -395,14 +398,16 @@ $(document).ready(function() {
 
             if (db == "twitter") {
                 $("#example tbody td:nth-child(5)").each(function() {
-                    if ($(this).html() == "retweet") {
-                        $(this).html('Retweet <span class="fa fa-retweet"><\/span>');
+                    var type = $(this).text()
+                    var html = $(this).html()
+                    if (type == "retweet") {
+                        $(this).html(html + ' <span class="fa fa-retweet"><\/span>');
                     }
-                    else if ($(this).html() == "reply") {
-                        $(this).html('Reply <span class="fa fa-reply"><\/span>');
+                    else if (type == "reply") {
+                        $(this).html(html + ' <span class="fa fa-reply"><\/span>');
                     }
-                    else if ($(this).html() == "mention") {
-                        $(this).html('Mention <span class="fa fa-user-plus"><\/span>');
+                    else if (type == "mention") {
+                        $(this).html(html + ' <span class="fa fa-user-plus"><\/span>');
                     }
                     else {
                         $(this).html("");

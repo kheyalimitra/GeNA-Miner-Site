@@ -77,7 +77,7 @@
                 "class": "all"
             },
             {
-                "data": "user.screen_name",
+                "data": "user_name",
                 "title": "User",
                 "class": "all",
                 "orderable": false
@@ -96,9 +96,9 @@
                 "orderable": false
             },
             {
-                "data": "place_desc",
+                "data": "place",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
-                "title": "Location",
+                "title": "Place",
                 "class": "desktop",
                 "orderable": false
             },
@@ -110,52 +110,52 @@
                 "orderable": false
             },
             {
-                "data": "id_str",
+                "data": "id",
                 "title": "Tweet ID",
                 "class": "none",
                 "orderable": false
             },
             {
-                "data": "user.id_str",
+                "data": "user_id",
                 "title": "User ID",
                 "class": "none",
                 "orderable": false
             },
             {
-                "data": "original_id_str",
+                "data": "original_id",
                 "title": "Original Tweet ID",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "class": "none",
                 "orderable": false
             },
             {
-                "data": "original_user_id_str",
+                "data": "original_user_id",
                 "title": "Original User ID",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "class": "none",
                 "orderable": false
             },
             {
-                "data": "hashtags",
-                "title": "Hashtags",
+                "data": "hashtag_list",
+                "title": "Hashtag List",
                 "class": "none",
                 "orderable": false
             },
             {
-                "data": "mentions",
-                "title": "Mentions",
+                "data": "mention_list",
+                "title": "Mention List",
                 "class": "none",
                 "orderable": false
             },
             {
-                "data": "urls",
-                "title": "URLs",
+                "data": "url_list",
+                "title": "URL List",
                 "class": "none",
                 "orderable": false
             },
             {
-                "data": "media",
-                "title": "Media",
+                "data": "media_list",
+                "title": "Media List",
                 "class": "none",
                 "orderable": false
             },
