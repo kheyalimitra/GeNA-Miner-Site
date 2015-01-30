@@ -29,13 +29,8 @@
                 "data": "abbrAuthors",
                 "title": "Authors",
                 "class": "all",
-                "orderable": false
-            },
-            {
-                "data": "id",
-                "title": "ID",
-                "class": "none",
-                "orderable": false
+                "orderable": false,
+                "unsearchable": true
             },
             {
                 "data": "authors",
@@ -60,10 +55,17 @@
                 "title": "URL",
                 "class": "none",
                 "orderable": false
+            },
+            {
+                "data": "id",
+                "title": "ID",
+                "class": "none",
+                "orderable": false
             }
         ],
         "order": [[2, "desc"]],
-        "groupby": true
+        "groupby": true,
+        "buttonGroups": [5, 4]
     },
     "twitter": {
         "host": "0.0.0.0:5001",
@@ -91,6 +93,7 @@
             {
                 "width": "60px",
                 "data": "type",
+                "defaultContent": "",
                 "title": "Type",
                 "class": "tablet-l desktop",
                 "orderable": false
@@ -107,32 +110,6 @@
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "title": "Source",
                 "class": "desktop",
-                "orderable": false
-            },
-            {
-                "data": "id",
-                "title": "Tweet ID",
-                "class": "none",
-                "orderable": false
-            },
-            {
-                "data": "user_id",
-                "title": "User ID",
-                "class": "none",
-                "orderable": false
-            },
-            {
-                "data": "original_id",
-                "title": "Original Tweet ID",
-                "defaultContent": "<span class=\"missing\">n/a</span>",
-                "class": "none",
-                "orderable": false
-            },
-            {
-                "data": "original_user_id",
-                "title": "Original User ID",
-                "defaultContent": "<span class=\"missing\">n/a</span>",
-                "class": "none",
                 "orderable": false
             },
             {
@@ -171,10 +148,37 @@
                 "title": "Language",
                 "class": "none",
                 "orderable": false
+            },
+            {
+                "data": "id",
+                "title": "Tweet ID",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "user_id",
+                "title": "User ID",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "original_id",
+                "title": "Original Tweet ID",
+                "defaultContent": "",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "original_user_id",
+                "title": "Original User ID",
+                "defaultContent": "",
+                "class": "none",
+                "orderable": false
             }
         ],
         "order": [[1, "desc"]],
-        "groupby": false
+        "groupby": false,
+        "buttonGroups": [6, 4, 2, 4]
     },
     "dblp": {
         "host": "0.0.0.0:5002",

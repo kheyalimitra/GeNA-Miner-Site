@@ -323,16 +323,38 @@ $(document).ready(function() {
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
         $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
 
+        function getPopoverButtons() {
+            var buttonGroups = [];
+
+            var offset = 0;
+            $.each(hosts[db].buttonGroups, function(i, v) {
+                var buttons = ""
+                $.each(hosts[db].columns.slice(offset, offset + v), function(i, v) {
+                    if (!v.unsearchable) {
+                        buttons += '<a class="btn btn-clipboard btn-xs">' + v.data + ':<\/a>';
+                    }
+                });
+                buttonGroups.push('<span class="btn-group">' + buttons + '<\/span>');
+                offset += v;
+            });
+
+            return buttonGroups.join('<br/>');
+        }
+
         $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content", 
             '\
             <h5><small>Column</small></h5>\
-            <p><span class="btn-group"><a class="btn btn-clipboard btn-xs">title:</a><a class="btn btn-clipboard btn-xs">year:</a><a class="btn btn-clipboard btn-xs">source:</a><a class="btn btn-clipboard btn-xs">authors:</a><a class="btn btn-clipboard btn-xs">abstract:</a><a class="btn btn-clipboard btn-xs">keywords:</a><a class="btn btn-clipboard btn-xs">id:</a></span></p>\
+            <p>' + getPopoverButtons() + '</p>\
             <h5><small>Boolean Operator</small></h5>\
             <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></td><td style="width:20px;"></td><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">(</a><a class="btn btn-xs disabled">...</a><a class="btn btn-clipboard btn-xs">)</a></span></td></tr></table></p>\
+            <h5><small>Column Operator</small></h5>\
+            <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">_missing_:</a><a class="btn btn-clipboard btn-xs">_exists_:</a></span></td></tr></table></p>\
             <h5><small>Basic</small></h5>\
             <p><code><b>word</b></code> -- Match <b>word</b> as keyword</p>\
             <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase</p>\
             <p><code><u>col</u>:<b>query</b></code> -- Match <b>query</b> (any type) on column <u>col</u></p>\
+            <p><code>_exists_:<u>col</u></code> -- Has any value on column <u>col</u></p>\
+            <p><code>_missing_:<u>col</u></code> -- Does have any value on column <u>col</u></p>\
             <h5><small>Wildchar, Fuzziness, and Distance</small></h5>\
             <p><code><b>wo</b>?<b>d</b></code>, <code><b>wor</b>*</code> -- Match <b>word</b> with wildchar</p>\
             <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
