@@ -137,6 +137,7 @@ $(document).ready(function() {
                 if(e.which == 13){
                     $('#enter').click();
                 }
+                });
             });
         });
 
@@ -151,7 +152,6 @@ $(document).ready(function() {
                 window.location.href = 'query.html?db=' + $(this).attr("data-db");
             }
         });
-    });
 
         $("[title]").tooltip({placement: "top", html: true, container: 'body'});
 
