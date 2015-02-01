@@ -1,6 +1,6 @@
 {
     "pubmed": {
-        "host": "0.0.0.0:5000",
+        "host": "localhost:5000",
         "name": "PubMed",
         "minPeriod": "year",
         "jsonp": true,
@@ -68,7 +68,7 @@
         "buttonGroups": [5, 4]
     },
     "twitter": {
-        "host": "0.0.0.0:5001",
+        "host": "localhost:5001",
         "name": "Twitter (Public Stream)",
         "minPeriod": "second",
         "columns": [
@@ -180,10 +180,11 @@
         ],
         "order": [[1, "desc"]],
         "groupby": false,
+        "searchOnly": true,
         "buttonGroups": [6, 6, 4]
     },
     "dblp": {
-        "host": "0.0.0.0:5002",
+        "host": "localhost:5002",
         "name": "DBLP",
         "minPeriod": "year",
         "hide": true

@@ -105,13 +105,17 @@ $(document).ready(function() {
 
         var query = $.url().param('query');
         var yearFrom = $.url().param('from');
+        /*
         if (!yearFrom) {
             yearFrom = 1900;
         }
+        */
         var yearTo = $.url().param('to');
+        /*
         if (!yearTo) {
             yearTo = new Date().getFullYear() - 1;
         }
+        */
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo;
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
@@ -404,7 +408,9 @@ $(document).ready(function() {
         });
 
         table.on('draw.dt', function () {
-            $("#form_divmask").hide();
+            if (!hosts[db].searchOnly) {
+                $("#form_divmask").hide();
+            }
 
             expandAll($("#expandAll").prop("checked"));
 
