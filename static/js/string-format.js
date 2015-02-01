@@ -1,0 +1,1 @@
+../other_components/string-format/lib/string-format.js
