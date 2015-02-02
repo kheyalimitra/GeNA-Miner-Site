@@ -150,7 +150,7 @@ $(document).ready(function() {
 
             "serverSide": true,
             "ajax": {
-                "url": "http://" + host + "/main/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo),
+                "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo),
                 "dataType": (jsonp ? "jsonp" : "json"),
                 cache: true,
                 jsonpCallback: "jsonpcallback_main", 
@@ -262,7 +262,7 @@ $(document).ready(function() {
                 dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback_validate",
                 cache: true,
-                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + query + "&search=" + filterValue, 
+                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query) + "&search=" + encodeURIComponent(filterValue), 
                 success: function(j) {
                     if (j.valid) {
                         if ($("#example_filter input").val() != "") {
