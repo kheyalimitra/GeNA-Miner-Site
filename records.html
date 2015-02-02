@@ -262,7 +262,7 @@ $(document).ready(function() {
                 dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback_validate",
                 cache: true,
-                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query) + "&search=" + encodeURIComponent(filterValue), 
+                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + query + "&search=" + filterValue, 
                 success: function(j) {
                     if (j.valid) {
                         if ($("#example_filter input").val() != "") {

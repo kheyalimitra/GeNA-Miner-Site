@@ -156,8 +156,12 @@ $(document).ready(function() {
             $(".input-date").css("width", "140px");
 
             var momentFormat = "YYYY-MM-DD hh:mm:ss";
+            /*
             $('#from').val(moment().startOf('day').subtract(1, "months").format(momentFormat));
             $('#to').val(moment().endOf('day').subtract(1, "days").format(momentFormat));
+            */
+            $('#from').val("2014-11-21 20:00:00");
+            $('#to').val("2015-01-20 21:59:59");
         }
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
