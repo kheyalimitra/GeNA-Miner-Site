@@ -158,7 +158,7 @@ $(document).ready(function() {
             var momentFormat = "YYYY-MM-DD hh:mm:ss";
             //$('#from').val(moment().startOf('day').subtract(1, "months").format(momentFo*/
             $('#from').val("2014-11-21 20:00:00");
-            $('#to').val(moment().endOf('hour').subtract(2, "hours").format(momentFormat));
+            $('#to').val(moment().utc().endOf('hour').subtract(2, "hours").format(momentFormat));
         }
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
