@@ -1,6 +1,6 @@
 {
     "pubmed": {
-        "host": "localhost:5000",
+        "host": "d142-58-33-188.burnaby.sfu.ca:5000",
         "name": "PubMed",
         "minPeriod": "year",
         "jsonp": true,
@@ -68,7 +68,7 @@
         "buttonGroups": [5, 4]
     },
     "twitter": {
-        "host": "localhost:5001",
+        "host": "d142-58-33-188.burnaby.sfu.ca:5001",
         "name": "Twitter (Public Stream)",
         "minPeriod": "second",
         "columns": [
