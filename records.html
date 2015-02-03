@@ -55,10 +55,6 @@ tr.group {
     width: 250px;
 }
 
-.dataTables_paginate li.paginate_button:nth-last-of-type(2) {
-    display: none;
-}
-
 mark {
     background-color: rgba(243,228,48,0.25);
     color: inherit;
@@ -415,6 +411,11 @@ $(document).ready(function() {
             }
 
             expandAll($("#expandAll").prop("checked"));
+
+
+            if ($(".dataTables_paginate li.paginate_button").length > 3 && $(".dataTables_paginate li.paginate_button:nth-last-of-type(3)").hasClass("disabled")) {
+            $(".dataTables_paginate li.paginate_button:nth-last-of-type(2)").hide();
+            }
 
             $("a.user, a.place").each(function() {
                 $(this).attr("data-url", $(this).attr("href"));
