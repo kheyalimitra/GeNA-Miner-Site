@@ -224,8 +224,8 @@ $(document).ready(function() {
             }
         });
 
-        if (!hosts[db].showIndexed) {
-            $("#indexed.block").hide();
+        if (hosts[db].showIndexed) {
+            $("#indexed.block").show();
         }
     });
 });
@@ -240,6 +240,10 @@ $(document).ready(function() {
 .datetimepicker .active {
     background: #428bca !important;
     text-shadow: none !important;
+}
+
+div#indexed.block {
+    display: none;
 }
 </style>
 </head>
