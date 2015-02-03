@@ -33,6 +33,16 @@
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <script src="js/main.js"></script>
 
+<!--datetimepicker-->
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" media="screen"
+    href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+<script type="text/javascript"
+     src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript"
+     src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js"></script>
+
+
 <script type="text/javascript">
 $(document).ready(function() {
     $.getJSON("hosts.json", function(hosts) {
@@ -145,15 +155,28 @@ $(document).ready(function() {
 
         if (minPeriod == "year") {
             $(".input-date").css("width", "50px");
-
+            $(".input-date").css("height", "30px");
+            $(".input-date").css("border-radius", "4px");
+            $(".add-on").remove();
+            
             var momentFormat = "YYYY";
+
             $('#from').val(moment().subtract(10, "years").format(momentFormat));
             $('#to').val(moment().subtract(1, "years").format(momentFormat));
 
             $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");
         }
         else if (minPeriod == "second") {
-            $(".input-date").css("width", "140px");
+            $(".input-date").css("width", "150px");
+            $(".input-date").css("height", "30px");
+            $(".add-on").css("height", "30px");
+            
+            $('#datetimepickerfrom').datetimepicker({
+                format: 'yyyy-MM-dd hh:mm:ss'
+            });
+            $('#datetimepickerto').datetimepicker({
+                format: 'yyyy-MM-dd hh:mm:ss'
+            });
 
             var momentFormat = "YYYY-MM-DD hh:mm:ss";
             /*
@@ -251,15 +274,29 @@ $(document).ready(function() {
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="container-fluid">
     <h3>GeNA Miner <small id="dbName"></small></h3>
-<div style="max-width:800px;">
+<div style="max-width:820px;">
     <div class="block">
         <form class="form-inline" id="query_form" action="records.html" method="get">
             <input type="hidden" name="db">
             <label class="control-label">Query: </label>
             <input class="form-control input-sm" id="query" style="width:250px;" name="query">
             <label class="control-label">Period: </label>
-            <input class="form-control input-sm input-date" id="from" style="width:50px;" name="from" 
-            title="Greater than or equal to "> - <input class="form-control input-sm input-date" id="to" style="width:50px;" name="to" title="Less than or equal to ">
+
+            <div id="datetimepickerfrom" class="input-append date">
+                <input type="text" class="form-control input-sm input-date" id="from" style="width:50px;" name="from" 
+            title="Greater than or equal to "></input>
+                <span class="add-on">
+                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                </span>
+            </div>
+            <span> - </span>
+            <div id="datetimepickerto" class="input-append date">
+                <input type="text" class="form-control input-sm input-date" id="to" style="width:50px;" name="to" 
+            title="Less than or equal to "></input>
+                <span class="add-on">
+                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                </span>
+            </div>
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
         </form>
     </div>
