@@ -4,6 +4,7 @@
         "name": "PubMed",
         "minPeriod": "year",
         "jsonp": true,
+        "showIndexed": true,
         "columns": [
             {
                 "width": "50%",
