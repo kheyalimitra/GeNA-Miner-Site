@@ -156,16 +156,13 @@ $(document).ready(function() {
             $(".input-date").css("width", "140px");
 
             var momentFormat = "YYYY-MM-DD hh:mm:ss";
-            /*
-            $('#from').val(moment().startOf('day').subtract(1, "months").format(momentFormat));
-            $('#to').val(moment().endOf('day').subtract(1, "days").format(momentFormat));
-            */
+            //$('#from').val(moment().startOf('day').subtract(1, "months").format(momentFo*/
             $('#from').val("2014-11-21 20:00:00");
-            $('#to').val("2015-01-20 21:59:59");
+            $('#to').val(moment().endOf('hour').subtract(2, "hours").format(momentFormat));
         }
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
-        //$("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
+        $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
         table.on('draw.dt', function () {
             if ($("div.dataTables_scrollBody").prop("scrollHeight") > $("div.dataTables_scrollBody").height()) {
                 $(".dataTables_scroll").attr("title", "Scroll to see more entries").attr("data-trigger", "manual").tooltip({placement: "bottom", html: true, container: 'body'}).tooltip("show");
@@ -258,8 +255,7 @@ $(document).ready(function() {
             <label class="control-label">Query: </label>
             <input class="form-control input-sm" id="query" style="width:250px;" name="query">
             <label class="control-label">Period: </label>
-            <input class="form-control input-sm input-date" id="from" style="width:50px;" name="from" 
-            title="Greater than or equal to "> - <input class="form-control input-sm input-date" id="to" style="width:50px;" name="to" title="Less than or equal to ">
+            <input class="form-control input-sm input-date" id="from" style="width:50px;" name="from" title="Greater than or equal to "> - <input class="form-control input-sm input-date" id="to" style="width:50px;" name="to" title="Less than or equal to ">
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
         </form>
     </div>
