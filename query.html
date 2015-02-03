@@ -155,7 +155,7 @@ $(document).ready(function() {
         else if (minPeriod == "second") {
             $(".input-date").css("width", "140px");
 
-            var momentFormat = "YYYY-MM-DD hh:mm:ss";
+            var momentFormat = "YYYY-MM-DD HH:mm:ss";
             //$('#from').val(moment().startOf('day').subtract(1, "months").format(momentFo*/
             $('#from').val("2014-11-21 20:00:00");
             $('#to').val(moment().utc().endOf('hour').subtract(2, "hours").format(momentFormat));
