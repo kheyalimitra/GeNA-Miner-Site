@@ -88,6 +88,14 @@ tr.child span.dtr-title {
 tr.child span.dtr-data {
     white-space: initial !important;
 }
+
+table {
+    table-layout: fixed;
+}
+
+table td {
+    word-wrap: break-word;
+}
 </style>
 
 <script type="text/javascript" class="init">
@@ -180,8 +188,9 @@ $(document).ready(function() {
                 }
             },
 
+            "autoWidth": false,
             "columns": [{
-                "width": "0px",
+                "width": "1px",
                 "data": null,
                 "defaultContent": '',
                 "orderable": false,

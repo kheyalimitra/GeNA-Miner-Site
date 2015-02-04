@@ -74,18 +74,20 @@
         "minPeriod": "second",
         "columns": [
             {
-                "width": "130px",
+                "width": "120px",
                 "data": "date_time",
                 "title": "Time (UTC)",
                 "class": "all"
             },
             {
+                "width": "120px",
                 "data": "user_name",
                 "title": "User",
                 "class": "all",
                 "orderable": false
             },
             {
+                "width": "100%",
                 "data": "text",
                 "title": "Text",
                 "class": "all",
