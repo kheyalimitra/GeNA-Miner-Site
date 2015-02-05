@@ -81,14 +81,14 @@
                 "class": "all"
             },
             {
-                "width": "120px",
+                "width": "15%",
                 "data": "user_name",
                 "title": "User",
                 "class": "all",
                 "orderable": false
             },
             {
-                "width": "100%",
+                "width": "55%",
                 "data": "text",
                 "title": "Text",
                 "class": "all",
@@ -103,7 +103,7 @@
                 "orderable": false
             },
             {
-                "width": "120px",
+                "width": "15%",
                 "data": "place",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "title": "Place",
@@ -111,7 +111,7 @@
                 "orderable": false
             },
             {
-                "width": "120px",
+                "width": "15%",
                 "data": "source",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "title": "Source",
