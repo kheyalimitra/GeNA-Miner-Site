@@ -24,7 +24,7 @@
 
 <style type="text/css">
 div.plot {
-    font-family: Arial, sans-serif;font-size:10px;
+    font-family: Arial, sans-serif;font-size:10px; overflow: scroll;
 }
 .axis path,.axis line {
     fill: none;stroke:#b6b6b6;shape-rendering: crispEdges;
@@ -81,28 +81,6 @@ $(document).ready(function() {
             return str;
         }
 
-        var margin = {top: 20, right: 200, bottom: 20, left: 20},
-            width = 800,
-            height = 650;
-
-        var c = d3.scale.category20();
-
-        var x = d3.scale.linear()
-            .range([0, width]);
-
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("top");
-
-        var formatYears = d3.format("0000");
-        xAxis.tickFormat(formatYears);
-
-        var svg = d3.select("#plot").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
         $.ajax({
             dataType: "jsonp",
             cache: true,
@@ -119,31 +97,66 @@ $(document).ready(function() {
                 var start_year = raw.yearFrom;
                 var end_year = raw.yearTo;
 
+                var margin = {top: 20, right: 200, bottom: 20, left: 20};
+                var xInterval = 60;
+                var Ticks = end_year - start_year;
+                var maxR = 20;
+                if (end_year - start_year > 60) {
+                    xInterval = 15;
+                    Ticks = Ticks/10;
+                    maxR = maxR/4;
+                } else if (end_year - start_year > 20) {
+                    xInterval = 20;
+                    Ticks = Ticks/5;
+                    maxR = maxR/2;
+                }
+                width = (end_year - start_year) * xInterval;
+                yInterval = 50;
+                height = data.length * yInterval;
+
+                var c = d3.scale.category20();
+
+                var x = d3.scale.linear()
+                    .range([0, width]);
+
+                var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .ticks(Ticks)
+                    .orient("top");
+
+                var formatYears = d3.format("0000");
+                xAxis.tickFormat(formatYears);
+
+                var svg = d3.select("#plot").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
                 x.domain([start_year, end_year]);
                 var xScale = d3.scale.linear()
                     .domain([start_year, end_year])
                     .range([0, width]);
 
+                var listvals=[];
+                for (var j=0; j<data.length; j++){
+                    var val = d3.max(data[j]['articles'], function(d) {return d[1];} )
+                    listvals.push(val);
+                }
+                console.log(listvals); 
 
-                    var listvals=[];
-                    for (var j=0; j<data.length; j++){
-                        var val = d3.max(data[j]['articles'], function(d) {return d[1];} )
-                        listvals.push(val);
-                    }
-                    console.log(listvals); 
+                var globalMax = d3.max(listvals);
+                console.log(globalMax);
 
-                    var globalMax = d3.max(listvals);
-                    console.log(globalMax);
+                var listvals=[];
+                for (var j=0; j<data.length; j++){
+                    var val = d3.min(data[j]['articles'], function(d) {return d[1];} )
+                    listvals.push(val);
+                }
+                console.log(listvals);
 
-                    var listvals=[];
-                    for (var j=0; j<data.length; j++){
-                        var val = d3.min(data[j]['articles'], function(d) {return d[1];} )
-                        listvals.push(val);
-                    }
-                    console.log(listvals);
-
-                    var globalMin = d3.min(listvals);
-                    console.log(globalMin);
+                var globalMin = d3.min(listvals);
+                console.log(globalMin);
 
                 svg.append("g")
                     .attr("class", "x axis")
@@ -165,16 +178,18 @@ $(document).ready(function() {
 
                     var rScale = d3.scale.linear()
                         .domain([globalMin, globalMax ])
-                        .range([2, 9]);
+                        .range([2, maxR]);
+
+                    console.log(rScale);
 
                     circles
                         .attr("cx", function(d, i) { return xScale(d[0]); })
-                        .attr("cy", j*20+20)
+                        .attr("cy", j*yInterval+20)
                         .attr("r", function(d) { return rScale(d[1]); })
                         .style("fill", function(d) { return c(j); });
 
                     text
-                        .attr("y", j*20+25)
+                        .attr("y", j*yInterval+25)
                         .attr("x",function(d, i) { return xScale(d[0])-5; })
                         .attr("class","value")
                         .text(function(d){ return d[1]; })
@@ -182,8 +197,8 @@ $(document).ready(function() {
                         .style("display","none");
 
                     g.append("text")
-                        .attr("y", j*20+25)
-                        .attr("x",width+20)
+                        .attr("y", j*yInterval+25)
+                        .attr("x",width+50)
                         .attr("class","label")
                         .text(truncate(data[j]['name'],30,"..."))
                         .style("fill", function(d) { return c(j); })
