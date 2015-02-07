@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "angular": "*",
     "bootbox": "*",
     "bootstrap-growl": "*",
     "bootstrap": "*",

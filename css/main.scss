@@ -73,7 +73,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     }
 }
 
-.form-control:hover {
+.form-control:hover:not(:focus) {
     transition: border .2s;
     border: 1px solid #888;
 }
