@@ -341,10 +341,10 @@ $(document).ready(function() {
                 $.each(hosts[db].columns.slice(offset, offset + v), function(i, v) {
                     if (!v.unsearchable) {
                         if (v.dataName) {
-                            buttons += '<a class="btn btn-clipboard btn-xs">' + v.dataName + '<\/a>';
+                            buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.dataName + '<\/a>';
                         }
                         else {
-                            buttons += '<a class="btn btn-clipboard btn-xs">' + v.data + ':<\/a>';
+                            buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.data + ':<\/a>';
                         }
                     }
                 });
@@ -401,6 +401,8 @@ $(document).ready(function() {
                 $("#example_filter_clear").hide();
             }
         });
+        $("body").tooltip({placement: "top", html: true, container: 'body', selector: '.popover-content [title]'});
+
         $(document).on('click', function(e) {
             if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
                 closePopover();
