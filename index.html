@@ -69,7 +69,7 @@ $(document).ready(function() {
                         setLock(db, true);
                         $("#" + db).addClass("dbbtn-offline");
 
-                        $("#" + db + " .lockIcon").before('<span class="offlineIcon"><span class="fa fa-plug"></span> Offline</span>');
+                        $("#" + db + " .lockIcon").before('<span class="offlineIcon">Offline <span class="fa fa-plug"></span></span>');
                     }
                 );
             });
@@ -215,8 +215,8 @@ $(document).ready(function() {
 
 <style>
 .dbbtn {
-    position:relative;
-    width: 210px;
+    position: relative;
+    width: 180px;
 }
 .dbbtn img {
     max-height: 40px;

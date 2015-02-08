@@ -187,8 +187,13 @@
         "searchOnly": true,
         "buttonGroups": [6, 6, 4]
     },
-    "dblp": {
+    "instagram": {
         "host": "localhost:5002",
+        "name": "Instagram",
+        "minPeriod": "second"
+    },
+    "dblp": {
+        "host": "localhost:5003",
         "name": "DBLP",
         "minPeriod": "year",
         "hide": true
