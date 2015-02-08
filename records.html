@@ -340,7 +340,12 @@ $(document).ready(function() {
                 var buttons = ""
                 $.each(hosts[db].columns.slice(offset, offset + v), function(i, v) {
                     if (!v.unsearchable) {
-                        buttons += '<a class="btn btn-clipboard btn-xs">' + v.data + ':<\/a>';
+                        if (v.dataName) {
+                            buttons += '<a class="btn btn-clipboard btn-xs">' + v.dataName + '<\/a>';
+                        }
+                        else {
+                            buttons += '<a class="btn btn-clipboard btn-xs">' + v.data + ':<\/a>';
+                        }
                     }
                 });
                 buttonGroups.push('<span class="btn-group">' + buttons + '<\/span>');

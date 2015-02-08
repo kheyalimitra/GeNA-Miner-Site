@@ -120,12 +120,14 @@
             },
             {
                 "data": "hashtag_list",
+                "dataName": "#",
                 "title": "Hashtag List",
                 "class": "none",
                 "orderable": false
             },
             {
                 "data": "mention_list",
+                "dataName": "@",
                 "title": "Mention List",
                 "class": "none",
                 "orderable": false
