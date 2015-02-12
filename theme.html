@@ -221,6 +221,8 @@ $(document).ready(function() {
                     d3.select(g).selectAll("circle").style("display","block");
                     d3.select(g).selectAll("text.value").style("display","none");
                 }
+
+                $("[title]").tooltip({placement: "top", html: true, container: 'body'});
             }
         });
 
@@ -236,7 +238,6 @@ $(document).ready(function() {
         });
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
-        $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
 });
 });
 </script>
