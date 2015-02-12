@@ -121,26 +121,26 @@
             {
                 "data": "hashtag_list",
                 "dataName": "#",
-                "title": "Hashtag List",
+                "title": "Hashtags",
                 "class": "none",
                 "orderable": false
             },
             {
                 "data": "mention_list",
                 "dataName": "@",
-                "title": "Mention List",
+                "title": "Mentions",
                 "class": "none",
                 "orderable": false
             },
             {
                 "data": "url_list",
-                "title": "URL List",
+                "title": "URLs",
                 "class": "none",
                 "orderable": false
             },
             {
                 "data": "media_list",
-                "title": "Media List",
+                "title": "Media",
                 "class": "none",
                 "orderable": false
             },
