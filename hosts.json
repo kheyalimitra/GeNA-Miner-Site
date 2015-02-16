@@ -3,6 +3,7 @@
         "host": "d142-58-33-188.burnaby.sfu.ca:5000",
         "name": "PubMed",
         "minPeriod": "year",
+        "dateTimeFormat": "YYYY",
         "jsonp": true,
         "showIndexed": true,
         "columns": [
@@ -73,6 +74,8 @@
         "host": "d142-58-33-188.burnaby.sfu.ca:5001",
         "name": "Twitter (Public Stream)",
         "minPeriod": "second",
+        "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
+        "allowEmptyQuery": true,
         "columns": [
             {
                 "width": "120px",
@@ -191,13 +194,11 @@
     },
     "instagram": {
         "host": "localhost:5002",
-        "name": "Instagram",
-        "minPeriod": "second"
+        "name": "Instagram"
     },
     "dblp": {
         "host": "localhost:5003",
         "name": "DBLP",
-        "minPeriod": "year",
         "hide": true
     }
 }

@@ -30,8 +30,22 @@
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.min.css">
 <script src="static/js/dataTables.bootstrap.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="static/css/bootstrap-datetimepicker.min.css">
+<script src="static/js/bootstrap-datetimepicker.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <script src="js/main.js"></script>
+
+<style>
+.table tr td {
+    vertical-align: middle;
+    height: 22px;
+}
+
+#indexed.block {
+    display: none;
+}
+</style>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -43,8 +57,6 @@ $(document).ready(function() {
             window.location.href = '/';
         }
 
-        var minPeriod = hosts[db].minPeriod;
-
         var host = hosts[db].host;
         var dbName = hosts[db].name;
 
@@ -52,6 +64,9 @@ $(document).ready(function() {
         document.title = "GeNA Miner -- " + dbName;
 
         var jsonp = hosts[db].jsonp;
+
+        var minPeriod = hosts[db].minPeriod;
+        var momentFormat = hosts[db].dateTimeFormat;
 
         var table = $("#example").DataTable( {
             "ajax": {
@@ -146,19 +161,33 @@ $(document).ready(function() {
         if (minPeriod == "year") {
             $(".input-date").css("width", "50px");
 
-            var momentFormat = "YYYY";
             $('#from').val(moment().subtract(10, "years").format(momentFormat));
             $('#to').val(moment().subtract(1, "years").format(momentFormat));
 
-            $('#to').attr("title", $('#to').attr("title") + (new Date().getFullYear() - 1).toString() + " (last year)");
+            $('#from').attr("title", $('#from').attr("title") + (" 1900"));
+            $('#to').attr("title", $('#to').attr("title") + (" last year"));
         }
         else if (minPeriod == "second") {
             $(".input-date").css("width", "140px");
 
-            var momentFormat = "YYYY-MM-DD HH:mm:ss";
             //$('#from').val(moment().startOf('day').subtract(1, "months").format(momentFo*/
             $('#from').val("2014-11-21 20:00:00");
             $('#to').val(moment().utc().endOf('hour').subtract(2, "hours").format(momentFormat));
+
+            $('#from').attr("title", $('#from').attr("title") + (" least recent available time"));
+            $('#to').attr("title", $('#to').attr("title") + (" last second of two hours ago"));
+        }
+
+        $('.input-date').datetimepicker({
+            format: momentFormat
+        });
+
+        var allowEmptyQuery = hosts[db].allowEmptyQuery;
+        if (allowEmptyQuery) {
+            $("#query").attr("title", "Empty query matchs all records")
+        }
+        else {
+            $("#query").attr("title", "At least one keyword")
         }
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
@@ -176,8 +205,7 @@ $(document).ready(function() {
         });
 
         $('#query_form').submit( function(e) {
-            /*
-            if (!isNotEmpty($('#query').val())) {
+            if (!allowEmptyQuery && !isNotEmpty($('#query').val())) {
                 showAlert("Please check your <b>query</b> input.", "danger");
                 $("#query").tooltip("show");
                 $("#query_form").addClass("has-error");
@@ -187,7 +215,6 @@ $(document).ready(function() {
             else {
                 $("#query").tooltip("hide");
             }
-            */
 
             /*
             if (!isIntWithMinVal($('#from').val(), 1900)) {
@@ -230,22 +257,6 @@ $(document).ready(function() {
     });
 });
 </script>
-
-<style>
-.table tr td {
-    vertical-align: middle;
-    height: 22px;
-}
-
-.datetimepicker .active {
-    background: #428bca !important;
-    text-shadow: none !important;
-}
-
-div#indexed.block {
-    display: none;
-}
-</style>
 </head>
 <body>
 <ol class="breadcrumb">
@@ -263,7 +274,13 @@ div#indexed.block {
             <label class="control-label">Query: </label>
             <input class="form-control input-sm" id="query" style="width:250px;" name="query">
             <label class="control-label">Period: </label>
-            <input class="form-control input-sm input-date" id="from" style="width:50px;" name="from" title="Greater than or equal to "> - <input class="form-control input-sm input-date" id="to" style="width:50px;" name="to" title="Less than or equal to ">
+            <div class='input-group'>
+                <input class="form-control input-sm input-date" id="from" style="width:50px;" name="from" title="Greater than or equal to ">
+            </div>
+            -
+            <div class='input-group'>
+                <input class="form-control input-sm input-date" id="to" style="width:50px;" name="to" title="Less than or equal to ">
+            </div>
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
         </form>
     </div>
