@@ -45,6 +45,10 @@
 #indexed.block {
     display: none;
 }
+
+.input-date {
+    border-radius: 3px !important;
+}
 </style>
 
 <script type="text/javascript">
@@ -179,7 +183,8 @@ $(document).ready(function() {
         }
 
         $('.input-date').datetimepicker({
-            format: momentFormat
+            format: momentFormat,
+            sideBySide: true
         });
 
         var allowEmptyQuery = hosts[db].allowEmptyQuery;
