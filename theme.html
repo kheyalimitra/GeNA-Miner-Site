@@ -66,6 +66,9 @@ $(document).ready(function() {
         var fileName = $.url().param('name');
 
         var year_interval = $.url().param('year_interval');
+        if (!year_interval) {
+            year_interval = 5;
+        }
         $("#year_interval").val(year_interval);
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Themes (Dict. =  " + fileName + ")";
@@ -112,7 +115,15 @@ $(document).ready(function() {
                     Ticks = Ticks/5;
                     maxR = maxR/2;
                 }*/
-                width = (end_year - start_year) * xInterval;
+
+                var listvals=[];
+                for (var j=0; j<data.length; j++){
+                    var val = d3.min(data[j]['articles'], function(d) {return d[0];} )
+                    listvals.push(val);
+                }
+                var min_year = d3.min(listvals);
+
+                width = (end_year - min_year) * xInterval;
                 yInterval = 50;
                 height = data.length * yInterval;
 
@@ -135,9 +146,9 @@ $(document).ready(function() {
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                x.domain([start_year, end_year]);
+                x.domain([min_year, end_year]);
                 var xScale = d3.scale.linear()
-                    .domain([start_year, end_year])
+                    .domain([min_year, end_year])
                     .range([0, width]);
 
                 var listvals=[];
@@ -145,20 +156,16 @@ $(document).ready(function() {
                     var val = d3.max(data[j]['articles'], function(d) {return d[1];} )
                     listvals.push(val);
                 }
-                console.log(listvals); 
 
                 var globalMax = d3.max(listvals);
-                console.log(globalMax);
 
                 var listvals=[];
                 for (var j=0; j<data.length; j++){
                     var val = d3.min(data[j]['articles'], function(d) {return d[1];} )
                     listvals.push(val);
                 }
-                console.log(listvals);
 
                 var globalMin = d3.min(listvals);
-                console.log(globalMin);
 
                 svg.append("g")
                     .attr("class", "x axis")
@@ -182,15 +189,12 @@ $(document).ready(function() {
                         .domain([globalMin, globalMax ])
                         .range([2, maxR]);
 
-                    console.log(rScale);
-
                     circles
                         .attr("cx", function(d, i) { return xScale(d[0]); })
                         .attr("cy", j*yInterval+20)
                         .attr("r", function(d) { return rScale(d[1]); })
                         .style("fill", function(d) { return c(j); })
                         .attr("title", function(d) { return d[1]; });
-
 
                     text
                         .attr("y", j*yInterval+25)
