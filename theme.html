@@ -23,8 +23,10 @@
 <script src="js/main.js"></script>
 
 <style type="text/css">
-div.plot {
-    font-family: Arial, sans-serif;font-size:10px; overflow: scroll;
+div#plot {
+    font-family: Arial, sans-serif;
+    font-size:10px;
+    overflow: scroll;
 }
 .axis path,.axis line {
     fill: none;stroke:#b6b6b6;shape-rendering: crispEdges;
@@ -226,7 +228,7 @@ $(document).ready(function() {
                     d3.select(g).selectAll("text.value").style("display","none");
                 }
 
-                $("[title]").tooltip({placement: "top", html: true, container: 'body'});
+                $("[title]").tooltip({placement: "top", html: true, container: '#plot'});
             }
         });
 
@@ -241,7 +243,7 @@ $(document).ready(function() {
             window.location.href=url;
         });
 
-        $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: '#plot'});
 });
 });
 </script>
