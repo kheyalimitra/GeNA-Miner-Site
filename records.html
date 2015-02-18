@@ -44,7 +44,7 @@
 
 <style>
 tr.group {
-    background-color: #dddddd !important;
+    background-color: #eeeeee !important;
 }
 
 #form_table th, #form_table td {
@@ -135,7 +135,7 @@ $(document).ready(function() {
         $("#example thead tr").html(tableHeaderTags);
 
         var table = $('#example').DataTable( {
-            dom: '<"expandAll">lfTrtip',
+            dom: '<"toggleButtons">lfTrtip',
             tableTools: {
                 "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
                 "aButtons": [
@@ -179,12 +179,11 @@ $(document).ready(function() {
             "deferRender": true,
             "pageLength": 50,
             "pagingType": "simple_numbers",
-            "lengthMenu": [[10, 50, 100, 500, 1000], [10, 50, 100, 500, 1000]],
+            "lengthMenu": [[10, 50, 100, 500, 1000], ["10", "50", "100", "500", "1,000"]],
 
             "responsive": {
                 "details": {
                     type: 'column'
-                    //target: 'tr'
                 }
             },
 
@@ -199,7 +198,7 @@ $(document).ready(function() {
             "order": hosts[db].order,
 
             "drawCallback": function ( settings ) {
-                if (!hosts[db].groupby) {
+                if (!$("#groupBy").prop("checked")) {
                     return;
                 }
 
@@ -221,9 +220,10 @@ $(document).ready(function() {
             }
 
         });
-        $("div.expandAll").html('\
+        $("div.toggleButtons").html('\
             <div class="btn-group" data-toggle="buttons">\
-                <label class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
+                <label id="expandAllButton" class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
+                <label id="groupByButton" class="btn btn-default btn-sm"><span class="fa fa-list-ul"></span> Group by<input type="checkbox" id="groupBy"></label>\
             </div>\
         ');
 
@@ -234,8 +234,15 @@ $(document).ready(function() {
             }
         }
 
+        if (hosts[db].toggleButtons && hosts[db]["toggleButtons"].defaultGroupBy) {
+            $('#groupByButton').trigger("click");
+        }
+
         $('#expandAll').change(function() {
             expandAll(this.checked);
+        });
+        $('#groupBy').change(function() {
+            table.draw();
         });
 
         new $.fn.dataTable.FixedHeader( table );

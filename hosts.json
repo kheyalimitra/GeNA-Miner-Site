@@ -67,7 +67,9 @@
             }
         ],
         "order": [[2, "desc"]],
-        "groupby": true,
+        "toggleButtons": {
+            "defaultGroupBy": true
+        },
         "buttonGroups": [5, 4]
     },
     "twitter": {
@@ -188,7 +190,6 @@
             }
         ],
         "order": [[1, "desc"]],
-        "groupby": false,
         "searchOnly": true,
         "buttonGroups": [6, 6, 4]
     },

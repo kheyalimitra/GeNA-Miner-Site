@@ -75,7 +75,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .dataTables_wrapper {
   overflow: hidden; }
-  .dataTables_wrapper .expandAll {
+  .dataTables_wrapper .toggleButtons {
     float: left;
     margin-left: 0px;
     margin-right: 10px;
@@ -173,3 +173,5 @@ div.fixedHeader th, div.fixedHeader td {
 .btn-clipboard:hover {
   color: #fff;
   background-color: #563d7c; }
+
+/*# sourceMappingURL=main.css.map */

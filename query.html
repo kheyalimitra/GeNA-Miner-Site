@@ -189,10 +189,10 @@ $(document).ready(function() {
 
         var allowEmptyQuery = hosts[db].allowEmptyQuery;
         if (allowEmptyQuery) {
-            $("#query").attr("title", "Empty query matchs all records")
+            $("#query").attr("title", "Leave it empty to match all records").attr("placeholder", "Leave it empty to match all records")
         }
         else {
-            $("#query").attr("title", "At least one keyword")
+            $("#query").attr("title", "At least one keyword").attr("placeholder", "At least one keyword");
         }
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
