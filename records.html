@@ -148,7 +148,7 @@ $(document).ready(function() {
                     },
                     {
                         "sExtends": "csv",
-                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Current as CSV",
+                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Current",
                         "oSelectorOpts": {
                             page: 'current'
                         }
@@ -223,7 +223,7 @@ $(document).ready(function() {
         $("div.toggleButtons").html('\
             <div class="btn-group" data-toggle="buttons">\
                 <label id="expandAllButton" class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
-                <label id="groupByButton" class="btn btn-default btn-sm"><span class="fa fa-list-ul"></span> Group by<input type="checkbox" id="groupBy"></label>\
+                <label id="groupByButton" class="btn btn-default btn-sm"><span class="fa fa-list-ul"></span> Group By<input type="checkbox" id="groupBy"></label>\
             </div>\
         ');
 
@@ -234,8 +234,13 @@ $(document).ready(function() {
             }
         }
 
-        if (hosts[db].toggleButtons && hosts[db]["toggleButtons"].defaultGroupBy) {
-            $('#groupByButton').trigger("click");
+        if (hosts[db].toggleButtons) {
+            if (hosts[db]["toggleButtons"].defaultExpandAll) {
+                $('#expandAllButton').trigger("click");
+            }
+            if (hosts[db]["toggleButtons"].defaultGroupBy) {
+                $('#groupByButton').trigger("click");
+            }
         }
 
         $('#expandAll').change(function() {

@@ -24,12 +24,14 @@
 
 <style type="text/css">
 div#plot {
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     font-size:10px;
     overflow: scroll;
 }
 .axis path,.axis line {
-    fill: none;stroke:#b6b6b6;shape-rendering: crispEdges;
+    fill: none;
+    stroke:#b6b6b6;
+    shape-rendering: crispEdges;
 }
 .tick text{
     fill:#999;
@@ -38,10 +40,13 @@ g.journal.active{
     cursor:pointer;
 }
 text.label {
-    font-size:12px;font-weight:bold;cursor:pointer;
+    font-size:12px;
+    font-weight:bold;
+    cursor:pointer;
 }
 text.value{
-    font-size:12px;font-weight:bold;
+    font-size:12px;
+    font-weight:bold;
 }
 </style>
 
@@ -67,11 +72,11 @@ $(document).ready(function() {
         }
         var fileName = $.url().param('name');
 
-        var year_interval = $.url().param('year_interval');
-        if (!year_interval) {
-            year_interval = 5;
+        var interval = $.url().param('interval');
+        if (!interval) {
+            interval = 1;
         }
-        $("#year_interval").val(year_interval);
+        $("#interval").val(interval);
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Themes (Dict. =  " + fileName + ")";
         $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
@@ -102,21 +107,11 @@ $(document).ready(function() {
                 data = raw.data;
                 var start_year = raw.yearFrom;
                 var end_year = raw.yearTo;
-                var Ticks = (end_year - start_year)/year_interval;
+                var Ticks = (end_year - start_year)/interval;
 
                 var margin = {top: 20, right: 200, bottom: 20, left: 20};
-                var xInterval = 60;
+                var xInterval = 50;
                 var maxR = 20;
-
-                /*if (end_year - start_year > 60) {
-                    xInterval = 15;
-                    Ticks = Ticks/10;
-                    maxR = maxR/4;
-                } else if (end_year - start_year > 20) {
-                    xInterval = 20;
-                    Ticks = Ticks/5;
-                    maxR = maxR/2;
-                }*/
 
                 var listvals=[];
                 for (var j=0; j<data.length; j++){
@@ -193,24 +188,24 @@ $(document).ready(function() {
 
                     circles
                         .attr("cx", function(d, i) { return xScale(d[0]); })
-                        .attr("cy", j*yInterval+20)
+                        .attr("cy", j*yInterval+25)
                         .attr("r", function(d) { return rScale(d[1]); })
                         .style("fill", function(d) { return c(j); })
                         .attr("title", function(d) { return d[1]; });
 
                     text
-                        .attr("y", j*yInterval+25)
-                        .attr("x",function(d, i) { return xScale(d[0])-5; })
+                        .attr("y", j*yInterval+25+5)
+                        .attr("x",function(d, i) { return xScale(d[0])-10; })
                         .attr("class","value")
                         .text(function(d){ return d[1]; })
                         .style("fill", function(d) { return c(j); })
                         .style("display","none");
 
                     g.append("text")
-                        .attr("y", j*yInterval+25)
+                        .attr("y", j*yInterval+25+5)
                         .attr("x",width+50)
                         .attr("class","label")
-                        .text(truncate(data[j]['name'],30,"..."))
+                        .text(data[j]['name'])
                         .style("fill", function(d) { return c(j); })
                         .on("mouseover", mouseover)
                         .on("mouseout", mouseout);
@@ -232,13 +227,13 @@ $(document).ready(function() {
             }
         });
 
-        $("#year_interval").change(function(){
+        $("#interval").change(function(){
             var url = window.location.href;
-            var index = url.indexOf('&year_interval=');
+            var index = url.indexOf('&interval=');
             if (index > -1){
-               url = url.substring(0, index) + "&year_interval=" + $(this).val();
+               url = url.substring(0, index) + "&interval=" + $(this).val();
             } else {
-               url += "&year_interval=" + $(this).val();
+               url += "&interval=" + $(this).val();
             }
             window.location.href=url;
         });
@@ -260,16 +255,16 @@ $(document).ready(function() {
 <h3>
 </h3>
     <div class="block" style="width:100%; float:left;">
-        <div class="dataTables_length" id="year_interval_div">
-            <label class="control-label">Year Interval: </label>
-            <select id="year_interval" class="form-control input-sm" style="display:inline; width:60px;">
+        <div class="dataTables_length" id="interval_div">
+            <label class="control-label">Label Interval: </label>
+            <select id="interval" class="form-control input-sm" style="display:inline; width:60px;">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="5">5</option>
               <option value="10">10</option>
             </select>
         </div>
-        <div id="plot" style="padding-top:10px;">
+        <div id="plot" style="padding:10px;">
         </div>
     </div>
 </div>
