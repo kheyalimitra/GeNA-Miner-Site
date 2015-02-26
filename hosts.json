@@ -82,7 +82,7 @@
             {
                 "width": "120px",
                 "data": "date_time",
-                "title": "Time (UTC)",
+                "title": "Date & Time",
                 "class": "all"
             },
             {
