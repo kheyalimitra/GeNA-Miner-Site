@@ -25,6 +25,7 @@
     "phpjs": "*",
     "rangyinputs": "*",
     "underscore": "*",
-    "eonasdan-bootstrap-datetimepicker": "*"
+    "eonasdan-bootstrap-datetimepicker": "*",
+    "awesomplete": "https://github.com/LeaVerou/awesomplete.git#gh-pages"
   }
 }

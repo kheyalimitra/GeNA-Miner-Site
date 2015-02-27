@@ -33,6 +33,9 @@
 <link rel="stylesheet" type="text/css" href="static/css/bootstrap-datetimepicker.min.css">
 <script src="static/js/bootstrap-datetimepicker.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="static/css/awesomplete.css">
+<script src="static/js/awesomplete.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <script src="js/main.js"></script>
 
@@ -46,8 +49,48 @@
     display: none;
 }
 
+/* Fix for datetime picker */
 .input-date {
     border-radius: 3px !important;
+}
+
+.bootstrap-datetimepicker-widget {
+	margin-top: 5px !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid #ccc;
+}
+.bootstrap-datetimepicker-widget:before, .bootstrap-datetimepicker-widget.dropdown-menu:after {
+    display: none !important;
+}
+
+div.awesomplete > ul:before {
+    top: 0em;
+    left: 0em;
+    padding: 0em;
+}
+div.awesomplete > ul {
+    background: rgba(255, 255, 255, 0.9) !important;
+	margin-top: 5px;
+    border: 1px solid #ccc;
+    transition: none;
+}
+div.awesomplete > ul > li {
+    padding: 4px 4px;
+    font-size: 12px;
+    color: inherit;
+    cursor: inherit;
+}
+div.awesomplete > ul > li:hover {
+    background-color: #eee;
+}
+div.awesomplete > ul > li[aria-selected="true"] {
+    background-color: #08C;
+    color: white;
+}
+div.awesomplete mark, div.awesomplete li:hover mark, div.awesomplete li[aria-selected="true"] mark {
+    background-color: rgba(243,228,48,0.25);
+    color: inherit;
+    padding: 4px 0px;
 }
 </style>
 
@@ -259,6 +302,17 @@ $(document).ready(function() {
         if (hosts[db].showIndexed) {
             $("#indexed.block").show();
         }
+
+        table.on('draw.dt', function () {
+            $("#query").each(function() {
+                new Awesomplete(this, {
+                    list: $("#example tbody td:first-child").map(function() {
+                        return $(this).text();
+                    }).get(),
+                    minChars: 1
+                });
+            });
+        });
     });
 });
 </script>
@@ -277,14 +331,14 @@ $(document).ready(function() {
         <form class="form-inline" id="query_form" action="records.html" method="get">
             <input type="hidden" name="db">
             <label class="control-label">Query: </label>
-            <input class="form-control input-sm" id="query" style="width:250px;" name="query">
+            <input class="form-control input-sm" id="query" style="width:250px;" name="query" autocomplete="off">
             <label class="control-label">Period: </label>
             <div class='input-group'>
-                <input class="form-control input-sm input-date" id="from" style="width:50px;" name="from" title="Greater than or equal to ">
+                <input class="form-control input-sm input-date" id="from" style="width:50px;" name="from" autocomplete="off" title="Greater than or equal to ">
             </div>
             -
             <div class='input-group'>
-                <input class="form-control input-sm input-date" id="to" style="width:50px;" name="to" title="Less than or equal to ">
+                <input class="form-control input-sm input-date" id="to" style="width:50px;" name="to" autocomplete="off" title="Less than or equal to ">
             </div>
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
         </form>

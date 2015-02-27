@@ -78,10 +78,20 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     border: 1px solid #888;
 }
 
-.tooltip, .popover {
-    opacity: .9 !important;
-
+.tooltip {
+    opacity: 0.9 !important;
     font-size: 12px;
+}
+
+.popover {
+    background: rgba(255, 255, 255, 0.9) !important;
+    font-size: 12px;
+    .arrow {
+        display: none !important;
+    }
+}
+.popover.bottom {
+	margin-top: 5px !important;
 }
 
 .panel {
@@ -92,7 +102,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     }
 }
 
-.btn, .paginate_button a  {
+.btn, .paginate_button a {
     transition: background .2s, color .2s;
 }
 
