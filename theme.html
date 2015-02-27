@@ -244,6 +244,8 @@ $(document).ready(function() {
 
                 d3.select("#plot").on("click", zoomed);
                 zoomed();
+
+                $('#plot').scrollLeft($('#plot svg').width());
             }
         });
 
