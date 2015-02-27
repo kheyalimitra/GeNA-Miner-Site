@@ -231,7 +231,9 @@ $(document).ready(function() {
                     if (g.iszoomed) {
                         scale = 1;
                         $("#plot svg").attr("width", width + 200);
-                        $("#plot svg").attr("height", height + 200);
+                        $("#plot svg").attr("height", height);
+
+                        $('#plot').scrollLeft($('#plot svg').width());
                     } else {
                         $("#plot svg").attr("width", "100%");
                         scale = ($("#plot svg").width()) / (width + 200);
@@ -244,8 +246,6 @@ $(document).ready(function() {
 
                 d3.select("#plot").on("click", zoomed);
                 zoomed();
-
-                $('#plot').scrollLeft($('#plot svg').width());
             }
         });
 
