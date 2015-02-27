@@ -224,21 +224,20 @@ $(document).ready(function() {
 
                 $("[title]").tooltip({placement: "top", html: true, container: '#plot'});
 
-                 g = d3.select("#plot").select("svg").select("g");
+                g = d3.select("#plot").select("svg").select("g");
 
-                g.iszoomed = false;
+                g.iszoomed = true;
                 function zoomed() {
                     if (g.iszoomed) {
-                        scale = 1;  
                         $("#plot svg").attr("width", width + 200);
                         $("#plot svg").attr("height", height + 200);
-                        g.iszoomed = false;
+                        scale = 1;
                     } else {
-                        $("#plot svg").attr("width", "95%");
-                        scale = ($("#plot svg").width() - 300) / width; 
-                        $("#plot svg").attr("height", height * scale + 200);       
-                        g.iszoomed = true;
+                        $("#plot svg").attr("width", "100%");
+                        $("#plot svg").attr("height", height * scale);
+                        scale = ($("#plot svg").width()) / (width + 200);
                     }
+                    g.iszoomed = !g.iszoomed;
 
                     g.attr("transform", "translate(25, 40) scale(" + scale + ", " + scale + ")");
                 }
@@ -284,6 +283,7 @@ $(document).ready(function() {
               <option value="5">5</option>
               <option value="10">10</option>
             </select>
+            <span class="btn btn-sm disabled">Click to zoom and scroll to move</span>
         </div>
         <div id="plot" style="padding:10px;">
         </div>
