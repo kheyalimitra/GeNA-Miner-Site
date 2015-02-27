@@ -138,7 +138,6 @@ $(document).ready(function() {
                 xAxis.tickFormat(formatYears);
 
                 var svg = d3.select("#plot").append("svg")
-                    .attr("width", "95%")
                     .attr("height", height + margin.top + margin.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -229,20 +228,23 @@ $(document).ready(function() {
 
                 g.iszoomed = false;
                 function zoomed() {
-
-                    console.log("hi");
-
                     if (g.iszoomed) {
                         scale = 1;  
+                        $("#plot svg").attr("width", width + 200);
+                        $("#plot svg").attr("height", height + 200);
                         g.iszoomed = false;
                     } else {
-                        scale = ($("#plot svg").width() - 300) / width;        
+                        $("#plot svg").attr("width", "95%");
+                        scale = ($("#plot svg").width() - 300) / width; 
+                        $("#plot svg").attr("height", height * scale + 200);       
                         g.iszoomed = true;
                     }
 
-                    g.attr("transform", "translate(20, 20) scale(" + scale + ", 1)");
+                    g.attr("transform", "translate(25, 40) scale(" + scale + ", " + scale + ")");
                 }
+
                 d3.select("#plot").on("click", zoomed);
+                zoomed();
             }
         });
 
