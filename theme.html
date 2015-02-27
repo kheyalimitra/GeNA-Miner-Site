@@ -229,17 +229,17 @@ $(document).ready(function() {
                 g.iszoomed = true;
                 function zoomed() {
                     if (g.iszoomed) {
+                        scale = 1;
                         $("#plot svg").attr("width", width + 200);
                         $("#plot svg").attr("height", height + 200);
-                        scale = 1;
                     } else {
                         $("#plot svg").attr("width", "100%");
-                        $("#plot svg").attr("height", height * scale);
                         scale = ($("#plot svg").width()) / (width + 200);
+                        $("#plot svg").attr("height", height * scale);
                     }
                     g.iszoomed = !g.iszoomed;
 
-                    g.attr("transform", "translate(25, 40) scale(" + scale + ", " + scale + ")");
+                    g.attr("transform", "scale(" + scale + ", " + scale + ") translate(20, 20)");
                 }
 
                 d3.select("#plot").on("click", zoomed);
