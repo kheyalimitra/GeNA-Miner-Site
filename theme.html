@@ -165,7 +165,6 @@ $(document).ready(function() {
 
                 svg.append("g")
                     .attr("class", "x axis")
-                    .attr("transform", "translate(0," + 0 + ")")
                     .call(xAxis);
 
                 for (var j = 0; j < data.length; j++) {
@@ -261,7 +260,7 @@ $(document).ready(function() {
         });
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: '#plot'});
-});
+    });
 });
 </script>
 </head>
