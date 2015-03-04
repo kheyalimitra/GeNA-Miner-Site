@@ -109,7 +109,7 @@ $(document).ready(function() {
                 var end_year = raw.yearTo;
                 var Ticks = (end_year - start_year)/interval;
 
-                var margin = {top: 20, right: 200, bottom: 20, left: 20};
+                var margin = {top: 60, right: 200, bottom: 20, left: 20};
                 var xInterval = 50;
                 var maxR = 20;
 
@@ -135,7 +135,11 @@ $(document).ready(function() {
                     .orient("top");
 
                 var formatYears = d3.format("0000");
-                xAxis.tickFormat(formatYears);
+                if (interval >= 2) {
+                    xAxis.tickFormat(function (d) { return formatYears(d) + "-" + formatYears(parseInt(d)+parseInt(interval)-1); });
+                } else {
+                    xAxis.tickFormat(formatYears);
+                }
 
                 var svg = d3.select("#plot").append("svg")
                     .attr("height", height + margin.top + margin.bottom)
@@ -163,10 +167,17 @@ $(document).ready(function() {
 
                 var globalMin = d3.min(listvals);
 
+                var axisLabelRotate = 0;
+                if (interval >= 2) {
+                    axisLabelRotate = -15;
+                }
+
                 svg.append("g")
                     .attr("class", "x axis")
                     .attr("transform", "translate(0," + 0 + ")")
-                    .call(xAxis);
+                    .call(xAxis)
+                    .selectAll("text")
+                        .attr("transform", "rotate(" + axisLabelRotate + ")");
 
                 for (var j = 0; j < data.length; j++) {
                     var g = svg.append("g").attr("class","journal");
@@ -241,7 +252,7 @@ $(document).ready(function() {
                     }
                     g.iszoomed = !g.iszoomed;
 
-                    g.attr("transform", "scale(" + scale + ", " + scale + ") translate(20, 20)");
+                    g.attr("transform", "scale(" + scale + ", " + scale + ") translate(" + margin.left + "," + margin.top + ") ");
                 }
 
                 d3.select("#plot").on("click", zoomed);
