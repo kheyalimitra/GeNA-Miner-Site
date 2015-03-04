@@ -109,8 +109,9 @@ $(document).ready(function() {
                 var end_year = raw.yearTo;
                 var Ticks = (end_year - start_year)/interval;
 
-                var margin = {top: 20, right: 200, bottom: 20, left: 20};
+                var margin = {top: 60, right: 200, bottom: 20, left: 20};
                 var xInterval = 50;
+                var yInterval = 50;
                 var maxR = 20;
 
                 var listvals=[];
@@ -121,7 +122,6 @@ $(document).ready(function() {
                 var min_year = d3.min(listvals);
 
                 width = (end_year - min_year) * xInterval;
-                yInterval = 50;
                 height = data.length * yInterval;
 
                 var c = d3.scale.category20();
@@ -135,12 +135,14 @@ $(document).ready(function() {
                     .orient("top");
 
                 var formatYears = d3.format("0000");
-                xAxis.tickFormat(formatYears);
+                if (interval >= 2) {
+                    xAxis.tickFormat(function (d) { return formatYears(d) + "-" + formatYears(parseInt(d)+parseInt(interval)-1); });
+                } else {
+                    xAxis.tickFormat(formatYears);
+                }
 
                 var svg = d3.select("#plot").append("svg")
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    .append("g");
 
                 x.domain([min_year, end_year]);
                 var xScale = d3.scale.linear()
@@ -163,9 +165,13 @@ $(document).ready(function() {
 
                 var globalMin = d3.min(listvals);
 
+                axisLabelRotate = -45;
+
                 svg.append("g")
                     .attr("class", "x axis")
-                    .call(xAxis);
+                    .call(xAxis)
+                    .selectAll("text")
+                    .attr("transform", "translate(5, -20) rotate(" + axisLabelRotate + ")");
 
                 for (var j = 0; j < data.length; j++) {
                     var g = svg.append("g").attr("class","journal");
@@ -230,17 +236,17 @@ $(document).ready(function() {
                     if (g.iszoomed) {
                         scale = 1;
                         $("#plot svg").attr("width", width + 200);
-                        $("#plot svg").attr("height", height);
+                        $("#plot svg").attr("height", height + 55);
 
                         $('#plot').scrollLeft($('#plot svg').width());
                     } else {
                         $("#plot svg").attr("width", "100%");
                         scale = ($("#plot svg").width()) / (width + 200);
-                        $("#plot svg").attr("height", height * scale);
+                        $("#plot svg").attr("height", (height + 55) * scale);
                     }
                     g.iszoomed = !g.iszoomed;
 
-                    g.attr("transform", "scale(" + scale + ", " + scale + ") translate(20, 20)");
+                    g.attr("transform", "scale(" + scale + ", " + scale + ") translate(" + margin.left + "," + margin.top + ") ");
                 }
 
                 d3.select("#plot").on("click", zoomed);
