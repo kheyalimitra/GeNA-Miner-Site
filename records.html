@@ -100,6 +100,51 @@ table td {
 
 <script type="text/javascript" class="init">
 $(document).ready(function() {
+
+    function build_NodeXL_table() {
+        NodeXL_table = $('#NodeXL_table').DataTable();
+        full_table = $('#example').DataTable();
+
+        NodeXL_table.clear();
+
+        var l = full_table.row().nodes().length;
+        for (var i = 0; i < l; ++i) {
+            arow = full_table.row(i).data();
+            var vertex1 = arow.user_name;
+            var vertex2;
+            var text = arow.text;
+            var NodeXL = arow.type;
+            var NodeXL_date = arow.date_time;
+
+            var reg = RegExp('[\uD800-\uDBFF][\uDC00-\uDFFF]','g');
+            text = text.replace(reg, "(emoji)");
+            text = text.replace("…", "...");
+            text = text.replace(/[^\x00-\x80]/g, "(U)");
+
+            if (arow.type == 'mention') {
+                mlist = arow.mention_list.split(',');
+                for (var j = 0; j < mlist.length; ++j) {
+                    vertex2 = mlist[j].replace("@", "");
+                    NodeXL_table.row.add([vertex1, vertex2, text, NodeXL]);
+                }
+            } else {
+                if (arow.type == null) {
+                    vertex2 = vertex1;
+                    NodeXL = 'tweet';
+                } else if (arow.type == 'retweet' || arow.type == 'reply') {
+                    vertex2 = arow.mention_list.replace("@", "");
+                }
+                NodeXL_table.row.add([vertex1, vertex2, text, NodeXL]);
+            }
+        }
+        NodeXL_table.draw();
+    }
+
+    $('#NodeXL_table_btn').click(function () {
+        build_NodeXL_table();
+        setTimeout(function(){TableTools.fnGetInstance('NodeXL_table').fnResizeButtons();$('#NodeXL_table').DataTable().draw();}, 500);
+    });
+
     $.getJSON("hosts.json", function(hosts) {
         var token = $.cookie("token");
 
@@ -220,6 +265,35 @@ $(document).ready(function() {
             }
 
         });
+
+        if (db == "twitter") {
+            $("#twitter_nav").show();
+            var NodeXL_table = $('#NodeXL_table').DataTable( {
+                dom: '<"clear">lTrtip',
+                tableTools: {
+                    "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
+                    "aButtons": [
+                        {
+                            "sExtends": "copy",
+                            "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
+                            "oSelectorOpts": {
+                                page: 'current'
+                            }
+                        },
+                        {
+                            "sExtends": "csv",
+                            "sButtonText": "<span class=\"fa fa-table\"></span> Save Current",
+                            "oSelectorOpts": {
+                                page: 'current'
+                            }
+                        }
+                    ]
+                },
+                "order": hosts[db].order,
+                paging: false,
+            });
+        }
+
         $("div.toggleButtons").html('\
             <div class="btn-group" data-toggle="buttons">\
                 <label id="expandAllButton" class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
@@ -781,14 +855,39 @@ $(document).ready(function() {
     </table>
 </div>
 
-<div class="block" style="width:100%;">
-    <table id="example" class="table table-hover" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-            </tr>
-        </thead>
+<div class="block" style="width:100%;" role="tabpanel">
+    <ul id="twitter_nav" class="nav nav-tabs" role="tablist" hidden>
+        <li role="presentation" class="active"><a href="#full_table_wrapper" aria-controls="full_table_wrapper" role="tab" data-toggle="tab">Full Table</a></li>
+        <li role="presentation"><a id="NodeXL_table_btn" href="#NodeXL_table_wrapper" aria-controls="NodeXL_table_wrapper" role="tab" data-toggle="tab">NodeXL Table</a></li>
+        <li role="presentation"><a href="#Nvivo_table_wrapper" aria-controls="Nvivo_table_wrapper" role="tab" data-toggle="tab">Nvivo Table</a></li>
+    </ul>
 
-    </table>
+
+
+    <div style="width:100%;" class="tab-content">
+        <div id="full_table_wrapper" role="tabpanel" class="tab-pane fade in active">
+            <table id="example" class="table table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+
+        <div id="NodeXL_table_wrapper" role="tabpanel" class="tab-pane fade">
+            <table id="NodeXL_table" class="table table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Vertex 1</th>
+                        <th>Vertex 2</th>
+                        <th>Text</th>
+                        <th>Relationship</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 </div>
 
 </div>
