@@ -134,6 +134,67 @@ $(document).ready(function() {
         }
         $("#example thead tr").html(tableHeaderTags);
 
+        function tableDataToArray(tableData) {
+            rows = tableData.split('\n');
+            for (i = 0; i < rows.length; ++i) {
+                rows[i] = rows[i].split('\t');
+            }
+            return rows;
+        }
+        function arrayToTableData(rows) {
+            stringData = "";
+            for (i = 0; i < rows.length; ++i) {
+                for (j = 0; j < rows[i].length-1; ++j) {
+                    stringData = stringData + rows[i][j] + '\t';
+                }
+                if (rows[i].length >= 1) {
+                    stringData = stringData + rows[i][j] + '\n'
+                }
+            }
+            return stringData;
+        }
+
+        function toNodeXLData(oriData) {
+            rows = tableDataToArray(oriData);
+            rows.shift();
+            var newTableArray = [["Vertex 1", "Vertex 2", "Text", "Relationship"]];
+            for (i = 0; i < rows.length; ++i) {
+                var arow = rows[i];
+                var vertex1 = arow[0];
+                var vertex2 = arow[0];
+                var text = arow[1];
+                var relationship = arow[2];
+                var mentionList = arow[3];
+
+                if (relationship == "") {
+                    relationship = "Tweet";
+                } else if (relationship == "reply") {
+                    relationship = "Reply To";
+                } else if (relationship == "mention") {
+                    relationship = "Mentions";
+                } else {
+                    continue;
+                }
+
+                var reg = RegExp('[\uD800-\uDBFF][\uDC00-\uDFFF]','g');
+                text = text.replace(reg, "(emoji)");
+                text = text.replace("…", "...");
+                text = text.replace(/[^\x00-\x80]/g, "(U)");
+
+                if (mentionList == "") {
+                    newTableArray.push([vertex1, vertex2, text, relationship]);
+                } else {
+                    mlist = mentionList.split(', ');
+                    for (j = 0; j < mlist.length; ++j) {
+                        vertex2 = mlist[j].replace("@", "");
+                        newTableArray.push([vertex1, vertex2, text, relationship]);
+                    }
+                }
+
+            }
+            return arrayToTableData(newTableArray);
+        }
+
         var table = $('#example').DataTable( {
             dom: '<"toggleButtons">lfTrtip',
             tableTools: {
@@ -151,6 +212,28 @@ $(document).ready(function() {
                         "sButtonText": "<span class=\"fa fa-table\"></span> Save Current",
                         "oSelectorOpts": {
                             page: 'current'
+                        }
+                    },
+                    {
+                        "sExtends": "copy",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        },
+                        "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy NodeXL",
+                        "mColumns": [2, 3, 4, 8],
+                        "fnClick": function( nButton, oConfig, flash ) {
+                            this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig)) );
+                        }
+                    },
+                    {
+                        "sExtends": "xls",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        },
+                        "sButtonText": "<span class=\"fa fa-table\"></span> Save NodeXL",
+                        "mColumns": [2, 3, 4, 8],
+                        "fnClick": function( nButton, oConfig, flash ) {
+                            this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig)) );
                         }
                     }
                 ]
