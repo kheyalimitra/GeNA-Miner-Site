@@ -254,60 +254,72 @@ $(document).ready(function() {
                 "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
                 "aButtons": [
                     {
-                        "sExtends": "copy",
+                        "sExtends":    "collection",
                         "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
-                        "oSelectorOpts": {
-                            page: 'current'
-                        }
+                        "aButtons":    [
+                            {
+                                "sExtends": "copy",
+                                "sButtonText": "Plain",
+                                "oSelectorOpts": {
+                                    page: 'current'
+                                }
+                            },
+                            {
+                                "sExtends": "copy",
+                                "oSelectorOpts": {
+                                    page: 'current'
+                                },
+                                "sButtonText": "For NodeXL",
+                                "mColumns": [2, 3, 4, 8],
+                                "fnClick": function( nButton, oConfig, flash ) {
+                                    this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig)) );
+                                }
+                            },
+                            {
+                                "sExtends": "copy",
+                                "oSelectorOpts": {
+                                    page: 'current'
+                                },
+                                "sButtonText": "For Nvivo",
+                                "fnClick": function( nButton, oConfig, flash ) {
+                                    this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig)) );
+                                }
+                            }
+                        ]
                     },
                     {
-                        "sExtends": "csv",
+                        "sExtends":    "collection",
                         "sButtonText": "<span class=\"fa fa-table\"></span> Save Current",
-                        "oSelectorOpts": {
-                            page: 'current'
-                        }
-                    },
-                    {
-                        "sExtends": "copy",
-                        "oSelectorOpts": {
-                            page: 'current'
-                        },
-                        "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy NodeXL",
-                        "mColumns": [2, 3, 4, 8],
-                        "fnClick": function( nButton, oConfig, flash ) {
-                            this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig)) );
-                        }
-                    },
-                    {
-                        "sExtends": "xls",
-                        "oSelectorOpts": {
-                            page: 'current'
-                        },
-                        "sButtonText": "<span class=\"fa fa-table\"></span> Save NodeXL",
-                        "mColumns": [2, 3, 4, 8],
-                        "fnClick": function( nButton, oConfig, flash ) {
-                            this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig)) );
-                        }
-                    },
-                    {
-                        "sExtends": "copy",
-                        "oSelectorOpts": {
-                            page: 'current'
-                        },
-                        "sButtonText": "<span class=\"fa fa-table\"></span> Copy Nvivo",
-                        "fnClick": function( nButton, oConfig, flash ) {
-                            this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig)) );
-                        }
-                    },
-                    {
-                        "sExtends": "xls",
-                        "oSelectorOpts": {
-                            page: 'current'
-                        },
-                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Nvivo",
-                        "fnClick": function( nButton, oConfig, flash ) {
-                            this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig)) );
-                        }
+                        "aButtons":    [
+                            {
+                                "sExtends": "csv",
+                                "sButtonText": "Plain",
+                                "oSelectorOpts": {
+                                    page: 'current'
+                                }
+                            },
+                            {
+                                "sExtends": "xls",
+                                "oSelectorOpts": {
+                                    page: 'current'
+                                },
+                                "sButtonText": "For NodeXL",
+                                "mColumns": [2, 3, 4, 8],
+                                "fnClick": function( nButton, oConfig, flash ) {
+                                    this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig)) );
+                                }
+                            },
+                            {
+                                "sExtends": "xls",
+                                "oSelectorOpts": {
+                                    page: 'current'
+                                },
+                                "sButtonText": "For Nvivo",
+                                "fnClick": function( nButton, oConfig, flash ) {
+                                    this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig)) );
+                                }
+                            }
+                        ]
                     }
                 ]
             }, 
@@ -382,6 +394,7 @@ $(document).ready(function() {
                 <label id="groupByButton" class="btn btn-default btn-sm"><span class="fa fa-list-ul"></span> Group By<input type="checkbox" id="groupBy"></label>\
             </div>\
         ');
+        $(".DTTT_collection .DTTT_button").addClass("btn btn-default btn-sm");
 
         function expandAll(flag) {
             $('#example tbody tr[role="row"].parent td.control').trigger("click");
