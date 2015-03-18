@@ -14,11 +14,11 @@
     "lightweight"
   ],
   "license": "MIT",
-  "_release": "8d0ebeee43",
+  "_release": "bb34696931",
   "_resolution": {
     "type": "branch",
     "branch": "gh-pages",
-    "commit": "8d0ebeee432c8a3d164baf67809d2f431a5217e9"
+    "commit": "bb34696931f1abad2c7d264224474951c76be368"
   },
   "_source": "https://github.com/LeaVerou/awesomplete.git",
   "_target": "gh-pages",
