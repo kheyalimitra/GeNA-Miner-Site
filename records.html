@@ -176,11 +176,6 @@ $(document).ready(function() {
                     continue;
                 }
 
-                var reg = RegExp('[\uD800-\uDBFF][\uDC00-\uDFFF]','g');
-                text = text.replace(reg, "(emoji)");
-                text = text.replace("…", "...");
-                text = text.replace(/[^\x00-\x80]/g, "(U)");
-
                 if (mentionList == "") {
                     newTableArray.push([vertex1, vertex2, text, relationship]);
                 } else {
@@ -192,6 +187,64 @@ $(document).ready(function() {
                 }
 
             }
+            return arrayToTableData(newTableArray);
+        }
+
+        function toNvivoData(oriData) {
+            rows = tableDataToArray(oriData);
+            rows.shift();
+
+            var newTableArray = [];
+            var structuredData = {};
+            var typeMap = {"": "Tweet", "retweet": "Retweet", "mention": "Mentions", "reply": "Reply To"};
+
+            for (i = 0; i < rows.length; ++i) {
+                var arow = rows[i];
+
+                structuredData[arow[13]] = {
+                    "Tweet ID": arow[13],
+                    "Username": arow[2],
+                    "Tweet": arow[3],
+                    "Time": arow[1],
+                    "Tweet Type": typeMap[arow[4]],
+                    "Retweeted by": "",
+                    "Number of Retweets": 0,
+                    "Hashtags": arow[7],
+                    "Mentions": arow[8],
+                    "Name (real)": "",
+                    "Location": arow[5],
+                    "Web": arow[9],
+                    "Bio": "",
+                    "Number of Tweets": 0,
+                    "Number of Followers": 0,
+                    "Number Following": 0,
+                    "Location Coordinates": arow[11]
+                }
+            }
+
+            for (i = 0; i < rows.length; ++i) {
+                var arow = rows[i];
+                var oriTweetID = arow[15];
+                if (oriTweetID != "" && structuredData[oriTweetID] != null) {
+                    if (structuredData[oriTweetID]["Retweeted by"] == "") {
+                        structuredData[oriTweetID]["Retweeted by"] = arow[2];
+                    } else {
+                        structuredData[oriTweetID]["Retweeted by"] += ", " + arow[2];
+                    }
+                    structuredData[oriTweetID]["Number of Retweets"]++;
+                }
+            }
+
+            for (id in structuredData) {
+                if (newTableArray.length == 0) {
+                    newTableArray.push(Object.keys(structuredData[id]));
+                }
+                var values = Object.keys(structuredData[id]).map(function(key){
+                    return structuredData[id][key];
+                });
+                newTableArray.push(values);
+            }
+
             return arrayToTableData(newTableArray);
         }
 
@@ -234,6 +287,26 @@ $(document).ready(function() {
                         "mColumns": [2, 3, 4, 8],
                         "fnClick": function( nButton, oConfig, flash ) {
                             this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig)) );
+                        }
+                    },
+                    {
+                        "sExtends": "copy",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        },
+                        "sButtonText": "<span class=\"fa fa-table\"></span> Copy Nvivo",
+                        "fnClick": function( nButton, oConfig, flash ) {
+                            this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig)) );
+                        }
+                    },
+                    {
+                        "sExtends": "xls",
+                        "oSelectorOpts": {
+                            page: 'current'
+                        },
+                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Nvivo",
+                        "fnClick": function( nButton, oConfig, flash ) {
+                            this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig)) );
                         }
                     }
                 ]
