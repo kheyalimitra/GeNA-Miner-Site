@@ -96,6 +96,18 @@ table {
 table td {
     word-wrap: break-word;
 }
+
+.DTTT_collection {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-color: #ccc !important;
+    margin-top: 5px !important;
+    padding: 5px 5px 0px 5px !important;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2) !important;
+}
+.DTTT_collection > a {
+    position: relative !important;
+    margin-bottom: 5px !important;
+}
 </style>
 
 <script type="text/javascript" class="init">
@@ -255,7 +267,7 @@ $(document).ready(function() {
                 "aButtons": [
                     {
                         "sExtends":    "collection",
-                        "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current",
+                        "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV) <span class=\"fa fa-caret-down\"></span>",
                         "aButtons":    [
                             {
                                 "sExtends": "copy",
@@ -289,7 +301,7 @@ $(document).ready(function() {
                     },
                     {
                         "sExtends":    "collection",
-                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Current",
+                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Current (CSV) <span class=\"fa fa-caret-down\"></span>",
                         "aButtons":    [
                             {
                                 "sExtends": "csv",
@@ -394,7 +406,7 @@ $(document).ready(function() {
                 <label id="groupByButton" class="btn btn-default btn-sm"><span class="fa fa-list-ul"></span> Group By<input type="checkbox" id="groupBy"></label>\
             </div>\
         ');
-        $(".DTTT_collection .DTTT_button").addClass("btn btn-default btn-sm");
+        $(".DTTT_collection > a").removeClass("DTTT_button").addClass("btn btn-default btn-sm btn-block");
 
         function expandAll(flag) {
             $('#example tbody tr[role="row"].parent td.control').trigger("click");
