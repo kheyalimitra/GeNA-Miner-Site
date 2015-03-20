@@ -147,26 +147,27 @@ $(document).ready(function() {
         $("#example thead tr").html(tableHeaderTags);
 
         function tableDataToArray(tableData) {
+            tableData = tableData.replace("…", "...");
             rows = tableData.split('\n');
             for (i = 0; i < rows.length; ++i) {
                 rows[i] = rows[i].split('\t');
             }
             return rows;
         }
-        function arrayToTableData(rows) {
+        function arrayToTableData(rows, fieldBoundary, fieldSeperator) {
             stringData = "";
             for (i = 0; i < rows.length; ++i) {
                 for (j = 0; j < rows[i].length-1; ++j) {
-                    stringData = stringData + rows[i][j] + '\t';
+                    stringData = stringData + fieldBoundary + rows[i][j] + fieldBoundary + fieldSeperator;
                 }
                 if (rows[i].length >= 1) {
-                    stringData = stringData + rows[i][j] + '\n'
+                    stringData = stringData + fieldBoundary + rows[i][j] + fieldBoundary + '\n';
                 }
             }
             return stringData;
         }
 
-        function toNodeXLData(oriData) {
+        function toNodeXLData(oriData, fieldBoundary, fieldSeperator) {
             rows = tableDataToArray(oriData);
             rows.shift();
             var newTableArray = [["Vertex 1", "Vertex 2", "Text", "Relationship"]];
@@ -199,10 +200,11 @@ $(document).ready(function() {
                 }
 
             }
-            return arrayToTableData(newTableArray);
+
+            return arrayToTableData(newTableArray, fieldBoundary, fieldSeperator);
         }
 
-        function toNvivoData(oriData) {
+        function toNvivoData(oriData, fieldBoundary, fieldSeperator) {
             rows = tableDataToArray(oriData);
             rows.shift();
 
@@ -257,7 +259,7 @@ $(document).ready(function() {
                 newTableArray.push(values);
             }
 
-            return arrayToTableData(newTableArray);
+            return arrayToTableData(newTableArray, fieldBoundary, fieldSeperator);
         }
 
         var table = $('#example').DataTable( {
@@ -284,7 +286,7 @@ $(document).ready(function() {
                                 "sButtonText": "For NodeXL",
                                 "mColumns": [2, 3, 4, 8],
                                 "fnClick": function( nButton, oConfig, flash ) {
-                                    this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig)) );
+                                    this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig), "", "\t") );
                                 }
                             },
                             {
@@ -294,7 +296,7 @@ $(document).ready(function() {
                                 },
                                 "sButtonText": "For Nvivo",
                                 "fnClick": function( nButton, oConfig, flash ) {
-                                    this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig)) );
+                                    this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig), "", "\t") );
                                 }
                             }
                         ]
@@ -311,24 +313,28 @@ $(document).ready(function() {
                                 }
                             },
                             {
-                                "sExtends": "xls",
+                                "sExtends": "csv",
                                 "oSelectorOpts": {
                                     page: 'current'
                                 },
                                 "sButtonText": "For NodeXL",
                                 "mColumns": [2, 3, 4, 8],
+                                "sFieldBoundary": "",
+                                "sFieldSeperator": "\t",
                                 "fnClick": function( nButton, oConfig, flash ) {
-                                    this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig)) );
+                                    this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig), "\"", ",") );
                                 }
                             },
                             {
-                                "sExtends": "xls",
+                                "sExtends": "csv",
                                 "oSelectorOpts": {
                                     page: 'current'
                                 },
                                 "sButtonText": "For Nvivo",
+                                "sFieldBoundary": "",
+                                "sFieldSeperator": "\t",
                                 "fnClick": function( nButton, oConfig, flash ) {
-                                    this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig)) );
+                                    this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig), "\"", ",") );
                                 }
                             }
                         ]
