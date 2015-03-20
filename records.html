@@ -147,7 +147,8 @@ $(document).ready(function() {
         $("#example thead tr").html(tableHeaderTags);
 
         function tableDataToArray(tableData) {
-            tableData = tableData.replace("…", "...");
+            tableData = tableData.replace(/…/g, "...");
+            tableData = tableData.replace(/"/g, '\"\"');
             rows = tableData.split('\n');
             for (i = 0; i < rows.length; ++i) {
                 rows[i] = rows[i].split('\t');
