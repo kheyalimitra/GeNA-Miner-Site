@@ -263,84 +263,103 @@ $(document).ready(function() {
             return arrayToTableData(newTableArray, fieldBoundary, fieldSeperator);
         }
 
+        var tabletoolsButtons = db == "twitter" ? 
+            [
+                {
+                    "sExtends":    "collection",
+                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV) <span class=\"fa fa-caret-down\"></span>",
+                    "aButtons":    [
+                        {
+                            "sExtends": "copy",
+                            "sButtonText": "Plain",
+                            "oSelectorOpts": {
+                                page: 'current'
+                            }
+                        },
+                        {
+                            "sExtends": "copy",
+                            "oSelectorOpts": {
+                                page: 'current'
+                            },
+                            "sButtonText": "For NodeXL",
+                            "mColumns": [2, 3, 4, 8],
+                            "fnClick": function( nButton, oConfig, flash ) {
+                                this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig), "", "\t") );
+                            }
+                        },
+                        {
+                            "sExtends": "copy",
+                            "oSelectorOpts": {
+                                page: 'current'
+                            },
+                            "sButtonText": "For Nvivo",
+                            "fnClick": function( nButton, oConfig, flash ) {
+                                this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig), "", "\t") );
+                            }
+                        }
+                    ]
+                },
+                {
+                    "sExtends":    "collection",
+                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current (CSV) <span class=\"fa fa-caret-down\"></span>",
+                    "aButtons":    [
+                        {
+                            "sExtends": "csv",
+                            "sButtonText": "Plain",
+                            "oSelectorOpts": {
+                                page: 'current'
+                            }
+                        },
+                        {
+                            "sExtends": "csv",
+                            "oSelectorOpts": {
+                                page: 'current'
+                            },
+                            "sButtonText": "For NodeXL",
+                            "mColumns": [2, 3, 4, 8],
+                            "sFieldBoundary": "",
+                            "sFieldSeperator": "\t",
+                            "fnClick": function( nButton, oConfig, flash ) {
+                                this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig), "\"", ",") );
+                            }
+                        },
+                        {
+                            "sExtends": "csv",
+                            "oSelectorOpts": {
+                                page: 'current'
+                            },
+                            "sButtonText": "For Nvivo",
+                            "sFieldBoundary": "",
+                            "sFieldSeperator": "\t",
+                            "fnClick": function( nButton, oConfig, flash ) {
+                                this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig), "\"", ",") );
+                            }
+                        }
+                    ]
+                }
+            ] :
+            [
+                {
+                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV)",
+                    "sExtends": "copy",
+                    "oSelectorOpts": {
+                        page: 'current'
+                    }
+                },
+                {
+                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current (CSV)",
+                    "sExtends": "csv",
+                    "oSelectorOpts": {
+                        page: 'current'
+                    }
+                }
+            ];
+
         var table = $('#example').DataTable( {
             dom: '<"toggleButtons">lfTrtip',
             tableTools: {
                 "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
-                "aButtons": [
-                    {
-                        "sExtends":    "collection",
-                        "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV) <span class=\"fa fa-caret-down\"></span>",
-                        "aButtons":    [
-                            {
-                                "sExtends": "copy",
-                                "sButtonText": "Plain",
-                                "oSelectorOpts": {
-                                    page: 'current'
-                                }
-                            },
-                            {
-                                "sExtends": "copy",
-                                "oSelectorOpts": {
-                                    page: 'current'
-                                },
-                                "sButtonText": "For NodeXL",
-                                "mColumns": [2, 3, 4, 8],
-                                "fnClick": function( nButton, oConfig, flash ) {
-                                    this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig), "", "\t") );
-                                }
-                            },
-                            {
-                                "sExtends": "copy",
-                                "oSelectorOpts": {
-                                    page: 'current'
-                                },
-                                "sButtonText": "For Nvivo",
-                                "fnClick": function( nButton, oConfig, flash ) {
-                                    this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig), "", "\t") );
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "sExtends":    "collection",
-                        "sButtonText": "<span class=\"fa fa-table\"></span> Save Current (CSV) <span class=\"fa fa-caret-down\"></span>",
-                        "aButtons":    [
-                            {
-                                "sExtends": "csv",
-                                "sButtonText": "Plain",
-                                "oSelectorOpts": {
-                                    page: 'current'
-                                }
-                            },
-                            {
-                                "sExtends": "csv",
-                                "oSelectorOpts": {
-                                    page: 'current'
-                                },
-                                "sButtonText": "For NodeXL",
-                                "mColumns": [2, 3, 4, 8],
-                                "sFieldBoundary": "",
-                                "sFieldSeperator": "\t",
-                                "fnClick": function( nButton, oConfig, flash ) {
-                                    this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig), "\"", ",") );
-                                }
-                            },
-                            {
-                                "sExtends": "csv",
-                                "oSelectorOpts": {
-                                    page: 'current'
-                                },
-                                "sButtonText": "For Nvivo",
-                                "sFieldBoundary": "",
-                                "sFieldSeperator": "\t",
-                                "fnClick": function( nButton, oConfig, flash ) {
-                                    this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig), "\"", ",") );
-                                }
-                            }
-                        ]
-                    }
-                ]
+                "aButtons": tabletoolsButtons
             }, 
 
             "serverSide": true,
