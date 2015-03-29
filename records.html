@@ -5,6 +5,8 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <!--<script src="static/js/jquery.min.js"></script>-->
 
+<script src="//maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false"></script>
+
 <script src="static/js/purl.min.js"></script>
 
 <script src="static/js/jquery.cookie.min.js"></script>
@@ -262,9 +264,54 @@ $(document).ready(function() {
 
             return arrayToTableData(newTableArray, fieldBoundary, fieldSeperator);
         }
+        
+        function draw_heatmap(LatLngString) {
+            
+            var LatLngList = LatLngString.split("\n");
+            LatLngList.shift();
+            
+            var heatmapData = [];
+            for (i = 0; i < LatLngList.length; ++i) {
+                if (!LatLngList || LatLngList.length <= 1) {
+                    continue;
+                }
+                loc = LatLngList[i].split(", ");
+                if (loc.length != 2) {
+                    continue;
+                }
+                heatmapData.push( new google.maps.LatLng(parseFloat(loc[0]), parseFloat(loc[1])));
+            }
+            
+            $('#map_wrapper').modal('toggle');
+            
+            var sanFrancisco = new google.maps.LatLng(37.774546, -122.433523);
+            map = new google.maps.Map(document.getElementById('map_canvas'), {
+                center: sanFrancisco,
+                zoom: 1,
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+            });
+                
+            var heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatmapData
+            });
+            heatmap.setMap(map);
+            
+            
+        }
 
         var tabletoolsButtons = db == "twitter" ? 
             [
+                {
+                    "sExtends": "text",
+                    "oSelectorOpts": {
+                        page: 'current'
+                    },
+                    "sButtonText": "Draw Heatmap",
+                    "mColumns": [11],
+                    "fnClick": function( nButton, oConfig, flash ) {
+                        draw_heatmap(this.fnGetTableData(oConfig));
+                    }
+                },
                 {
                     "sExtends":    "collection",
                     "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV) <span class=\"fa fa-caret-down\"></span>",
@@ -986,6 +1033,11 @@ $(document).ready(function() {
             </td>
         </tr>
     </table>
+</div>
+
+<div class="modal" id="map_wrapper" tabindex="-1" role="dialog" aria-labelledby="map_wrapper_label" aria-hidden="true">
+    <div class="block" id="map_canvas" style="width: 80%; height: 80%; margin-left: 10%; margin-top: 5%">
+    </div>
 </div>
 
 <div class="block" style="width:100%;">
