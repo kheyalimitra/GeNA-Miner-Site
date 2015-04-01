@@ -264,54 +264,42 @@ $(document).ready(function() {
 
             return arrayToTableData(newTableArray, fieldBoundary, fieldSeperator);
         }
-        
-        function draw_heatmap(LatLngString) {
-            
-            var LatLngList = LatLngString.split("\n");
-            LatLngList.shift();
-            
-            var heatmapData = [];
-            for (i = 0; i < LatLngList.length; ++i) {
-                if (!LatLngList || LatLngList.length <= 1) {
-                    continue;
-                }
-                loc = LatLngList[i].split(", ");
-                if (loc.length != 2) {
-                    continue;
-                }
-                heatmapData.push( new google.maps.LatLng(parseFloat(loc[0]), parseFloat(loc[1])));
+
+        function draw_heatmap() {
+            if (!isIntWithMinVal($('#geo_n').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
             }
-            
-            $('#map_wrapper').modal('toggle');
-            
-            var sanFrancisco = new google.maps.LatLng(37.774546, -122.433523);
-            map = new google.maps.Map(document.getElementById('map_canvas'), {
-                center: sanFrancisco,
-                zoom: 1,
-                mapTypeId: google.maps.MapTypeId.SATELLITE
+
+            $.ajax({
+                dataType: (jsonp ? "jsonp" : "json"),
+                jsonpCallback: "jsonpcallback_heatmap",
+                cache: true,
+                url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent((query == "" ? "" : "(" + query + ") AND ") + "_exists_:coordinates") + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo) + "&length=" + $('#geo_n').val() + "&raw=true",
+                success: function(j) {
+                    var heatmapData = [];
+                    for (i = 0; i < j.data.length; i++) {
+                        var match = j.data[i].coordinates.split(',');
+                        heatmapData.push(new google.maps.LatLng(parseFloat(match[0]), parseFloat(match[1])));
+                    }
+
+                    $('#map_wrapper').modal('toggle');
+
+                    var map = new google.maps.Map(document.getElementById('map_canvas'), {
+                        center: new google.maps.LatLng(0, 0),
+                        zoom: 2,
+                        mapTypeId: google.maps.MapTypeId.SATELLITE
+                    });
+
+                    var heatmap = new google.maps.visualization.HeatmapLayer({
+                        data: heatmapData
+                    });
+                    heatmap.setMap(map);
+                }
             });
-                
-            var heatmap = new google.maps.visualization.HeatmapLayer({
-                data: heatmapData
-            });
-            heatmap.setMap(map);
-            
-            
         }
 
         var tabletoolsButtons = db == "twitter" ? 
             [
-                {
-                    "sExtends": "text",
-                    "oSelectorOpts": {
-                        page: 'current'
-                    },
-                    "sButtonText": "Draw Heatmap",
-                    "mColumns": [11],
-                    "fnClick": function( nButton, oConfig, flash ) {
-                        draw_heatmap(this.fnGetTableData(oConfig));
-                    }
-                },
                 {
                     "sExtends":    "collection",
                     "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV) <span class=\"fa fa-caret-down\"></span>",
@@ -828,6 +816,13 @@ $(document).ready(function() {
             }
         });
 
+        $('#geo_n').val(1000);
+        $('#geo_form').submit( function (e) {
+            e.preventDefault();
+
+            draw_heatmap();
+        });
+
         function updateThemeList() {
             $.ajax({
                 dataType: "jsonp",
@@ -1032,11 +1027,26 @@ $(document).ready(function() {
                 </div>
             </td>
         </tr>
+        <tr>
+            <td>
+                <div style="display:inline-block;">
+                    <form class="form-inline" id="geo_form" method="get">
+                        <input type="hidden" name="db"></input>
+                        <input type="hidden" name="query"></input>
+                        <input type="hidden" name="from"></input>
+                        <input type="hidden" name="to"></input>
+                        <label class="control-label">Max. #Coordinates.: </label>
+                        <input class="form-control input-sm" id="geo_n" style="width:100px;" name="n" title="Greater than or equal to 1"></input>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-globe"></span> Map View</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
     </table>
 </div>
 
 <div class="modal" id="map_wrapper" tabindex="-1" role="dialog" aria-labelledby="map_wrapper_label" aria-hidden="true">
-    <div class="block" id="map_canvas" style="width: 80%; height: 80%; margin-left: 10%; margin-top: 5%">
+    <div class="block" id="map_canvas" style="width: 800px; height: 600px; margin: auto; margin-top: 50px;">
     </div>
 </div>
 
@@ -1046,7 +1056,6 @@ $(document).ready(function() {
             <tr>
             </tr>
         </thead>
-
     </table>
 </div>
 

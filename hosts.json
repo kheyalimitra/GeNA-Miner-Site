@@ -190,7 +190,6 @@
             }
         ],
         "order": [[1, "desc"]],
-        "searchOnly": true,
         "buttonGroups": [6, 6, 4]
     },
     "instagram": {
