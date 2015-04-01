@@ -266,10 +266,6 @@ $(document).ready(function() {
         }
 
         function draw_heatmap() {
-            if (!isIntWithMinVal($('#geo_n').val(), 1)) {
-                showAlert("Please check your inputs.", "danger");
-            }
-
             $.ajax({
                 dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback_heatmap",
@@ -819,6 +815,11 @@ $(document).ready(function() {
         $('#geo_n').val(1000);
         $('#geo_form').submit( function (e) {
             e.preventDefault();
+
+            if (!isIntWithMinVal($('#geo_n').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                return;
+            }
 
             draw_heatmap();
         });
