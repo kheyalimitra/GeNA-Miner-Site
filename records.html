@@ -49,8 +49,14 @@ tr.group {
     background-color: #eeeeee !important;
 }
 
-#form_table th, #form_table td {
+#form_div .actionblock, #form_div .spaceblock {
     padding: 5px;
+    display: inline-block;
+}
+
+#form_div .spaceblock {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #example_filter input {
@@ -283,7 +289,7 @@ $(document).ready(function() {
                     var map = new google.maps.Map(document.getElementById('map_canvas'), {
                         center: new google.maps.LatLng(0, 0),
                         zoom: 2,
-                        mapTypeId: google.maps.MapTypeId.SATELLITE
+                        mapTypeId: google.maps.MapTypeId.MAP
                     });
 
                     var heatmap = new google.maps.visualization.HeatmapLayer({
@@ -940,12 +946,7 @@ $(document).ready(function() {
 
 <div class="block" id="form_div" style="width:100%;">
     <div id="form_divmask" style="position:absolute; z-index: 1000; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); "></div>
-    <table id="form_table" style="width:100%; ">
-        <col width="400px">
-        <col>
-        <tr>
-            <td>
-                <div style="display:inline-block;">
+                <div class="actionblock">
                     <form class="form-inline" id="trend_form" action="trend.html" method="get">
                         <input type="hidden" name="db"></input>
                         <input type="hidden" name="query"></input>
@@ -956,9 +957,9 @@ $(document).ready(function() {
                         <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
                     </form>
                 </div>
-            </td>
-            <td>
-                <div style="display:inline-block;">
+                <div class="spaceblock">
+                </div>
+                <div class="actionblock">
                     <div style="display:inline-block;">
                         <form class="form-inline" id="theme_form" action="theme.html" method="get">
                             <input type="hidden" name="db"></input>
@@ -993,11 +994,8 @@ $(document).ready(function() {
                         </div>
                     </div>
                 </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div style="display:inline-block;">
+                <br/>
+                <div class="actionblock">
                     <form class="form-inline" id="topic_form" action="topic.html" method="get">
                         <input type="hidden" name="db"></input>
                         <input type="hidden" name="query"></input>
@@ -1010,9 +1008,9 @@ $(document).ready(function() {
                         <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Topics</button>
                     </form>
                 </div>
-            </td>
-            <td>
-                <div style="display:inline-block;">
+                <div class="spaceblock">
+                </div>
+                <div class="actionblock">
                     <form class="form-inline" id="topk_form" action="topk.html" method="get">
                         <input type="hidden" name="db"></input>
                         <input type="hidden" name="query"></input>
@@ -1025,24 +1023,19 @@ $(document).ready(function() {
                         <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Co-occurrences</button>
                     </form>
                 </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div style="display:inline-block;">
+                <div class="spaceblock">
+                </div>
+                <div class="actionblock">
                     <form class="form-inline" id="geo_form" method="get">
                         <input type="hidden" name="db"></input>
                         <input type="hidden" name="query"></input>
                         <input type="hidden" name="from"></input>
                         <input type="hidden" name="to"></input>
-                        <label class="control-label">Max. #Coordinates.: </label>
-                        <input class="form-control input-sm" id="geo_n" style="width:100px;" name="n" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-globe"></span> Map View</button>
+                        <label class="control-label">#Coordinates: </label>
+                        <input class="form-control input-sm" id="geo_n" style="width:80px;" name="n" title="Greater than or equal to 1"></input>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-globe"></span> Heatmap</button>
                     </form>
                 </div>
-            </td>
-        </tr>
-    </table>
 </div>
 
 <div class="modal" id="map_wrapper" tabindex="-1" role="dialog" aria-labelledby="map_wrapper_label" aria-hidden="true">
