@@ -981,16 +981,20 @@ $(document).ready(function() {
     </div>
 </div>
 
-<div class="modal" id="progress_wrapper" tabindex="-1" role="dialog" aria-labelledby="progress_wrapper_label" aria-hidden="true">
-    <div class="progress" style="width: 50%; margin-left: 25%; margin-top: 25%">
-        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-            <span class="sr-only">Loading...</span>
+<div class="modal" id="progress_wrapper" tabindex="-1" role="dialog" aria-labelledby="progress_wrapper_label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="width: 800px; margin: auto; margin-top: 200px;">
+    <div class="progress">
+        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span>Loading...</span>
         </div>
+    </div>
     </div>
 </div>
 
 <div class="modal" id="map_wrapper" tabindex="-1" role="dialog" aria-labelledby="map_wrapper_label" aria-hidden="true">
-    <div class="block" id="map_canvas" style="width: 800px; height: 600px; margin: auto; margin-top: 50px;">
+    <div class="modal-dialog" style="width: 800px; height: 600px; margin: auto; margin-top: 50px;">
+    <div class="map" id="map_canvas" style="width: 800px; height: 600px;">
+    </div>
     </div>
 </div>
 
