@@ -44,6 +44,8 @@
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <script src="js/main.js"></script>
 
+<script src="js/records.js"></script>
+
 <style>
 tr.group {
     background-color: #eeeeee !important;
@@ -60,7 +62,7 @@ tr.group {
 }
 
 #example_filter input {
-    width: 250px;
+    width: 300px;
 }
 
 mark {
@@ -116,6 +118,25 @@ table td {
     position: relative !important;
     margin-bottom: 5px !important;
 }
+
+#searchToggleDiv {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+}
+#searchToggleButton {
+    border-color: #000;
+
+    border-radius: 0px;
+    border-bottom-left-radius: 3px;
+}
+#searchToggleButton {
+    color: #333;
+    background-color: #fff;
+}
+#searchToggleButton:hover, #searchToggleButton.active {
+    background-color: rgba(243,228,48,0.25);
+}
 </style>
 
 <script type="text/javascript" class="init">
@@ -148,128 +169,23 @@ $(document).ready(function() {
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo;
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
 
+        function setFilterQueryTooltip() {
+            if ($('#searchToggle').prop("checked") && filterValue != "") {
+                var filterQuery = query == "" ? filterValue : "(" + query + ") AND (" + filterValue + ")";
+                $("#searchToggleButton").attr("title", "Filter Query: " + filterQuery).tooltip({placement: "left", html: true, container: 'body'});
+            }
+            else {
+                $("#searchToggleButton").tooltip('destroy');
+            }
+        }
+
+        $('#searchToggle').change(setFilterQueryTooltip);
+
         var tableHeaderTags = '<th class="all"></th>';
         for (var i = 0; i < hosts[db].columns.length; i++) {
             tableHeaderTags += '<th></th>';
         }
         $("#example thead tr").html(tableHeaderTags);
-
-        function tableDataToArray(tableData) {
-            tableData = tableData.replace(/…/g, "...");
-            tableData = tableData.replace(/"/g, '\"\"');
-            rows = tableData.split('\n');
-            for (i = 0; i < rows.length; ++i) {
-                rows[i] = rows[i].split('\t');
-            }
-            return rows;
-        }
-        function arrayToTableData(rows, fieldBoundary, fieldSeperator) {
-            stringData = "";
-            for (i = 0; i < rows.length; ++i) {
-                for (j = 0; j < rows[i].length-1; ++j) {
-                    stringData = stringData + fieldBoundary + rows[i][j] + fieldBoundary + fieldSeperator;
-                }
-                if (rows[i].length >= 1) {
-                    stringData = stringData + fieldBoundary + rows[i][j] + fieldBoundary + '\n';
-                }
-            }
-            return stringData;
-        }
-
-        function toNodeXLData(oriData, fieldBoundary, fieldSeperator) {
-            rows = tableDataToArray(oriData);
-            rows.shift();
-            var newTableArray = [["Vertex 1", "Vertex 2", "Text", "Relationship"]];
-            for (i = 0; i < rows.length; ++i) {
-                var arow = rows[i];
-                var vertex1 = arow[0];
-                var vertex2 = arow[0];
-                var text = arow[1];
-                var relationship = arow[2];
-                var mentionList = arow[3];
-
-                if (relationship == "") {
-                    relationship = "Tweet";
-                } else if (relationship == "reply") {
-                    relationship = "Reply To";
-                } else if (relationship == "mention") {
-                    relationship = "Mentions";
-                } else {
-                    continue;
-                }
-
-                if (mentionList == "") {
-                    newTableArray.push([vertex1, vertex2, text, relationship]);
-                } else {
-                    mlist = mentionList.split(', ');
-                    for (j = 0; j < mlist.length; ++j) {
-                        vertex2 = mlist[j].replace("@", "");
-                        newTableArray.push([vertex1, vertex2, text, relationship]);
-                    }
-                }
-
-            }
-
-            return arrayToTableData(newTableArray, fieldBoundary, fieldSeperator);
-        }
-
-        function toNvivoData(oriData, fieldBoundary, fieldSeperator) {
-            rows = tableDataToArray(oriData);
-            rows.shift();
-
-            var newTableArray = [];
-            var structuredData = {};
-            var typeMap = {"": "Tweet", "retweet": "Retweet", "mention": "Mentions", "reply": "Reply To"};
-
-            for (i = 0; i < rows.length; ++i) {
-                var arow = rows[i];
-
-                structuredData[arow[13]] = {
-                    "Tweet ID": arow[13],
-                    "Username": arow[2],
-                    "Tweet": arow[3],
-                    "Time": arow[1],
-                    "Tweet Type": typeMap[arow[4]],
-                    "Retweeted by": "",
-                    "Number of Retweets": 0,
-                    "Hashtags": arow[7],
-                    "Mentions": arow[8],
-                    "Name (real)": "",
-                    "Location": arow[5],
-                    "Web": arow[9],
-                    "Bio": "",
-                    "Number of Tweets": 0,
-                    "Number of Followers": 0,
-                    "Number Following": 0,
-                    "Location Coordinates": arow[11]
-                }
-            }
-
-            for (i = 0; i < rows.length; ++i) {
-                var arow = rows[i];
-                var oriTweetID = arow[15];
-                if (oriTweetID != "" && structuredData[oriTweetID] != null) {
-                    if (structuredData[oriTweetID]["Retweeted by"] == "") {
-                        structuredData[oriTweetID]["Retweeted by"] = arow[2];
-                    } else {
-                        structuredData[oriTweetID]["Retweeted by"] += ", " + arow[2];
-                    }
-                    structuredData[oriTweetID]["Number of Retweets"]++;
-                }
-            }
-
-            for (id in structuredData) {
-                if (newTableArray.length == 0) {
-                    newTableArray.push(Object.keys(structuredData[id]));
-                }
-                var values = Object.keys(structuredData[id]).map(function(key){
-                    return structuredData[id][key];
-                });
-                newTableArray.push(values);
-            }
-
-            return arrayToTableData(newTableArray, fieldBoundary, fieldSeperator);
-        }
 
         function draw_heatmap() {
             $.ajax({
@@ -393,7 +309,7 @@ $(document).ready(function() {
             ];
 
         var table = $('#example').DataTable( {
-            dom: '<"toggleButtons">lfTrtip',
+            dom: '<"toggleButtons">fTlrtip',
             tableTools: {
                 "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
                 "aButtons": tabletoolsButtons
@@ -505,6 +421,7 @@ $(document).ready(function() {
         var filterValue = ""
         function search() {
             filterValue = $("#example_filter input").val();
+            setFilterQueryTooltip();
 
             /*
             var columnRegex = /((?:\w|[_.])+):/g;
@@ -552,7 +469,7 @@ $(document).ready(function() {
             if (popoverShown) {
                 popoverShown = false;
                 $('#example_filter input').popover('hide').animate({
-                    "width": "250px"
+                    "width": "300px"
                 }, 200);
                 $("#example_filter_clear").hide();
             }
@@ -1036,6 +953,9 @@ $(document).ready(function() {
                         <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-globe"></span> Heatmap</button>
                     </form>
                 </div>
+    <div id="searchToggleDiv" class="btn-group" data-toggle="buttons">
+        <label id="searchToggleButton" class="btn btn-xs"><span class="fa fa-filter"></span> Filter by Search<input type="checkbox" id="searchToggle"></label>
+    </div>
 </div>
 
 <div class="modal" id="map_wrapper" tabindex="-1" role="dialog" aria-labelledby="map_wrapper_label" aria-hidden="true">
