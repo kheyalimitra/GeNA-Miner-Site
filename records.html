@@ -51,14 +51,13 @@ tr.group {
     background-color: #eeeeee !important;
 }
 
-#form_div .actionblock, #form_div .spaceblock {
-    padding: 5px;
+#form_div .actionblock {
+    padding: 0px;
+    padding-right: 10px;
     display: inline-block;
 }
-
-#form_div .spaceblock {
-    padding-left: 10px;
-    padding-right: 10px;
+#form_div .newrow {
+    height: 10px;
 }
 
 #example_filter input {
@@ -168,6 +167,21 @@ $(document).ready(function() {
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo;
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
+
+        if (hosts[db].hiddenActions != null) {
+            $.each(hosts[db].hiddenActions, function(index, s) {
+                $("#" + s + "block").hide();
+            });
+        }
+        if (hosts[db].disableActions != null) {
+            $.each(hosts[db].disableActions, function(index, s) {
+                $("#" + s + "block .btn, #" + s + "block .form-control").prop("disabled", true); 
+            });
+        }
+
+        if (hosts[db].noFilterToggle) {
+            $("#searchToggleDiv").hide();
+        }
 
         function getFilterQuery() {
             if ($('#searchToggle').prop("checked")) {
@@ -904,96 +918,90 @@ $(document).ready(function() {
 
 <div class="block" id="form_div" style="width:100%;">
     <div id="form_divmask" style="position:absolute; z-index: 1000; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); "></div>
-                <div class="actionblock">
-                    <form class="form-inline" id="trend_form" action="trend.html" method="get">
-                        <input type="hidden" name="db"></input>
-                        <input type="hidden" name="query"></input>
-                        <input type="hidden" name="from"></input>
-                        <input type="hidden" name="to"></input>
-                        <label class="control-label">Year Interval: </label>
-                        <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
-                    </form>
-                </div>
-                <div class="spaceblock">
-                </div>
-                <div class="actionblock">
-                    <div style="display:inline-block;">
-                        <form class="form-inline" id="theme_form" action="theme.html" method="get">
-                            <input type="hidden" name="db"></input>
-                            <input type="hidden" name="query"></input>
-                            <input type="hidden" name="from"></input>
-                            <input type="hidden" name="to"></input>
-                            <label class="control-label">Dictionary: </label>
-                            <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
-                            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-pie-chart"></span> Visualize</button>
-                        </form>
+    <div class="actionblock" id="trendblock">
+        <form class="form-inline" id="trend_form" action="trend.html" method="get">
+            <input type="hidden" name="db"></input>
+            <input type="hidden" name="query"></input>
+            <input type="hidden" name="from"></input>
+            <input type="hidden" name="to"></input>
+            <label class="control-label">Year Interval: </label>
+            <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
+            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
+        </form>
+    </div>
+    <div class="actionblock" id="themeblock">
+        <div style="display:inline-block;">
+            <form class="form-inline" id="theme_form" action="theme.html" method="get">
+                <input type="hidden" name="db"></input>
+                <input type="hidden" name="query"></input>
+                <input type="hidden" name="from"></input>
+                <input type="hidden" name="to"></input>
+                <label class="control-label">Dictionary: </label>
+                <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
+                <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-pie-chart"></span> Visualize</button>
+            </form>
+        </div>
+        <div style="display:inline-block;">
+            |
+            <div id="theme_othersdiv" style="display: inline-block;">
+                <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="fa fa-download"></span> View</button>
+                <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="fa fa-trash-o"></span> Delete</button>
+            </div>
+            <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="fa fa-upload"></span> New</button>
+            <div id="theme_uploaddiv" style="display: inline-block;">
+                <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
+                <form class="form-inline" id="theme_uploadform" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
+                    <input id="theme_uploadstatus" type="hidden" name="root"></input>
+                    <div class="btn-group">
+                        <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="fa fa-upload"></span> Upload</button>
+                        <span class="btn btn-default btn-sm btn-file" title="CSV file only">
+                            Browse ...
+                            <input id="theme_uploadinput" type="file" name="file" accept=".csv" tabindex="0"></input>
+                        </span>
+                        <span class="btn btn-sm disabled" id="theme_uploadfile"></span>
                     </div>
-                    <div style="display:inline-block;">
-                        |
-                        <div id="theme_othersdiv" style="display: inline-block;">
-                            <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="fa fa-download"></span> View</button>
-                            <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="fa fa-trash-o"></span> Delete</button>
-                        </div>
-                        <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="fa fa-upload"></span> New</button>
-                        <div id="theme_uploaddiv" style="display: inline-block;">
-                            <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
-                            <form class="form-inline" id="theme_uploadform" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
-                                <input id="theme_uploadstatus" type="hidden" name="root"></input>
-                                <div class="btn-group">
-                                    <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="fa fa-upload"></span> Upload</button>
-                                    <span class="btn btn-default btn-sm btn-file" title="CSV file only">
-                                        Browse ...
-                                        <input id="theme_uploadinput" type="file" name="file" accept=".csv" tabindex="0"></input>
-                                    </span>
-                                    <span class="btn btn-sm disabled" id="theme_uploadfile"></span>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <br/>
-                <div class="actionblock">
-                    <form class="form-inline" id="topic_form" action="topic.html" method="get">
-                        <input type="hidden" name="db"></input>
-                        <input type="hidden" name="query"></input>
-                        <input type="hidden" name="from"></input>
-                        <input type="hidden" name="to"></input>
-                        <label class="control-label">k: </label>
-                        <input class="form-control input-sm" id="topic_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
-                        <label class="control-label">#Word per Topic: </label>
-                        <input class="form-control input-sm" id="topic_wordnum" style="width:50px;" name="wordnum" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Topics</button>
-                    </form>
-                </div>
-                <div class="spaceblock">
-                </div>
-                <div class="actionblock">
-                    <form class="form-inline" id="topk_form" action="topk.html" method="get">
-                        <input type="hidden" name="db"></input>
-                        <input type="hidden" name="query"></input>
-                        <input type="hidden" name="from"></input>
-                        <input type="hidden" name="to"></input>
-                        <label class="control-label">k: </label>
-                        <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
-                        <label class="control-label">#Word per Phrase: </label>
-                        <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1"></input> - <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Co-occurrences</button>
-                    </form>
-                </div>
-                <div class="spaceblock">
-                </div>
-                <div class="actionblock">
-                    <form class="form-inline" id="geo_form" method="get">
-                        <input type="hidden" name="db"></input>
-                        <input type="hidden" name="query"></input>
-                        <input type="hidden" name="from"></input>
-                        <input type="hidden" name="to"></input>
-                        <label class="control-label">#Coordinates: </label>
-                        <input class="form-control input-sm" id="geo_n" style="width:80px;" name="n" title="Greater than or equal to 1"></input>
-                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-globe"></span> Heatmap</button>
-                    </form>
-                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="newrow"></div>
+    <div class="actionblock" id="topicblock">
+        <form class="form-inline" id="topic_form" action="topic.html" method="get">
+            <input type="hidden" name="db"></input>
+            <input type="hidden" name="query"></input>
+            <input type="hidden" name="from"></input>
+            <input type="hidden" name="to"></input>
+            <label class="control-label">k: </label>
+            <input class="form-control input-sm" id="topic_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
+            <label class="control-label">#Word per Topic: </label>
+            <input class="form-control input-sm" id="topic_wordnum" style="width:50px;" name="wordnum" title="Greater than or equal to 1"></input>
+            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Topics</button>
+        </form>
+    </div>
+    <div class="actionblock" id="topkblock">
+        <form class="form-inline" id="topk_form" action="topk.html" method="get">
+            <input type="hidden" name="db"></input>
+            <input type="hidden" name="query"></input>
+            <input type="hidden" name="from"></input>
+            <input type="hidden" name="to"></input>
+            <label class="control-label">k: </label>
+            <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
+            <label class="control-label">#Word per Phrase: </label>
+            <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1"></input> - <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1"></input>
+            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Co-occurrences</button>
+        </form>
+    </div>
+    <div class="actionblock" id="heatmapblock">
+        <form class="form-inline" id="geo_form" method="get">
+            <input type="hidden" name="db"></input>
+            <input type="hidden" name="query"></input>
+            <input type="hidden" name="from"></input>
+            <input type="hidden" name="to"></input>
+            <label class="control-label">#Coordinates: </label>
+            <input class="form-control input-sm" id="geo_n" style="width:80px;" name="n" title="Greater than or equal to 1"></input>
+            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-globe"></span> Heatmap</button>
+        </form>
+    </div>
     <div id="searchToggleDiv" class="btn-group" data-toggle="buttons">
         <label id="searchToggleButton" class="btn btn-xs"><span class="fa fa-filter"></span> Use Filter<input type="checkbox" id="searchToggle"></label>
     </div>

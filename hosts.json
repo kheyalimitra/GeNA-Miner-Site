@@ -70,7 +70,9 @@
         "toggleButtons": {
             "defaultGroupBy": true
         },
-        "buttonGroups": [5, 4]
+        "buttonGroups": [5, 4],
+        "hiddenActions": ["heatmap"],
+        "noFilterToggle": true
     },
     "twitter": {
         "host": "d142-58-33-188.burnaby.sfu.ca:5001",
@@ -190,15 +192,12 @@
             }
         ],
         "order": [[1, "desc"]],
-        "buttonGroups": [6, 6, 4]
-    },
-    "instagram": {
-        "host": "localhost:5002",
-        "name": "Instagram"
-    },
-    "dblp": {
-        "host": "localhost:5003",
-        "name": "DBLP",
-        "hide": true
+        "buttonGroups": [6, 6, 4],
+        "disableActions": [
+            "trend",
+            "theme",
+            "topic",
+            "topk"
+        ]
     }
 }
