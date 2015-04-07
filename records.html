@@ -202,7 +202,7 @@ $(document).ready(function() {
 
         function setFilterQueryTooltip() {
             if ($('#searchToggle').prop("checked") && filterValue != "") {
-                $("#searchToggleButton").attr("title", "Query with Filter: " + getFilterQuery()).tooltip({placement: "left", html: true, container: 'body', trigger: 'hover'}).tooltip('fixTitle').tooltip('show');
+                $("#searchToggleButton").attr("title", "Query with Filter: " + getFilterQuery()).tooltip({placement: "left", html: true, container: 'body', trigger: 'hover'}).tooltip("fixTitle").tooltip('show');
             }
             else {
                 $("#searchToggleButton").tooltip('destroy');
