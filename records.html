@@ -251,11 +251,12 @@ $(document).ready(function() {
                     var markers = [];
                     for (i = 0; i < heatmapData.length; ++i) {
                         var newmarker = new google.maps.Marker({
-                            position: heatmapData[i],
-                            title: "Twitter Marker"
+                            position: heatmapData[i]
                         });
 
-                        var info_keys = ["date_time", "user_name", "text", "type", "place", "coordinates", "source"];
+                        var info_keys = ["date_time", "user_name", "text", "type", "place", "source", 
+                            "hashtag_list", "mention_list", "url_list", "media_list", "coordinates", "language", 
+                            "tweet_id", "user_id", "original_id", "original_user_id"];
 
                         var info_div_string = "<div><p>";
                         for (j = 0; j < info_keys.length; ++j) {
@@ -268,31 +269,24 @@ $(document).ready(function() {
                             content: info_div_string
                         });
 
-                        google.maps.event.addListener(newmarker, 'mouseover', function() {
+                        google.maps.event.addListener(newmarker, 'click', function() {
                             this["infowindow"].open(map, this);
-                        });
-
-                        google.maps.event.addListener(newmarker, 'mouseout', function() {
-                            this["infowindow"].close();
                         });
 
                         markers.push(newmarker);
                     }
 
-                    $("#btn-toggle-markers").click(function () { 
-                        if ($("#btn-toggle-markers").text() == "Show Markers") {
+                    $("#marker").change(function () { 
+                        if ($("#marker").prop("checked")) {
                             for (i = 0; i < markers.length; ++i) {
                                 markers[i].setMap(map);
                             }
-                            $("#btn-toggle-markers").text("Hide Markers");
                         } else {
                             for (i = 0; i < markers.length; ++i) {
                                 markers[i].setMap(null);
                             }
-                            $("#btn-toggle-markers").text("Show Markers");
                         }
                     });
-                    $("#btn-toggle-markers").text("Show Markers");
 
                     var gradient = [
                         'rgba(0, 0, 255, 0)',
@@ -1066,8 +1060,12 @@ $(document).ready(function() {
 
 <div class="modal" id="map_wrapper" tabindex="-1" role="dialog" aria-labelledby="map_wrapper_label" aria-hidden="true">
     <div class="modal-dialog" style="width: 800px; height: 600px; margin: auto; margin-top: 50px;">
-    <div id="map-panel" style="position: absolute; top: 5px; left: 75%; z-index: 5; font-size: 0.8em;">
-        <button id="btn-toggle-markers" style="background-color: #fff; padding-top: 1px; padding-bottom: 1px; box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; outline:none;"></button>
+    <div id="map-panel" style="position: absolute; top: 4px; right: 100px; z-index: 100;">
+        <div class="btn-group" data-toggle="buttons">
+        <label id="markerButton" class="btn btn-xs btn-info"><span class="fa fa-map-marker"></span> Show Markers
+            <input type="checkbox" id="marker">
+        </label>
+        </div>
     </div>
     <div class="map" id="map_canvas" style="width: 800px; height: 600px;">
     </div>
