@@ -276,6 +276,9 @@ $(document).ready(function() {
                         });
 
                         google.maps.event.addListener(newmarker, 'click', function() {
+                            for(k = 0; k < markers.length; ++k) {
+                                markers[k]["infowindow"].close();
+                            }
                             this["infowindow"].open(map, this);
                         });
 
