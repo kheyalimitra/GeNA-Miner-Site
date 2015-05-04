@@ -258,10 +258,16 @@ $(document).ready(function() {
                             "hashtag_list", "mention_list", "url_list", "media_list", "coordinates", "language", 
                             "tweet_id", "user_id", "original_id", "original_user_id"];
 
+                        var title_dict = {"date_time": "Date & Time", "user_name": "User", "text": "Text", "type": "Type",
+                            "place": "Place", "source": "Source", "hashtag_list": "Hashtags", "mention_list": "Mentions", 
+                            "url_list": "URLs", "media_list": "Media", "coordinates": "Coordinates", "language": "Language", 
+                            "tweet_id": "Tweet ID", "user_id": "User ID", "original_id": "Original Tweet ID", 
+                            "original_user_id": "Original User ID"};
+
                         var info_div_string = "<div><p>";
                         for (j = 0; j < info_keys.length; ++j) {
                             var key = info_keys[j];
-                            info_div_string += "<span style='font-weight:bold'>" + key + ": </span>" + raw_data.data[i][key] + "<br>";
+                            info_div_string += "<span style='font-weight:bold'>" + title_dict[key] + ": </span>" + raw_data.data[i][key] + "<br>";
                         }
                         info_div_string += "</p></div>";
 
