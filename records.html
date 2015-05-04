@@ -276,18 +276,6 @@ $(document).ready(function() {
                         markers.push(newmarker);
                     }
 
-                    $("#marker").change(function () { 
-                        if ($("#marker").prop("checked")) {
-                            for (i = 0; i < markers.length; ++i) {
-                                markers[i].setMap(map);
-                            }
-                        } else {
-                            for (i = 0; i < markers.length; ++i) {
-                                markers[i].setMap(null);
-                            }
-                        }
-                    });
-
                     var gradient = [
                         'rgba(0, 0, 255, 0)',
                         'rgba(0, 0, 255, 1)',
@@ -304,10 +292,25 @@ $(document).ready(function() {
                         'rgba(191, 0, 31, 1)',
                         'rgba(255, 0, 0, 1)'
                     ];
-
+                    
                     heatmap.set('gradient', gradient);
                     heatmap.set('opacity', 1);
                     heatmap.set('radius', 20);
+                    
+                    $("#marker").change(function () { 
+                        if ($("#marker").prop("checked")) {
+                            for (i = 0; i < markers.length; ++i) {
+                                markers[i].setMap(map);
+                            }
+                            heatmap.setMap(null);
+                        } else {
+                            for (i = 0; i < markers.length; ++i) {
+                                markers[i].setMap(null);
+                            }
+                            heatmap.setMap(map);
+                        }
+                    });
+
                 }
             });
         }
