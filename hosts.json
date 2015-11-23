@@ -202,7 +202,7 @@
     },
     "ncaa": {
         "url": "http://d142-58-33-188.burnaby.sfu.ca:8000",
-        "name": "NCAA Men's Basketball",
+        "name": "NCAA - Men's Basketball",
         "allowedTokens": [
             "4dda3274fca48216e591ec989fb117edfeee7bb3",
             "3ab83d7d20012d2d962754b7cc33394c1a8799ca"
