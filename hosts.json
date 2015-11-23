@@ -199,5 +199,9 @@
             "topic",
             "topk"
         ]
+    },
+    "ncaa": {
+        "url": "http://d142-58-33-188.burnaby.sfu.ca:8000",
+        "name": "NCAA Men's Basketball"
     }
 }

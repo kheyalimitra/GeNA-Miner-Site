@@ -53,6 +53,10 @@ $(document).ready(function() {
 
         function checkToken(token) {
             $.each(hosts, function(db, v) {
+                if (hosts[db].url !== undefined) {
+                    return;
+                }
+
                 var host = hosts[db].host;
                 var jsonp = hosts[db].jsonp;
 
@@ -79,7 +83,12 @@ $(document).ready(function() {
         $.each(hosts, function(db, v) {
             var dbName = v.name;
 
-            dbhtml += '<a class="btn btn-default dbbtn' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-db="' + db + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-lock lockIcon"></span></a>' + "\n";
+            if (v.url !== undefined) {
+                dbhtml += '<a class="btn btn-default dbbtn dbbtn-url' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-url="' + v.url + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-link lockIcon"></span></a>' + "\n";
+            }
+            else {
+                dbhtml += '<a class="btn btn-default dbbtn' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-db="' + db + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-lock lockIcon"></span></a>' + "\n";
+            }
         });
         $("#dbbtnList").html(dbhtml);
 
@@ -149,7 +158,12 @@ $(document).ready(function() {
                 showAlert("You do not have access to this database.", "danger");
             }
             else {
-                window.location.href = 'query.html?db=' + $(this).attr("data-db");
+                if ($(this).hasClass("dbbtn-url")) {
+                    window.location.href = $(this).attr("data-url");
+                }
+                else {
+                    window.location.href = 'query.html?db=' + $(this).attr("data-db");
+                }
             }
         });
 
