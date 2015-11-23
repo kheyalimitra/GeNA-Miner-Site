@@ -85,7 +85,7 @@ $(document).ready(function() {
             var dbName = v.name;
 
             if (v.url !== undefined) {
-                dbhtml += '<a class="btn btn-default dbbtn dbbtn-url' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-url="' + v.url + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-lock lockIcon"></span></a>' + "\n";
+                dbhtml += '<a class="btn btn-default dbbtn dbbtn-url' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-url="' + v.url + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-lock lockIcon"></span><span class="beta">Beta</span></a>' + "\n";
             }
             else {
                 dbhtml += '<a class="btn btn-default dbbtn' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-db="' + db + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-lock lockIcon"></span></a>' + "\n";
@@ -275,13 +275,22 @@ $(document).ready(function() {
     margin:0;
     padding:0px;
 }
+.dbbtn .beta {
+    font-size: 12px;
+    color: #ff0000;
+    position:absolute;
+    bottom:5px;
+    right:5px;
+    margin:0;
+    padding:0px;
+}
 </style>
 </head>
 <body>
 
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="container-fluid" style="margin-top:46px;">
-    <h3>GeNA Miner <small>-- Made by GeNA Lab</small></h3>
+    <h3>GeNA Miner <small>-- Made by <a href="http://www.genalab.org/">GeNA Lab</a></small></h3>
 <div style="max-width:800px;">
     <div class="block">
         <div style="display:block">
@@ -308,7 +317,7 @@ $(document).ready(function() {
                     <button class="btn btn-info btn-xs" id="updates"><span class="fa fa-bell-o"></span> Updates</button>
                 </td>
                 <td style="text-align:right;">
-                    © GeNA Lab
+                    © <a href="http://www.genalab.org/">GeNA Lab</a>
                 </td>
             </tr>
         </table>
