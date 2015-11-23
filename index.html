@@ -54,6 +54,7 @@ $(document).ready(function() {
         function checkToken(token) {
             $.each(hosts, function(db, v) {
                 if (hosts[db].url !== undefined) {
+                    setLock(db, $.inArray(token, v.allowedTokens) < 0);
                     return;
                 }
 
@@ -84,7 +85,7 @@ $(document).ready(function() {
             var dbName = v.name;
 
             if (v.url !== undefined) {
-                dbhtml += '<a class="btn btn-default dbbtn dbbtn-url' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-url="' + v.url + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-link lockIcon"></span></a>' + "\n";
+                dbhtml += '<a class="btn btn-default dbbtn dbbtn-url' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-url="' + v.url + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-lock lockIcon"></span></a>' + "\n";
             }
             else {
                 dbhtml += '<a class="btn btn-default dbbtn' + (v.hide ? " dbbtn-hide" : "") + '" id="' + db + '" data-db="' + db + '" title="' + dbName + '"' + (v.hide ? ' style="display:none;"' : "") + '><img src="img/' + db + '.min.png"></img><span class="fa fa-lock lockIcon"></span></a>' + "\n";
