@@ -195,8 +195,7 @@
         "buttonGroups": [6, 6, 4],
         "disableActions": [
             "trend",
-            "theme",
-            "topk"
+            "theme"
         ]
     },
     "ncaa": {

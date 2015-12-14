@@ -43,17 +43,23 @@ $(document).ready(function() {
         var host = hosts[db].host;
         var dbName = hosts[db].name;
 
+        var jsonp = hosts[db].jsonp;
+
         $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
 
         var query = $.url().param('query');
         var yearFrom = $.url().param('from');
+        /*
         if (!yearFrom) {
             yearFrom = 1900;
         }
+        */
         var yearTo = $.url().param('to');
+        /*
         if (!yearTo) {
             yearTo = new Date().getFullYear() - 1;
         }
+        */
         var k = $.url().param('k');
         if (!k) {
             k = 10;
@@ -94,10 +100,10 @@ $(document).ready(function() {
             }, 
 
             "ajax": {
-                "url": "http://" + host + "/topk/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
-                "dataType": "jsonp",
-                cache: true,
+                dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback",
+                url: "http://" + host + "/topk/load?token=" + token + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo) + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
+                cache: true,
             },
 
             "processing": true,
