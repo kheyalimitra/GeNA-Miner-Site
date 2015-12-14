@@ -196,7 +196,6 @@
         "disableActions": [
             "trend",
             "theme",
-            "topic",
             "topk"
         ]
     },
