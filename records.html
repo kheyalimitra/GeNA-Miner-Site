@@ -207,6 +207,8 @@ $(document).ready(function() {
             else {
                 $("#searchToggleButton").tooltip('destroy');
             }
+
+            $("input[name='query']").val(getFilterQuery());
         }
 
         $('#searchToggle').change(setFilterQueryTooltip);
@@ -542,6 +544,8 @@ $(document).ready(function() {
                 match = columnRegex.exec(filterValue);
             }
             */
+
+            $("input[name='query']").val(getFilterQuery());
 
             $.ajax({
                 dataType: (jsonp ? "jsonp" : "json"),
