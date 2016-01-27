@@ -74,7 +74,7 @@ $(document).ready(function() {
         }
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")";
-        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo)).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")");
 
         var table = $('#example').DataTable( {
