@@ -1,6 +1,6 @@
 {
     "pubmed": {
-        "host": "142.58.33.8:5000",
+        "host": "gena-lab.chuancong.me:5000",
         "name": "PubMed",
         "minPeriod": "year",
         "dateTimeFormat": "YYYY",
@@ -75,7 +75,7 @@
         "noFilterToggle": true
     },
     "twitter": {
-        "host": "142.58.33.8:5001",
+        "host": "gena-lab.chuancong.me:5001",
         "name": "Twitter (Public Stream)",
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
@@ -199,7 +199,7 @@
         ]
     },
     "ncaa": {
-        "url": "http://142.58.33.8:8000/",
+        "url": "http://gena-lab.chuancong.me:8000/",
         "name": "NCAA - Men's Basketball",
         "allowedTokens": [
             "4dda3274fca48216e591ec989fb117edfeee7bb3",

@@ -7,15 +7,15 @@ function isInt(s) {
 }
 
 function isIntWithMinVal(s, v) {
-    return /^\d+$/.test(s) && s >= v;
+    return /^\d+$/.test(s) && parseInt(s) >= v;
 }
 
 function isIntWithMaxVal(s, v) {
-    return /^\d+$/.test(s) && s <= v;
+    return /^\d+$/.test(s) && parseInt(s) <= v;
 }
 
 function isIntWithMinMaxVal(s, v1, v2) {
-    return /^\d+$/.test(s) && s >= v1 && s <= v2;
+    return /^\d+$/.test(s) && parseInt(s) >= v1 && parseInt(s) <= v2;
 }
 
 function showAlert(msg, type) {

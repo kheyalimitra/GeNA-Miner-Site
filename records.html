@@ -817,7 +817,7 @@ $(document).ready(function() {
                 e.preventDefault();
                 return;
             }
-            if ($('#topk_minlen').val() > $('#topk_maxlen').val()) {
+            if (parseInt($('#topk_minlen').val()) > parseInt($('#topk_maxlen').val())) {
                 showAlert("Please check your inputs.", "danger");
                 $("#topk_minlen").tooltip("show");
                 $("#topk_maxlen").tooltip("show");
