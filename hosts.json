@@ -192,11 +192,7 @@
             }
         ],
         "order": [[1, "desc"]],
-        "buttonGroups": [6, 6, 4],
-        "disableActions": [
-            "trend",
-            "theme"
-        ]
+        "buttonGroups": [6, 6, 4]        
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",

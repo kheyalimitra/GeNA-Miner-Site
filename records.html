@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
 
@@ -19,7 +20,7 @@
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <!--<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">-->
 
-<script src="static/js/jquery.bootstrap-growl.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.0.0/jquery.bootstrap-growl.min.js"></script>
 
 <script src="static/js/bootbox.min.js"></script>
 
@@ -159,6 +160,7 @@ $(document).ready(function() {
         }
         */
         var yearTo = $.url().param('to');
+        var intervalType= $.url().param('intervaltype');
         /*
         if (!yearTo) {
             yearTo = new Date().getFullYear() - 1;
@@ -182,7 +184,23 @@ $(document).ready(function() {
         if (hosts[db].noFilterToggle) {
             $("#searchToggleDiv").hide();
         }
+        if(hosts[db].name==="PubMed"){
+             var i=0;
+             $("#interval_list").val('year').prop('selected', true);
+             $("#interval_list option" ).each(function() {
+                
+                 if(i>=1)
+                 {
+                    $(this).hide();
+                     console.log(this);
+                 }  
 
+                 i+=1;
+             }
+
+            );
+
+         }
         function getFilterQuery() {
             if ($('#searchToggle').prop("checked")) {
                 if (query == "") {
@@ -771,21 +789,56 @@ $(document).ready(function() {
                 $("tr.child a.url").attr("target", "_blank");
             }, 0);
         });
-
         $("input[name='db']").val(db);
         $("input[name='query']").val(query);
         $("input[name='from']").val(yearFrom);
         $("input[name='to']").val(yearTo);
-
         $('#trend_interval').val(5);
         $('#trend_form').submit( function (e) {
-            if (!isIntWithMinVal($('#trend_interval').val(), 1)) {
-                showAlert("Please check your inputs.", "danger");
-                $("#trend_interval").tooltip("show");
-                $("#trend_form").addClass("has-error");
-                e.preventDefault();
-                return;
-            }
+            var intervalTypeSelection = $("#interval_list");
+            var intervalVal = $('#trend_interval').val();
+            var isError = false;
+            var errorMessage = "";
+            var errorType = "danger";
+          if (((intervalTypeSelection.val()==='year') && !isIntWithMinMaxVal (intervalVal, 1,10))) 
+           {
+               errorMessage = "Please check your inputs: Year value should be with in 1 and 10.";
+               isError = true;
+           }
+           if (((intervalTypeSelection.val()==='month') && !isIntWithMinMaxVal (intervalVal, 1,12)))
+           {
+               errorMessage="Please check your inputs: Month value should be with in 1 and 12.";
+               isError = true;
+           }
+           if (((intervalTypeSelection.val()==='day') && !isIntWithMinMaxVal (intervalVal, 1,365)))
+           {
+               isError = true;
+               errorMessage="Please check your inputs: Day value should be with in 1 and 365.";
+           }
+           if (((intervalTypeSelection.val()==='hour') && !isIntWithMinMaxVal (intervalVal,1, 24)))
+           {
+               errorMessage="Please check your inputs: Hour value should be with in 1 and 24.";
+               isError = true;
+           }
+           if (((intervalTypeSelection.val()==='minute') && !isIntWithMinMaxVal (intervalVal,1, 60)))
+            {
+               errorMessage = "Please check your inputs: Minute value should be with in 1 and 10.";
+               isError = true;
+           }
+           if (((intervalTypeSelection.val()==='second') && !isIntWithMinMaxVal (intervalVal, 1,60)))  
+           {
+               errorMessage="Please check your inputs: Second value should be with in 1 and 10.";
+               isError = true;
+           }
+           if(isError)
+           {
+               showAlert(errorMessage, errorType);
+               $("#trend_interval").tooltip("show");
+               $("#trend_form").addClass("has-error");
+               e.preventDefault();
+               return;
+           }
+       
         });
 
         $('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload?token=" + token);
@@ -796,28 +849,28 @@ $(document).ready(function() {
         $('#topk_maxlen').val(5);
 
         $('#topk_form').submit( function (e) {
-            if (!isIntWithMinVal($('#topk_k').val(), 1)) {
+            if (!isIntWithMinMaxVal($('#topk_k').val(), 1, 100)) {
                 showAlert("Please check your inputs.", "danger");
                 $("#topk_k").tooltip("show");
                 $("#topk_form").addClass("has-error");
                 e.preventDefault();
                 return;
             }
-            if (!isIntWithMinVal($('#topk_minlen').val(), 1)) {
+            if (!isIntWithMinMaxVal($('#topk_minlen').val(), 1,10)) {
                 showAlert("Please check your inputs.", "danger");
                 $("#topk_minlen").tooltip("show");
                 $("#topk_form").addClass("has-error");
                 e.preventDefault();
                 return;
             }
-            if (!isIntWithMinVal($('#topk_maxlen').val(), 1)) {
+            if (!isIntWithMinMaxVal($('#topk_maxlen').val(), 1,10)) {
                 showAlert("Please check your inputs.", "danger");
                 $("#topk_maxlen").tooltip("show");
                 $("#topk_form").addClass("has-error");
                 e.preventDefault();
                 return;
             }
-            if (parseInt($('#topk_minlen').val()) > parseInt($('#topk_maxlen').val())) {
+            if ($('#topk_minlen').val() > $('#topk_maxlen').val()) {
                 showAlert("Please check your inputs.", "danger");
                 $("#topk_minlen").tooltip("show");
                 $("#topk_maxlen").tooltip("show");
@@ -831,14 +884,14 @@ $(document).ready(function() {
         $('#topic_wordnum').val(10);
 
         $('#topic_form').submit( function (e) {
-            if (!isIntWithMinVal($('#topic_k').val(), 1)) {
+            if (!isIntWithMinMaxVal($('#topic_k').val(), 1,100)) {
                 showAlert("Please check your inputs.", "danger");
                 $("#topic_k").tooltip("show");
                 $("#topic_form").addClass("has-error");
                 e.preventDefault();
                 return;
             }
-            if (!isIntWithMinVal($('#topic_wordnum').val(), 1)) {
+            if (!isIntWithMinMaxVal($('#topic_wordnum').val(), 100)) {
                 showAlert("Please check your inputs.", "danger");
                 $("#topic_wordnum").tooltip("show");
                 $("#topic_form").addClass("has-error");
@@ -981,8 +1034,17 @@ $(document).ready(function() {
             <input type="hidden" name="query"></input>
             <input type="hidden" name="from"></input>
             <input type="hidden" name="to"></input>
-            <label class="control-label">Year Interval: </label>
+            <label class="control-label">Interval: </label>
             <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
+             <select class="form-control input-sm" id="interval_list" name="intervaltype" style="width:90px;display:inline-block;"">
+                <option value="year" selected="selected">Year</option>
+                <option value="month">Month</option>
+                <option value="week">Week</option>
+                <option value="day">Day</option>
+                <option value="hour">Hour</option>
+                <option value="minute">Minute</option>
+                <option value="second">Second</option>
+            </select> 
             <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
         </form>
     </div>
