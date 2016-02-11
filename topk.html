@@ -74,7 +74,7 @@ $(document).ready(function() {
         }
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")";
-        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo)).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + encodeURIComponent(query).replace("%20", "+") + "&from=" + encodeURIComponent(yearFrom).replace("%20", "+") + "&to=" + encodeURIComponent(yearTo).replace("%20", "+")).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Top-" + k + " Co-occurrences (Min. Len. = " + minLen + ", Max. Len. = " + maxLen + ")");
 
         var table = $('#example').DataTable( {
@@ -102,7 +102,7 @@ $(document).ready(function() {
             "ajax": {
                 dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback",
-                url: "http://" + host + "/topk/load?token=" + token + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo) + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
+                url: "http://" + host + "/topk/load?token=" + token + "&query=" + encodeURIComponent(query).replace("%20", "+") + "&from=" + encodeURIComponent(yearFrom).replace("%20", "+") + "&to=" + encodeURIComponent(yearTo).replace("%20", "+") + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
                 cache: true,
             },
 

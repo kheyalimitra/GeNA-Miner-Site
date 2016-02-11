@@ -159,8 +159,7 @@ $(document).ready(function() {
         }
         */
         var yearTo = $.url().param('to');
-        var intervalType = $.url().param('intervaltype');
-            
+
         /*
         if (!yearTo) {
             yearTo = new Date().getFullYear() - 1;
@@ -185,14 +184,13 @@ $(document).ready(function() {
             $("#searchToggleDiv").hide();
         }
 
-        $.each(hosts[db].intervaltype, function(k, v) {
-            $('#interval_list')
+        $.each(hosts[db].intervalType, function(k, v) {
+            $('#trend_intervalType')
                 .append($("<option></option>")
-                    .attr("value", v.value)
-                    .text(v.text));
+                .attr("value", v.value)
+                .attr("selected", v.default)
+                .text(v.text));
         });
-
-        $("#interval_list").prepend("<option value='' selected='selected'></option>");
 
         function getFilterQuery() {
             if ($('#searchToggle').prop("checked")) {
@@ -238,7 +236,7 @@ $(document).ready(function() {
                 dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback_heatmap",
                 cache: true,
-                url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent((getFilterQuery() == "" ? "" : "(" + getFilterQuery() + ") AND ") + "_exists_:coordinates") + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo) + "&length=" + $('#geo_n').val() + "&raw=true",
+                url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent((getFilterQuery() == "" ? "" : "(" + getFilterQuery() + ") AND ") + "_exists_:coordinates").replace("%20", "+") + "&from=" + encodeURIComponent(yearFrom).replace("%20", "+") + "&to=" + encodeURIComponent(yearTo).replace("%20", "+") + "&length=" + $('#geo_n').val() + "&raw=true",
                 success: function(raw_data) {
                     $('#progress_wrapper').modal('hide');
                     var heatmapData = [];
@@ -438,7 +436,7 @@ $(document).ready(function() {
 
             "serverSide": true,
             "ajax": {
-                "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo),
+                "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query).replace("%20", "+") + "&from=" + encodeURIComponent(yearFrom).replace("%20", "+") + "&to=" + encodeURIComponent(yearTo).replace("%20", "+"),
                 "dataType": (jsonp ? "jsonp" : "json"),
                 cache: true,
                 jsonpCallback: "jsonpcallback_main", 
@@ -562,7 +560,7 @@ $(document).ready(function() {
                 dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback_validate",
                 cache: true,
-                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query) + "&search=" + encodeURIComponent($("#example_filter input").val()), 
+                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query).replace("%20", "+") + "&search=" + encodeURIComponent($("#example_filter input").val()).replace("%20", "+"), 
                 success: function(j) {
                     if (j.valid) {
                         if ($("#example_filter input").val() != "") {
@@ -790,46 +788,15 @@ $(document).ready(function() {
 
         $('#trend_interval').val(5);
 
-            $('#trend_form').submit(function (e) {
-                var intervalTypeSelection = $("#interval_list");
-                var intervalVal = $('#trend_interval').val();
-                var isError = false;
-                var errorMessage = "";
-                var errorType = "danger";
-                if (((intervalTypeSelection.val() === 'year') && !isIntWithMinMaxVal(intervalVal, 1, 10))) {
-                    errorMessage = "Please check your inputs: Year value should be with in 1 and 10.";
-                    isError = true;
-                }
-                if (((intervalTypeSelection.val() === 'month') && !isIntWithMinMaxVal(intervalVal, 1, 12))) {
-                    errorMessage = "Please check your inputs: Month value should be with in 1 and 12.";
-                    isError = true;
-                }
-                if (((intervalTypeSelection.val() === 'day') && !isIntWithMinMaxVal(intervalVal, 1, 365))) {
-                    isError = true;
-                    errorMessage = "Please check your inputs: Day value should be with in 1 and 365.";
-                }
-                if (((intervalTypeSelection.val() === 'hour') && !isIntWithMinMaxVal(intervalVal, 1, 24))) {
-                    errorMessage = "Please check your inputs: Hour value should be with in 1 and 24.";
-                    isError = true;
-                }
-                if (((intervalTypeSelection.val() === 'minute') && !isIntWithMinMaxVal(intervalVal, 1, 60))) {
-                    errorMessage = "Please check your inputs: Minute value should be with in 1 and 10.";
-                    isError = true;
-                }
-                if (((intervalTypeSelection.val() === 'second') && !isIntWithMinMaxVal(intervalVal, 1, 60))) {
-                    errorMessage = "Please check your inputs: Second value should be with in 1 and 10.";
-                    isError = true;
-                }
-                if (isError) {
-                    showAlert(errorMessage, errorType);
-                    $("#trend_interval").tooltip("show");
-                    $("#trend_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-
-            });
-
+        $('#trend_form').submit(function (e) {
+            if (!isIntWithMinVal($('#trend_interval').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#trend_interval").tooltip("show");
+                $("#trend_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+        });
 
         $('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload?token=" + token);
         $('#theme_uploadstatus').val($.url().attr("protocol") + "://" + $.url().attr("host") + ":" + $.url().attr("port") + "/theme_upload.html");
@@ -1026,8 +993,8 @@ $(document).ready(function() {
             <input type="hidden" name="to"></input>
             <label class="control-label">Interval: </label>
             <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
-            <select class="form-control input-sm" id="interval_list" name="intervaltype" style="width:90px;display:inline-block;"">
-            </select> 
+            <select class="form-control input-sm" id="trend_intervalType" name="intervaltype" style="width:75px; display:inline-block;">
+            </select>
             <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
         </form>
     </div>

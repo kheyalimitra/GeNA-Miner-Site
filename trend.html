@@ -43,6 +43,8 @@ $(document).ready(function() {
         var host = hosts[db].host;
         var dbName = hosts[db].name;
 
+        var jsonp = hosts[db].jsonp;
+
         $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
 
         var query = $.url().param('query');
@@ -62,11 +64,17 @@ $(document).ready(function() {
         if (!intervalType) {
             intervalType = 'Year';
         }
-        var img = query.replace(/ /g, '+') + "_" + yearFrom + "-" + yearTo + "_interval=" + interval +"_intervaltype="+intervalType+ ".svg";
-    ;
+
+        var img;
+        if (hosts[db].intervalType.length == 1) {
+            img = encodeURIComponent(query).replace("%20", "+") + "_" + yearFrom + "-" + yearTo + "_interval=" + interval + ".svg";
+        }
+        else {
+            img = encodeURIComponent(query).replace("%20", "+") + "_" + yearFrom + "-" + yearTo + "_interval=" + interval + "_intervaltype=" + intervalType + ".svg";
+        }
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- #Publication Trend (Interval = " + interval + ", Interval Type = "+intervalType + ")";
-        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
+        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + encodeURIComponent(query).replace("%20", "+") + "&from=" + encodeURIComponent(yearFrom).replace("%20", "+") + "&to=" + encodeURIComponent(yearTo).replace("%20", "+")).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
         $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- #Publication Trend (Interval = " + interval + ", Interval Type = " + intervalType + ")</small>");
 
         var table = $('#example').DataTable( {
@@ -89,26 +97,26 @@ $(document).ready(function() {
                         }
                     }
                 ]
-            }, 
+            },
 
             "ajax": {
-                "url": "http://" + host + "/trend/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval +"&intervaltype=" + intervalType + "&plot=true",
-                "dataType": "jsonp",
-                cache: true,
+                dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback",
+                "url": "http://" + host + "/trend/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval +"&intervaltype=" + intervalType + "&plot=true",
+                cache: true,
             },
 
             "deferRender": true,
             "searching": false,
-            "paging": false, 
-    
+            "paging": false,
+
             "columns": [
-                { 
-                    "width": "70%", 
+                {
+                    "width": "70%",
                     "data": "range",
                 },
-                { 
-                    "width": "30%", 
+                {
+                    "width": "30%",
                     "data": "count",
                 },
             ],
