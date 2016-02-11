@@ -62,7 +62,7 @@ $(document).ready(function() {
         if (!intervalType) {
             intervalType = 'Year';
         }
-        var img = query.replace(/ /g, '+') + "_" + yearFrom + "-" + yearTo + "_interval=" + interval +"_intervalType="+intervalType+ ".svg";
+        var img = query.replace(/ /g, '+') + "_" + yearFrom + "-" + yearTo + "_interval=" + interval +"_intervaltype="+intervalType+ ".svg";
     ;
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- #Publication Trend (Interval = " + interval + ", Interval Type = "+intervalType + ")";
@@ -101,7 +101,7 @@ $(document).ready(function() {
             "deferRender": true,
             "searching": false,
             "paging": false, 
-
+    
             "columns": [
                 { 
                     "width": "70%", 

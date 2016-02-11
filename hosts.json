@@ -6,6 +6,13 @@
         "dateTimeFormat": "YYYY",
         "jsonp": true,
         "showIndexed": true,
+        "intervaltype": [            
+            {
+                "value": "year",
+                "text":  "Year",
+                "selected": true
+            }
+        ],
         "columns": [
             {
                 "width": "50%",
@@ -66,12 +73,12 @@
                 "orderable": false
             }
         ],
-        "order": [[2, "desc"]],
+        "order": [ [ 2, "desc" ] ],
         "toggleButtons": {
             "defaultGroupBy": true
         },
-        "buttonGroups": [5, 4],
-        "hiddenActions": ["heatmap"],
+        "buttonGroups": [ 5, 4 ],
+        "hiddenActions": [ "heatmap" ],
         "noFilterToggle": true
     },
     "twitter": {
@@ -80,6 +87,34 @@
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
         "allowEmptyQuery": true,
+        "intervaltype": [
+            {
+                "value": "year",
+                "text":  "Year",
+                "selected": true
+            },
+            {
+                "value": "month",
+                "text":  "Month"
+            },
+            {
+                "value": "day",
+                "text":  "Day"
+            },
+            {
+                "value": "hour",
+                "text":  "Hour"
+            },
+            {
+                "value": "minute",
+                "text":  "Minute"
+            },
+            {
+                "value": "second",
+                "text":  "Second"
+            }
+
+        ],
         "columns": [
             {
                 "width": "120px",
@@ -192,7 +227,8 @@
             }
         ],
         "order": [[1, "desc"]],
-        "buttonGroups": [6, 6, 4]        
+        "buttonGroups": [ 6, 6, 4 ],
+        "disableActions": [	"theme" ]        
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",
