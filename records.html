@@ -3,143 +3,143 @@
 <html>
 <head>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<!--<script src="static/js/jquery.min.js"></script>-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!--<script src="static/js/jquery.min.js"></script>-->
 
-<script src="//maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false"></script>
+    <script src="//maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false"></script>
 
-<script src="static/js/purl.min.js"></script>
+    <script src="static/js/purl.min.js"></script>
 
-<script src="static/js/jquery.cookie.min.js"></script>
+    <script src="static/js/jquery.cookie.min.js"></script>
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-<!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">-->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<!--<script src="static/js/bootstrap.min.js"></script>-->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">-->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <!--<script src="static/js/bootstrap.min.js"></script>-->
 
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<!--<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">-->
 
-<script src="static/js/jquery.bootstrap-growl.min.js"></script>
+    <script src="static/js/jquery.bootstrap-growl.min.js"></script>
 
-<script src="static/js/bootbox.min.js"></script>
+    <script src="static/js/bootbox.min.js"></script>
 
-<!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
-<script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
-<!--<script src="static/js/jquery.dataTables.min.js"></script>-->
+    <!--<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">-->
+    <script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <!--<script src="static/js/jquery.dataTables.min.js"></script>-->
 
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.min.css">
-<script src="static/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.min.css">
+    <script src="static/js/dataTables.bootstrap.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.responsive.min.css">
-<script src="static/js/dataTables.responsive.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/dataTables.responsive.min.css">
+    <script src="static/js/dataTables.responsive.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.tableTools.min.css">
-<script src="static/js/dataTables.tableTools.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/dataTables.tableTools.min.css">
+    <script src="static/js/dataTables.tableTools.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.min.css">
-<script src="static/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/dataTables.fixedHeader.min.css">
+    <script src="static/js/dataTables.fixedHeader.min.js"></script>
 
-<script src="static/js/rangyinputs-jquery.js"></script>
+    <script src="static/js/rangyinputs-jquery.js"></script>
 
-<link rel="stylesheet" type="text/css" href="css/main.css">
-<script src="js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="js/main.js"></script>
 
-<script src="js/records.js"></script>
+    <script src="js/records.js"></script>
 
-<style>
-tr.group {
-    background-color: #eeeeee !important;
-}
+    <style>
+    tr.group {
+        background-color: #eeeeee !important;
+    }
 
-#form_div .actionblock {
-    padding: 0px;
-    padding-right: 10px;
-    display: inline-block;
-}
-#form_div .newrow {
-    height: 10px;
-}
+    #form_div .actionblock {
+        padding: 0px;
+        padding-right: 10px;
+        display: inline-block;
+    }
+    #form_div .newrow {
+        height: 10px;
+    }
 
-#example_filter input {
-    width: 300px;
-}
+    #example_filter input {
+        width: 300px;
+    }
 
-mark {
-    background-color: rgba(243,228,48,0.25);
-    color: inherit;
-}
-mark.hashtag {
-    background-color: rgba(104,85,222,0.25);
-    color: inherit;
-}
+    mark {
+        background-color: rgba(243,228,48,0.25);
+        color: inherit;
+    }
+    mark.hashtag {
+        background-color: rgba(104,85,222,0.25);
+        color: inherit;
+    }
 
-a.region, a.place, a.url, a.user {
-    cursor:pointer;
-}
+    a.region, a.place, a.url, a.user {
+        cursor:pointer;
+    }
 
-.popover {
-    min-width: 500px;
-    max-width: 500px;
-}
+    .popover {
+        min-width: 500px;
+        max-width: 500px;
+    }
 
-.missing {
-    color: #999;
-}
+    .missing {
+        color: #999;
+    }
 
-/* Fix for Firefox */
-.input-group .control-label .form-control, .control-label .input-group-addon, .control-label .input-group-btn {
-    display: inherit;
-}
+    /* Fix for Firefox */
+    .input-group .control-label .form-control, .control-label .input-group-addon, .control-label .input-group-btn {
+        display: inherit;
+    }
 
-tr.child span.dtr-title {
-    width: 120px !important;
-}
-tr.child span.dtr-data {
-    white-space: initial !important;
-}
+    tr.child span.dtr-title {
+        width: 120px !important;
+    }
+    tr.child span.dtr-data {
+        white-space: initial !important;
+    }
 
-table {
-    table-layout: fixed;
-}
+    table {
+        table-layout: fixed;
+    }
 
-table td {
-    word-wrap: break-word;
-}
+    table td {
+        word-wrap: break-word;
+    }
 
-.DTTT_collection {
-    background: rgba(255, 255, 255, 0.9) !important;
-    border-color: #ccc !important;
-    margin-top: 5px !important;
-    padding: 5px 5px 0px 5px !important;
-    box-shadow: 0 5px 10px rgba(0,0,0,.2) !important;
-}
-.DTTT_collection > a {
-    position: relative !important;
-    margin-bottom: 5px !important;
-}
+    .DTTT_collection {
+        background: rgba(255, 255, 255, 0.9) !important;
+        border-color: #ccc !important;
+        margin-top: 5px !important;
+        padding: 5px 5px 0px 5px !important;
+        box-shadow: 0 5px 10px rgba(0,0,0,.2) !important;
+    }
+    .DTTT_collection > a {
+        position: relative !important;
+        margin-bottom: 5px !important;
+    }
 
-#searchToggleDiv {
-    position: absolute;
-    top: -1px;
-    right: -1px;
-}
-#searchToggleButton {
-    border-color: #000;
+    #searchToggleDiv {
+        position: absolute;
+        top: -1px;
+        right: -1px;
+    }
+    #searchToggleButton {
+        border-color: #000;
 
-    border-radius: 0px;
-    border-bottom-left-radius: 3px;
-}
-#searchToggleButton {
-    color: #333;
-    background-color: #fff;
-}
-#searchToggleButton:hover, #searchToggleButton.active {
-    background-color: rgba(243,228,48,0.25);
-}
-</style>
+        border-radius: 0px;
+        border-bottom-left-radius: 3px;
+    }
+    #searchToggleButton {
+        color: #333;
+        background-color: #fff;
+    }
+    #searchToggleButton:hover, #searchToggleButton.active {
+        background-color: rgba(243,228,48,0.25);
+    }
+    </style>
 
-<script type="text/javascript" class="init">
+    <script type="text/javascript" class="init">
     $(document).ready(function () {
         $.getJSON("hosts.json", function (hosts) {
             var token = $.cookie("token");
@@ -185,11 +185,11 @@ table td {
                 $("#searchToggleDiv").hide();
             }
             $.each(hosts[db].intervaltype, function(k, v) {
-                    $('#interval_list')
-                        .append($("<option></option>")
-                            .attr("value", v.value)
-                            .text(v.text));
-                });
+                $('#interval_list')
+                .append($("<option></option>")
+                    .attr("value", v.value)
+                    .text(v.text));
+            });
 
             $("#interval_list").prepend("<option value='' selected='selected'></option>");
 
@@ -271,276 +271,276 @@ table td {
                             "tweet_id", "user_id", "original_id", "original_user_id"];
 
                             var title_dict = { "date_time": "Date & Time", "user_name": "User", "text": "Text", "type": "Type",
-                                "place": "Place", "source": "Source", "hashtag_list": "Hashtags", "mention_list": "Mentions",
-                                "url_list": "URLs", "media_list": "Media", "coordinates": "Coordinates", "language": "Language",
-                                "tweet_id": "Tweet ID", "user_id": "User ID", "original_id": "Original Tweet ID",
-                                "original_user_id": "Original User ID"
-                            };
+                            "place": "Place", "source": "Source", "hashtag_list": "Hashtags", "mention_list": "Mentions",
+                            "url_list": "URLs", "media_list": "Media", "coordinates": "Coordinates", "language": "Language",
+                            "tweet_id": "Tweet ID", "user_id": "User ID", "original_id": "Original Tweet ID",
+                            "original_user_id": "Original User ID"
+                        };
 
-                            var info_div_string = "<div><p>";
-                            for (j = 0; j < info_keys.length; ++j) {
-                                var key = info_keys[j];
-                                info_div_string += "<span style='font-weight:bold'>" + title_dict[key] + ": </span>" + raw_data.data[i][key] + "<br>";
-                            }
-                            info_div_string += "</p></div>";
-
-                            newmarker["infowindow"] = new google.maps.InfoWindow({
-                                content: info_div_string
-                            });
-
-                            google.maps.event.addListener(newmarker, 'click', function () {
-                                for (k = 0; k < markers.length; ++k) {
-                                    markers[k]["infowindow"].close();
-                                }
-                                this["infowindow"].open(map, this);
-                            });
-
-                            markers.push(newmarker);
+                        var info_div_string = "<div><p>";
+                        for (j = 0; j < info_keys.length; ++j) {
+                            var key = info_keys[j];
+                            info_div_string += "<span style='font-weight:bold'>" + title_dict[key] + ": </span>" + raw_data.data[i][key] + "<br>";
                         }
+                        info_div_string += "</p></div>";
 
-                        var gradient = [
-                        'rgba(0, 0, 255, 0)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 63, 255, 1)',
-                        'rgba(0, 127, 255, 1)',
-                        'rgba(0, 191, 223, 1)',
-                        'rgba(0, 255, 191, 1)',
-                        'rgba(0, 191, 159, 1)',
-                        'rgba(0, 127, 127, 1)',
-                        'rgba(63, 63, 91, 1)',
-                        'rgba(127, 0, 63, 1)',
-                        'rgba(191, 0, 31, 1)',
-                        'rgba(255, 0, 0, 1)'
-                    ];
-
-                        heatmap.set('gradient', gradient);
-                        heatmap.set('opacity', 1);
-                        heatmap.set('radius', 20);
-
-                        $("#marker").change(function () {
-                            if ($("#marker").prop("checked")) {
-                                for (i = 0; i < markers.length; ++i) {
-                                    markers[i].setMap(map);
-                                }
-                                heatmap.setMap(null);
-                            } else {
-                                for (i = 0; i < markers.length; ++i) {
-                                    markers[i].setMap(null);
-                                }
-                                heatmap.setMap(map);
-                            }
+                        newmarker["infowindow"] = new google.maps.InfoWindow({
+                            content: info_div_string
                         });
 
-                    }
-                });
-            }
-
-            var tabletoolsButtons = db == "twitter" ?
-            [
-                {
-                    "sExtends": "collection",
-                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV) <span class=\"fa fa-caret-down\"></span>",
-                    "aButtons": [
-                        {
-                            "sExtends": "copy",
-                            "sButtonText": "Plain",
-                            "oSelectorOpts": {
-                                page: 'current'
+                        google.maps.event.addListener(newmarker, 'click', function () {
+                            for (k = 0; k < markers.length; ++k) {
+                                markers[k]["infowindow"].close();
                             }
-                        },
-                        {
-                            "sExtends": "copy",
-                            "oSelectorOpts": {
-                                page: 'current'
-                            },
-                            "sButtonText": "For NodeXL",
-                            "mColumns": [2, 3, 4, 8],
-                            "fnClick": function (nButton, oConfig, flash) {
-                                this.fnSetText(flash, toNodeXLData(this.fnGetTableData(oConfig), "", "\t"));
+                            this["infowindow"].open(map, this);
+                        });
+
+                        markers.push(newmarker);
+                    }
+
+                    var gradient = [
+                    'rgba(0, 0, 255, 0)',
+                    'rgba(0, 0, 255, 1)',
+                    'rgba(0, 0, 255, 1)',
+                    'rgba(0, 0, 255, 1)',
+                    'rgba(0, 63, 255, 1)',
+                    'rgba(0, 127, 255, 1)',
+                    'rgba(0, 191, 223, 1)',
+                    'rgba(0, 255, 191, 1)',
+                    'rgba(0, 191, 159, 1)',
+                    'rgba(0, 127, 127, 1)',
+                    'rgba(63, 63, 91, 1)',
+                    'rgba(127, 0, 63, 1)',
+                    'rgba(191, 0, 31, 1)',
+                    'rgba(255, 0, 0, 1)'
+                    ];
+
+                    heatmap.set('gradient', gradient);
+                    heatmap.set('opacity', 1);
+                    heatmap.set('radius', 20);
+
+                    $("#marker").change(function () {
+                        if ($("#marker").prop("checked")) {
+                            for (i = 0; i < markers.length; ++i) {
+                                markers[i].setMap(map);
                             }
-                        },
-                        {
-                            "sExtends": "copy",
-                            "oSelectorOpts": {
-                                page: 'current'
-                            },
-                            "sButtonText": "For Nvivo",
-                            "fnClick": function (nButton, oConfig, flash) {
-                                this.fnSetText(flash, toNvivoData(this.fnGetTableData(oConfig), "", "\t"));
+                            heatmap.setMap(null);
+                        } else {
+                            for (i = 0; i < markers.length; ++i) {
+                                markers[i].setMap(null);
                             }
-                        }
-                    ]
-                },
-                {
-                    "sExtends": "collection",
-                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current (CSV) <span class=\"fa fa-caret-down\"></span>",
-                    "aButtons": [
-                        {
-                            "sExtends": "csv",
-                            "sButtonText": "Plain",
-                            "oSelectorOpts": {
-                                page: 'current'
-                            }
-                        },
-                        {
-                            "sExtends": "csv",
-                            "oSelectorOpts": {
-                                page: 'current'
-                            },
-                            "sButtonText": "For NodeXL",
-                            "mColumns": [2, 3, 4, 8],
-                            "sFieldBoundary": "",
-                            "sFieldSeperator": "\t",
-                            "fnClick": function (nButton, oConfig, flash) {
-                                this.fnSetText(flash, toNodeXLData(this.fnGetTableData(oConfig), "\"", ","));
-                            }
-                        },
-                        {
-                            "sExtends": "csv",
-                            "oSelectorOpts": {
-                                page: 'current'
-                            },
-                            "sButtonText": "For Nvivo",
-                            "sFieldBoundary": "",
-                            "sFieldSeperator": "\t",
-                            "fnClick": function (nButton, oConfig, flash) {
-                                this.fnSetText(flash, toNvivoData(this.fnGetTableData(oConfig), "\"", ","));
-                            }
-                        }
-                    ]
-                }
-            ] :
-            [
-                {
-                    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV)",
-                    "sExtends": "copy",
-                    "oSelectorOpts": {
-                        page: 'current'
-                    }
-                },
-                {
-                    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current (CSV)",
-                    "sExtends": "csv",
-                    "oSelectorOpts": {
-                        page: 'current'
-                    }
-                }
-            ];
-
-            var table = $('#example').DataTable({
-                dom: '<"toggleButtons">fTlrtip',
-                tableTools: {
-                    "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
-                    "aButtons": tabletoolsButtons
-                },
-
-                "serverSide": true,
-                "ajax": {
-                    "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo),
-                    "dataType": (jsonp ? "jsonp" : "json"),
-                    cache: true,
-                    jsonpCallback: "jsonpcallback_main",
-                    "error": function (reason) {
-                        alert("Error occurred!");
-                    }
-                },
-
-                "processing": true,
-                "language": {
-                    "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>",
-                    "search": "",
-                    "paginate": {
-                        "previous": '<span class="fa fa-chevron-left"></span>',
-                        "next": '<span class="fa fa-chevron-right"></span>'
-                    }
-                },
-                "deferRender": true,
-                "pageLength": 50,
-                "pagingType": "simple_numbers",
-                "lengthMenu": [[10, 50, 100, 500, 1000], ["10", "50", "100", "500", "1,000"]],
-
-                "responsive": {
-                    "details": {
-                        type: 'column'
-                    }
-                },
-
-                "columns": [{
-                    "width": "1px",
-                    "data": null,
-                    "defaultContent": '',
-                    "orderable": false,
-                    "class": 'control',
-                    "targets": 0
-                }].concat(hosts[db].columns),
-                "order": hosts[db].order,
-
-                "drawCallback": function (settings) {
-                    if (!$("#groupBy").prop("checked")) {
-                        return;
-                    }
-
-                    var api = this.api();
-                    var rows = api.rows({ page: 'current' }).nodes();
-                    var last = null;
-
-                    var groupCol = hosts[db].order[0][0];
-
-                    api.column(groupCol, { page: 'current' }).data().each(function (group, i) {
-                        if (last !== group) {
-                            $(rows).eq(i).before(
-                            '<tr class="group"><td colspan="10"><b>' + hosts[db].columns[groupCol - 1].title + ': </b>' + group + " <span class=\"caret\"></span>" + '</td></tr>'
-                        );
-
-                            last = group;
+                            heatmap.setMap(map);
                         }
                     });
-                }
 
+                }
             });
-            $("div.toggleButtons").html('\
-            <div class="btn-group" data-toggle="buttons">\
-                <label id="expandAllButton" class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
-                <label id="groupByButton" class="btn btn-default btn-sm"><span class="fa fa-list-ul"></span> Group By<input type="checkbox" id="groupBy"></label>\
-            </div>\
-        ');
-            $(".DTTT_collection > a").removeClass("DTTT_button").addClass("btn btn-default btn-sm btn-block");
+}
 
-            function expandAll(flag) {
-                $('#example tbody tr[role="row"].parent td.control').trigger("click");
-                if (flag) {
-                    $('#example tbody tr[role="row"] td.control').trigger("click");
-                }
+var tabletoolsButtons = db == "twitter" ?
+[
+{
+    "sExtends": "collection",
+    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV) <span class=\"fa fa-caret-down\"></span>",
+    "aButtons": [
+    {
+        "sExtends": "copy",
+        "sButtonText": "Plain",
+        "oSelectorOpts": {
+            page: 'current'
+        }
+    },
+    {
+        "sExtends": "copy",
+        "oSelectorOpts": {
+            page: 'current'
+        },
+        "sButtonText": "For NodeXL",
+        "mColumns": [2, 3, 4, 8],
+        "fnClick": function (nButton, oConfig, flash) {
+            this.fnSetText(flash, toNodeXLData(this.fnGetTableData(oConfig), "", "\t"));
+        }
+    },
+    {
+        "sExtends": "copy",
+        "oSelectorOpts": {
+            page: 'current'
+        },
+        "sButtonText": "For Nvivo",
+        "fnClick": function (nButton, oConfig, flash) {
+            this.fnSetText(flash, toNvivoData(this.fnGetTableData(oConfig), "", "\t"));
+        }
+    }
+    ]
+},
+{
+    "sExtends": "collection",
+    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current (CSV) <span class=\"fa fa-caret-down\"></span>",
+    "aButtons": [
+    {
+        "sExtends": "csv",
+        "sButtonText": "Plain",
+        "oSelectorOpts": {
+            page: 'current'
+        }
+    },
+    {
+        "sExtends": "csv",
+        "oSelectorOpts": {
+            page: 'current'
+        },
+        "sButtonText": "For NodeXL",
+        "mColumns": [2, 3, 4, 8],
+        "sFieldBoundary": "",
+        "sFieldSeperator": "\t",
+        "fnClick": function (nButton, oConfig, flash) {
+            this.fnSetText(flash, toNodeXLData(this.fnGetTableData(oConfig), "\"", ","));
+        }
+    },
+    {
+        "sExtends": "csv",
+        "oSelectorOpts": {
+            page: 'current'
+        },
+        "sButtonText": "For Nvivo",
+        "sFieldBoundary": "",
+        "sFieldSeperator": "\t",
+        "fnClick": function (nButton, oConfig, flash) {
+            this.fnSetText(flash, toNvivoData(this.fnGetTableData(oConfig), "\"", ","));
+        }
+    }
+    ]
+}
+] :
+[
+{
+    "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV)",
+    "sExtends": "copy",
+    "oSelectorOpts": {
+        page: 'current'
+    }
+},
+{
+    "sButtonText": "<span class=\"fa fa-table\"></span> Save Current (CSV)",
+    "sExtends": "csv",
+    "oSelectorOpts": {
+        page: 'current'
+    }
+}
+];
+
+var table = $('#example').DataTable({
+    dom: '<"toggleButtons">fTlrtip',
+    tableTools: {
+        "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
+        "aButtons": tabletoolsButtons
+    },
+
+    "serverSide": true,
+    "ajax": {
+        "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo),
+        "dataType": (jsonp ? "jsonp" : "json"),
+        cache: true,
+        jsonpCallback: "jsonpcallback_main",
+        "error": function (reason) {
+            alert("Error occurred!");
+        }
+    },
+
+    "processing": true,
+    "language": {
+        "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>",
+        "search": "",
+        "paginate": {
+            "previous": '<span class="fa fa-chevron-left"></span>',
+            "next": '<span class="fa fa-chevron-right"></span>'
+        }
+    },
+    "deferRender": true,
+    "pageLength": 50,
+    "pagingType": "simple_numbers",
+    "lengthMenu": [[10, 50, 100, 500, 1000], ["10", "50", "100", "500", "1,000"]],
+
+    "responsive": {
+        "details": {
+            type: 'column'
+        }
+    },
+
+    "columns": [{
+        "width": "1px",
+        "data": null,
+        "defaultContent": '',
+        "orderable": false,
+        "class": 'control',
+        "targets": 0
+    }].concat(hosts[db].columns),
+    "order": hosts[db].order,
+
+    "drawCallback": function (settings) {
+        if (!$("#groupBy").prop("checked")) {
+            return;
+        }
+
+        var api = this.api();
+        var rows = api.rows({ page: 'current' }).nodes();
+        var last = null;
+
+        var groupCol = hosts[db].order[0][0];
+
+        api.column(groupCol, { page: 'current' }).data().each(function (group, i) {
+            if (last !== group) {
+                $(rows).eq(i).before(
+                    '<tr class="group"><td colspan="10"><b>' + hosts[db].columns[groupCol - 1].title + ': </b>' + group + " <span class=\"caret\"></span>" + '</td></tr>'
+                    );
+
+                last = group;
             }
+        });
+    }
 
-            if (hosts[db].toggleButtons) {
-                if (hosts[db]["toggleButtons"].defaultExpandAll) {
-                    $('#expandAllButton').trigger("click");
-                }
-                if (hosts[db]["toggleButtons"].defaultGroupBy) {
-                    $('#groupByButton').trigger("click");
-                }
-            }
+});
+$("div.toggleButtons").html('\
+    <div class="btn-group" data-toggle="buttons">\
+    <label id="expandAllButton" class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
+    <label id="groupByButton" class="btn btn-default btn-sm"><span class="fa fa-list-ul"></span> Group By<input type="checkbox" id="groupBy"></label>\
+    </div>\
+    ');
+$(".DTTT_collection > a").removeClass("DTTT_button").addClass("btn btn-default btn-sm btn-block");
 
-            $('#expandAll').change(function () {
-                expandAll(this.checked);
-            });
-            $('#groupBy').change(function () {
-                table.draw();
-            });
+function expandAll(flag) {
+    $('#example tbody tr[role="row"].parent td.control').trigger("click");
+    if (flag) {
+        $('#example tbody tr[role="row"] td.control').trigger("click");
+    }
+}
 
-            new $.fn.dataTable.FixedHeader(table);
+if (hosts[db].toggleButtons) {
+    if (hosts[db]["toggleButtons"].defaultExpandAll) {
+        $('#expandAllButton').trigger("click");
+    }
+    if (hosts[db]["toggleButtons"].defaultGroupBy) {
+        $('#groupByButton').trigger("click");
+    }
+}
 
-            $(".DTTT_container").addClass("btn-group");
-            $(".DTTT_container a").removeClass("DTTT_button");
-            $(".DTTT_container a").addClass("btn btn-default btn-sm");
-            $(".dataTables_length label").addClass("control-label");
-            $(".dataTables_filter label").addClass("control-label");
+$('#expandAll').change(function () {
+    expandAll(this.checked);
+});
+$('#groupBy').change(function () {
+    table.draw();
+});
 
-            var filterValue = ""
-            function search() {
+new $.fn.dataTable.FixedHeader(table);
+
+$(".DTTT_container").addClass("btn-group");
+$(".DTTT_container a").removeClass("DTTT_button");
+$(".DTTT_container a").addClass("btn btn-default btn-sm");
+$(".dataTables_length label").addClass("control-label");
+$(".dataTables_filter label").addClass("control-label");
+
+var filterValue = ""
+function search() {
 
                 /*
                 var columnRegex = /((?:\w|[_.])+):/g;
@@ -585,559 +585,559 @@ table td {
                         }
                     }
                 });
-            };
+};
 
-            var popoverShown = false;
-            function closePopover() {
-                if (popoverShown) {
-                    popoverShown = false;
-                    $('#example_filter input').popover('hide').animate({
-                        "width": "300px"
-                    }, 200);
-                    $("#example_filter_clear").hide();
-                }
-            }
+var popoverShown = false;
+function closePopover() {
+    if (popoverShown) {
+        popoverShown = false;
+        $('#example_filter input').popover('hide').animate({
+            "width": "300px"
+        }, 200);
+        $("#example_filter_clear").hide();
+    }
+}
 
-            $("#example_filter").addClass("input-group");
-            $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;">Clear</span>');
-            $("#example_filter input").after("<div class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></div>").attr("placeholder", "Filter");
-            $('#example_filter input').unbind().bind('keyup', function (e) {
-                if (e.keyCode == 13) {
-                    search();
+$("#example_filter").addClass("input-group");
+$("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;">Clear</span>');
+$("#example_filter input").after("<div class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></div>").attr("placeholder", "Filter");
+$('#example_filter input').unbind().bind('keyup', function (e) {
+    if (e.keyCode == 13) {
+        search();
 
-                    closePopover();
-                    setTimeout(function () {
-                        $('#example_filter button').focus();
-                    }, 0);
-                }
-            });
-            $("#example_filter_searchicon").click(function () {
-                search();
+        closePopover();
+        setTimeout(function () {
+            $('#example_filter button').focus();
+        }, 0);
+    }
+});
+$("#example_filter_searchicon").click(function () {
+    search();
 
-                closePopover();
-            });
-            $("#example_filter_clear").click(function () {
-                $("#example_filter input").val("");
-                search();
+    closePopover();
+});
+$("#example_filter_clear").click(function () {
+    $("#example_filter input").val("");
+    search();
 
-                setTimeout(function () {
-                    $('#example_filter input').focus();
-                }, 0);
-            });
+    setTimeout(function () {
+        $('#example_filter input').focus();
+    }, 0);
+});
 
-            $(".breadcrumb [title]").tooltip({ placement: "bottom", html: true, container: 'body' });
-            $("[title]").tooltip({ placement: "top", html: true, container: 'body', trigger: "focus" });
+$(".breadcrumb [title]").tooltip({ placement: "bottom", html: true, container: 'body' });
+$("[title]").tooltip({ placement: "top", html: true, container: 'body', trigger: "focus" });
 
-            function getPopoverButtons() {
-                var buttonGroups = [];
+function getPopoverButtons() {
+    var buttonGroups = [];
 
-                var offset = 0;
-                $.each(hosts[db].buttonGroups, function (i, v) {
-                    var buttons = ""
-                    $.each(hosts[db].columns.slice(offset, offset + v), function (i, v) {
-                        if (!v.unsearchable) {
-                            if (v.dataName) {
-                                buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.dataName + '<\/a>';
-                            }
-                            else {
-                                buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.data + ':<\/a>';
-                            }
-                        }
-                    });
-                    buttonGroups.push('<span class="btn-group">' + buttons + '<\/span>');
-                    offset += v;
-                });
-
-                return buttonGroups.join('<br/>');
-            }
-
-            $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content",
-            '\
-            <h5><small>Column</small></h5>\
-            <p>' + getPopoverButtons() + '</p>\
-            <table><tr><td>\
-            <h5><small>Boolean Operator</small></h5>\
-            <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></td><td style="width:10px;"></td><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">(</a><a class="btn btn-xs disabled">...</a><a class="btn btn-clipboard btn-xs">)</a></span></td></tr></table></p>\
-            </td><td style="width:20px;"></td><td>\
-            <h5><small>Column Operator</small></h5>\
-            <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">_exists_:</a><a class="btn btn-clipboard btn-xs">_missing_:</a></span></td></tr></table></p>\
-            </td></tr></table></p>\
-            <h5><small>Basic</small></h5>\
-            <p><code><b>word</b></code> -- Match <b>word</b> as keyword</p>\
-            <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase (for query with space)</p>\
-            <p><code><u>col</u>:<b>query</b></code> -- Match <b>query</b> (any type) on column <u>col</u></p>\
-            <p><code>_exists_:<u>col</u></code> | <code>_missing_:<u>col</u></code> -- (Has | Does have) any value on column <u>col</u></p>\
-            <h5><small>Wildchar, Fuzziness, and Distance</small></h5>\
-            <p><code><b>wo</b>?<b>d</b></code>, <code><b>wor</b>*</code> -- Match <b>word</b> with wildchar</p>\
-            <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
-            <p><code>"<b>word1 word2 ...</b>"~<i>d</i></code> -- Match <b>word1 word2 ...</b> with at most <i>d</i> words in between</p>\
-            <h5><small>Range</small></h5>\
-            <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match range from <b>a</b> to <b>b</b></p>\
-            <p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="fa fa-book"></span> Reference</a></p>\
-            '
-        ).popover({
-            placement: "bottom", html: true, container: 'body'
-        }).focus(function () {
-            if (!popoverShown) {
-                popoverShown = true;
-                $(this).animate({
-                    "width": "500px"
-                }, 200, function () {
-                    $(this).popover("show");
-                    if ($(this).val() != "") {
-                        $("#example_filter_clear").show();
-                    }
-                });
-            }
-        }).on("input", function (e) {
-            if ($(this).val() != "") {
-                $("#example_filter_clear").show();
-            }
-            else {
-                $("#example_filter_clear").hide();
-            }
-        });
-            $("body").tooltip({ placement: "top", html: true, container: 'body', selector: '.popover-content [title]' });
-
-            $(document).on('click', function (e) {
-                if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
-                    closePopover();
-                }
-            }).keydown(function (e) {
-                if (e.keyCode === 27) {
-                    closePopover();
-                }
-            }).on("click", ".popover a.btn", function () {
-                var text = $(this).text();
-
-                setTimeout(function () {
-                    $("#example_filter input").focus().replaceSelectedText(text);
-                }, 0);
-            });
-
-            table.on('draw.dt', function () {
-                if (!hosts[db].searchOnly) {
-                    $("#form_divmask").hide();
-                }
-
-                expandAll($("#expandAll").prop("checked"));
-
-                if ($(".dataTables_paginate li.paginate_button").length > 3 && $(".dataTables_paginate li.paginate_button:nth-last-of-type(3)").hasClass("disabled")) {
-                    $(".dataTables_paginate li.paginate_button:nth-last-of-type(2)").hide();
-                }
-
-                $("a.user, a.place, a.region").each(function () {
-                    $(this).attr("data-url", $(this).attr("href"));
-                }).removeAttr("href").click(function () {
-                    window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
-                });
-
-                $("a.url").attr("target", "_blank");
-
-                $("a.place").html(function () {
-                    return $(this).html() + ' <span class="fa fa-map-marker"><\/span>';
-                });
-
-                if (db == "twitter") {
-                    $("#example tbody td:nth-child(5)").each(function () {
-                        var type = $(this).text()
-                        var html = $(this).html()
-                        if (type == "retweet") {
-                            $(this).html(html + ' <span class="fa fa-retweet"><\/span>');
-                        }
-                        else if (type == "reply") {
-                            $(this).html(html + ' <span class="fa fa-reply"><\/span>');
-                        }
-                        else if (type == "mention") {
-                            $(this).html(html + ' <span class="fa fa-user-plus"><\/span>');
-                        }
-                        else {
-                            $(this).html("");
-                        }
-                    });
-
-                    $("a.url[title]").each(function () {
-                        var type = $(this).attr("data-type");
-                        var title = $(this).attr("title");
-                        if (type == "link") {
-                            $(this).attr("title", title + ' <span class="fa fa-chain"><\/span>');
-                        }
-                        else if (type == "media") {
-                            $(this).attr("title", title + ' <span class="fa fa-photo"><\/span>');
-                        }
-                    });
-
-                    $("#example tbody td:nth-child(7) a").attr("target", "_blank");
-                }
-
-                $("a.url[title], a.place[title]").tooltip({ placement: "bottom", html: true, container: 'body' });
-            }).on('click', 'td.control', function () {
-                setTimeout(function () {
-                    $("tr.child a.user, tr.child a.place").each(function () {
-                        $(this).attr("data-url", $(this).attr("href"));
-                    }).removeAttr("href").click(function () {
-                        window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
-                    });
-
-                    $("tr.child a.url").attr("target", "_blank");
-                }, 0);
-            });
-            $("input[name='db']").val(db);
-            $("input[name='query']").val(query);
-            $("input[name='from']").val(yearFrom);
-            $("input[name='to']").val(yearTo);
-            $('#trend_interval').val(5);
-            $('#trend_form').submit(function (e) {
-                var intervalTypeSelection = $("#interval_list");
-                var intervalVal = $('#trend_interval').val();
-                var isError = false;
-                var errorMessage = "";
-                var errorType = "danger";
-                if (((intervalTypeSelection.val() === 'year') && !isIntWithMinMaxVal(intervalVal, 1, 10))) {
-                    errorMessage = "Please check your inputs: Year value should be with in 1 and 10.";
-                    isError = true;
-                }
-                if (((intervalTypeSelection.val() === 'month') && !isIntWithMinMaxVal(intervalVal, 1, 12))) {
-                    errorMessage = "Please check your inputs: Month value should be with in 1 and 12.";
-                    isError = true;
-                }
-                if (((intervalTypeSelection.val() === 'day') && !isIntWithMinMaxVal(intervalVal, 1, 365))) {
-                    isError = true;
-                    errorMessage = "Please check your inputs: Day value should be with in 1 and 365.";
-                }
-                if (((intervalTypeSelection.val() === 'hour') && !isIntWithMinMaxVal(intervalVal, 1, 24))) {
-                    errorMessage = "Please check your inputs: Hour value should be with in 1 and 24.";
-                    isError = true;
-                }
-                if (((intervalTypeSelection.val() === 'minute') && !isIntWithMinMaxVal(intervalVal, 1, 60))) {
-                    errorMessage = "Please check your inputs: Minute value should be with in 1 and 10.";
-                    isError = true;
-                }
-                if (((intervalTypeSelection.val() === 'second') && !isIntWithMinMaxVal(intervalVal, 1, 60))) {
-                    errorMessage = "Please check your inputs: Second value should be with in 1 and 10.";
-                    isError = true;
-                }
-                if (isError) {
-                    showAlert(errorMessage, errorType);
-                    $("#trend_interval").tooltip("show");
-                    $("#trend_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-
-            });
-
-            $('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload?token=" + token);
-            $('#theme_uploadstatus').val($.url().attr("protocol") + "://" + $.url().attr("host") + ":" + $.url().attr("port") + "/theme_upload.html");
-
-            $('#topk_k').val(10);
-            $('#topk_minlen').val(1);
-            $('#topk_maxlen').val(5);
-
-            $('#topk_form').submit(function (e) {
-                if (!isIntWithMinMaxVal($('#topk_k').val(), 1, 100)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topk_k").tooltip("show");
-                    $("#topk_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-                if (!isIntWithMinMaxVal($('#topk_minlen').val(), 1, 10)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topk_minlen").tooltip("show");
-                    $("#topk_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-                if (!isIntWithMinMaxVal($('#topk_maxlen').val(), 1, 10)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topk_maxlen").tooltip("show");
-                    $("#topk_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-                if ($('#topk_minlen').val() > $('#topk_maxlen').val()) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topk_minlen").tooltip("show");
-                    $("#topk_maxlen").tooltip("show");
-                    $("#topk_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-            });
-
-            $('#topic_k').val(5);
-            $('#topic_wordnum').val(10);
-
-            $('#topic_form').submit(function (e) {
-                if (!isIntWithMinMaxVal($('#topic_k').val(), 1, 100)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topic_k").tooltip("show");
-                    $("#topic_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-                if (!isIntWithMinMaxVal($('#topic_wordnum').val(), 100)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topic_wordnum").tooltip("show");
-                    $("#topic_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-            });
-
-            $('#geo_n').val(1000);
-            $('#geo_form').submit(function (e) {
-                e.preventDefault();
-
-                if (!isIntWithMinVal($('#geo_n').val(), 1)) {
-                    showAlert("Please check your inputs.", "danger");
-                    return;
-                }
-                draw_heatmap();
-            });
-
-            function updateThemeList() {
-                $.ajax({
-                    dataType: "jsonp",
-                    jsonpCallback: "jsonpcallback_themelist",
-                    url: "http://" + host + "/theme/file/list?token=" + token,
-                    success: function (j) {
-                        list = j.data;
-                        var options = '';
-
-                        toggleDisabled($("#theme_form button, #theme_othersdiv button"), list.length == 0);
-                        if (list.length > 0) {
-                            for (var i = 0; i < list.length; i++) {
-                                options += '<option value="' + list[i] + '">' + list[i] + '</option>';
-                            }
-                        }
-                        $("select#theme_list").html(options);
-                    }
-                });
-            }
-            function getThemeListSelected() {
-                return $('#theme_list').find(":selected").text()
-            }
-
-            updateThemeList();
-
-            $('#theme_view').click(function () {
-                var file = getThemeListSelected();
-                showAlert("Dictionary <b>" + file + "</b> has been downloaded.", "info");
-                window.location.href = "http://" + host + "/theme/file/view?token=" + token + "&name=" + file;
-            });
-            $('#theme_delete').click(function () {
-                var file = getThemeListSelected();
-                bootbox.dialog({
-                    message: 'Are you sure you want to delete dictionary <b>' + file + "</b>?",
-                    title: "Confirm",
-                    onEscape: function () { },
-                    buttons: {
-                        cancel: {
-                            label: "Cancel",
-                            className: "btn-default"
-                        },
-                        danger: {
-                            label: "<span class=\"fa fa-trash-o\"></span> Delete",
-                            className: "btn-danger",
-                            callback: function () {
-                                $.getJSON("http://" + host + "/theme/file/delete?token=" + token + "&callback=?",
-                                {
-                                    "name": file
-                                },
-                                function (j) {
-                                    updateThemeList();
-                                    showAlert("Dictionary <b>" + file + "</b> has been deleted.", "info");
-                                }
-                            );
-                            }
-                        }
-                    }
-                });
-            });
-            $("#theme_uploaddiv").hide();
-            $('#theme_showupload').click(function () {
-                $("#theme_showupload").hide();
-                $("#theme_uploaddiv").fadeIn(400);
-            });
-            $("#theme_uploadblank").load(function () {
-                updateThemeList();
-
-                var currFile = $("#theme_uploadinput").val().split('\\').slice(-1);
-                showAlert("Dictionary <b>" + currFile + "</b> has been uploaded.", "info");
-            });
-            $("#theme_uploadinput").change(function () {
-                var currFile = this.value.split('\\').slice(-1);
-                if (currFile !== "") {
-                    $("#theme_uploadfile").html(currFile);
+    var offset = 0;
+    $.each(hosts[db].buttonGroups, function (i, v) {
+        var buttons = ""
+        $.each(hosts[db].columns.slice(offset, offset + v), function (i, v) {
+            if (!v.unsearchable) {
+                if (v.dataName) {
+                    buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.dataName + '<\/a>';
                 }
                 else {
-                    $("#theme_uploadfile").html("No file chosen");
+                    buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.data + ':<\/a>';
                 }
-
-                toggleDisabled($("#theme_uploadsubmit"), currFile == "");
-                if (currFile == "") {
-                    $("#theme_uploadsubmit").tooltip("hide");
-                }
-                else {
-                    $("#theme_uploadsubmit").tooltip("show");
-                }
-            });
-            $("#theme_uploadfile").html("No file chosen");
-
-            table.on('preXhr.dt', function (e, settings, data) {
-                $("#example_processing div").fadeIn(800);
-            });
-            table.on('xhr.dt', function (e, settings, data) {
-                $("#example_processing div").hide();
-            });
+            }
         });
+        buttonGroups.push('<span class="btn-group">' + buttons + '<\/span>');
+        offset += v;
     });
+
+    return buttonGroups.join('<br/>');
+}
+
+$("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content",
+    '\
+    <h5><small>Column</small></h5>\
+    <p>' + getPopoverButtons() + '</p>\
+    <table><tr><td>\
+    <h5><small>Boolean Operator</small></h5>\
+    <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">AND</a><a class="btn btn-clipboard btn-xs">OR</a><a class="btn btn-clipboard btn-xs">NOT</a></span></td><td style="width:10px;"></td><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">(</a><a class="btn btn-xs disabled">...</a><a class="btn btn-clipboard btn-xs">)</a></span></td></tr></table></p>\
+    </td><td style="width:20px;"></td><td>\
+    <h5><small>Column Operator</small></h5>\
+    <p><table><tr><td><span class="btn-group"><a class="btn btn-clipboard btn-xs">_exists_:</a><a class="btn btn-clipboard btn-xs">_missing_:</a></span></td></tr></table></p>\
+    </td></tr></table></p>\
+    <h5><small>Basic</small></h5>\
+    <p><code><b>word</b></code> -- Match <b>word</b> as keyword</p>\
+    <p><code>"<b>word1 word2 ...</b>"</code> -- Match <b>word1 word2 ...</b> as phrase (for query with space)</p>\
+    <p><code><u>col</u>:<b>query</b></code> -- Match <b>query</b> (any type) on column <u>col</u></p>\
+    <p><code>_exists_:<u>col</u></code> | <code>_missing_:<u>col</u></code> -- (Has | Does have) any value on column <u>col</u></p>\
+    <h5><small>Wildchar, Fuzziness, and Distance</small></h5>\
+    <p><code><b>wo</b>?<b>d</b></code>, <code><b>wor</b>*</code> -- Match <b>word</b> with wildchar</p>\
+    <p><code><b>word</b>~</code> -- Match <b>word</b> with fuzziness</p>\
+    <p><code>"<b>word1 word2 ...</b>"~<i>d</i></code> -- Match <b>word1 word2 ...</b> with at most <i>d</i> words in between</p>\
+    <h5><small>Range</small></h5>\
+    <p><code>[<b>a</b> TO <b>b</b>]</code> -- Match range from <b>a</b> to <b>b</b></p>\
+    <p style="text-align:right;"><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank"><span class="fa fa-book"></span> Reference</a></p>\
+    '
+    ).popover({
+        placement: "bottom", html: true, container: 'body'
+    }).focus(function () {
+        if (!popoverShown) {
+            popoverShown = true;
+            $(this).animate({
+                "width": "500px"
+            }, 200, function () {
+                $(this).popover("show");
+                if ($(this).val() != "") {
+                    $("#example_filter_clear").show();
+                }
+            });
+        }
+    }).on("input", function (e) {
+        if ($(this).val() != "") {
+            $("#example_filter_clear").show();
+        }
+        else {
+            $("#example_filter_clear").hide();
+        }
+    });
+    $("body").tooltip({ placement: "top", html: true, container: 'body', selector: '.popover-content [title]' });
+
+    $(document).on('click', function (e) {
+        if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
+            closePopover();
+        }
+    }).keydown(function (e) {
+        if (e.keyCode === 27) {
+            closePopover();
+        }
+    }).on("click", ".popover a.btn", function () {
+        var text = $(this).text();
+
+        setTimeout(function () {
+            $("#example_filter input").focus().replaceSelectedText(text);
+        }, 0);
+    });
+
+    table.on('draw.dt', function () {
+        if (!hosts[db].searchOnly) {
+            $("#form_divmask").hide();
+        }
+
+        expandAll($("#expandAll").prop("checked"));
+
+        if ($(".dataTables_paginate li.paginate_button").length > 3 && $(".dataTables_paginate li.paginate_button:nth-last-of-type(3)").hasClass("disabled")) {
+            $(".dataTables_paginate li.paginate_button:nth-last-of-type(2)").hide();
+        }
+
+        $("a.user, a.place, a.region").each(function () {
+            $(this).attr("data-url", $(this).attr("href"));
+        }).removeAttr("href").click(function () {
+            window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
+        });
+
+        $("a.url").attr("target", "_blank");
+
+        $("a.place").html(function () {
+            return $(this).html() + ' <span class="fa fa-map-marker"><\/span>';
+        });
+
+        if (db == "twitter") {
+            $("#example tbody td:nth-child(5)").each(function () {
+                var type = $(this).text()
+                var html = $(this).html()
+                if (type == "retweet") {
+                    $(this).html(html + ' <span class="fa fa-retweet"><\/span>');
+                }
+                else if (type == "reply") {
+                    $(this).html(html + ' <span class="fa fa-reply"><\/span>');
+                }
+                else if (type == "mention") {
+                    $(this).html(html + ' <span class="fa fa-user-plus"><\/span>');
+                }
+                else {
+                    $(this).html("");
+                }
+            });
+
+            $("a.url[title]").each(function () {
+                var type = $(this).attr("data-type");
+                var title = $(this).attr("title");
+                if (type == "link") {
+                    $(this).attr("title", title + ' <span class="fa fa-chain"><\/span>');
+                }
+                else if (type == "media") {
+                    $(this).attr("title", title + ' <span class="fa fa-photo"><\/span>');
+                }
+            });
+
+            $("#example tbody td:nth-child(7) a").attr("target", "_blank");
+        }
+
+        $("a.url[title], a.place[title]").tooltip({ placement: "bottom", html: true, container: 'body' });
+    }).on('click', 'td.control', function () {
+        setTimeout(function () {
+            $("tr.child a.user, tr.child a.place").each(function () {
+                $(this).attr("data-url", $(this).attr("href"));
+            }).removeAttr("href").click(function () {
+                window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
+            });
+
+            $("tr.child a.url").attr("target", "_blank");
+        }, 0);
+    });
+    $("input[name='db']").val(db);
+    $("input[name='query']").val(query);
+    $("input[name='from']").val(yearFrom);
+    $("input[name='to']").val(yearTo);
+    $('#trend_interval').val(5);
+    $('#trend_form').submit(function (e) {
+        var intervalTypeSelection = $("#interval_list");
+        var intervalVal = $('#trend_interval').val();
+        var isError = false;
+        var errorMessage = "";
+        var errorType = "danger";
+        if (((intervalTypeSelection.val() === 'year') && !isIntWithMinMaxVal(intervalVal, 1, 10))) {
+            errorMessage = "Please check your inputs: Year value should be with in 1 and 10.";
+            isError = true;
+        }
+        if (((intervalTypeSelection.val() === 'month') && !isIntWithMinMaxVal(intervalVal, 1, 12))) {
+            errorMessage = "Please check your inputs: Month value should be with in 1 and 12.";
+            isError = true;
+        }
+        if (((intervalTypeSelection.val() === 'day') && !isIntWithMinMaxVal(intervalVal, 1, 365))) {
+            isError = true;
+            errorMessage = "Please check your inputs: Day value should be with in 1 and 365.";
+        }
+        if (((intervalTypeSelection.val() === 'hour') && !isIntWithMinMaxVal(intervalVal, 1, 24))) {
+            errorMessage = "Please check your inputs: Hour value should be with in 1 and 24.";
+            isError = true;
+        }
+        if (((intervalTypeSelection.val() === 'minute') && !isIntWithMinMaxVal(intervalVal, 1, 60))) {
+            errorMessage = "Please check your inputs: Minute value should be with in 1 and 10.";
+            isError = true;
+        }
+        if (((intervalTypeSelection.val() === 'second') && !isIntWithMinMaxVal(intervalVal, 1, 60))) {
+            errorMessage = "Please check your inputs: Second value should be with in 1 and 10.";
+            isError = true;
+        }
+        if (isError) {
+            showAlert(errorMessage, errorType);
+            $("#trend_interval").tooltip("show");
+            $("#trend_form").addClass("has-error");
+            e.preventDefault();
+            return;
+        }
+
+    });
+
+$('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload?token=" + token);
+$('#theme_uploadstatus').val($.url().attr("protocol") + "://" + $.url().attr("host") + ":" + $.url().attr("port") + "/theme_upload.html");
+
+$('#topk_k').val(10);
+$('#topk_minlen').val(1);
+$('#topk_maxlen').val(5);
+
+$('#topk_form').submit(function (e) {
+    if (!isIntWithMinMaxVal($('#topk_k').val(), 1, 100)) {
+        showAlert("Please check your inputs.", "danger");
+        $("#topk_k").tooltip("show");
+        $("#topk_form").addClass("has-error");
+        e.preventDefault();
+        return;
+    }
+    if (!isIntWithMinMaxVal($('#topk_minlen').val(), 1, 10)) {
+        showAlert("Please check your inputs.", "danger");
+        $("#topk_minlen").tooltip("show");
+        $("#topk_form").addClass("has-error");
+        e.preventDefault();
+        return;
+    }
+    if (!isIntWithMinMaxVal($('#topk_maxlen').val(), 1, 10)) {
+        showAlert("Please check your inputs.", "danger");
+        $("#topk_maxlen").tooltip("show");
+        $("#topk_form").addClass("has-error");
+        e.preventDefault();
+        return;
+    }
+    if ($('#topk_minlen').val() > $('#topk_maxlen').val()) {
+        showAlert("Please check your inputs.", "danger");
+        $("#topk_minlen").tooltip("show");
+        $("#topk_maxlen").tooltip("show");
+        $("#topk_form").addClass("has-error");
+        e.preventDefault();
+        return;
+    }
+});
+
+$('#topic_k').val(5);
+$('#topic_wordnum').val(10);
+
+$('#topic_form').submit(function (e) {
+    if (!isIntWithMinMaxVal($('#topic_k').val(), 1, 100)) {
+        showAlert("Please check your inputs.", "danger");
+        $("#topic_k").tooltip("show");
+        $("#topic_form").addClass("has-error");
+        e.preventDefault();
+        return;
+    }
+    if (!isIntWithMinMaxVal($('#topic_wordnum').val(), 100)) {
+        showAlert("Please check your inputs.", "danger");
+        $("#topic_wordnum").tooltip("show");
+        $("#topic_form").addClass("has-error");
+        e.preventDefault();
+        return;
+    }
+});
+
+$('#geo_n').val(1000);
+$('#geo_form').submit(function (e) {
+    e.preventDefault();
+
+    if (!isIntWithMinVal($('#geo_n').val(), 1)) {
+        showAlert("Please check your inputs.", "danger");
+        return;
+    }
+    draw_heatmap();
+});
+
+function updateThemeList() {
+    $.ajax({
+        dataType: "jsonp",
+        jsonpCallback: "jsonpcallback_themelist",
+        url: "http://" + host + "/theme/file/list?token=" + token,
+        success: function (j) {
+            list = j.data;
+            var options = '';
+
+            toggleDisabled($("#theme_form button, #theme_othersdiv button"), list.length == 0);
+            if (list.length > 0) {
+                for (var i = 0; i < list.length; i++) {
+                    options += '<option value="' + list[i] + '">' + list[i] + '</option>';
+                }
+            }
+            $("select#theme_list").html(options);
+        }
+    });
+}
+function getThemeListSelected() {
+    return $('#theme_list').find(":selected").text()
+}
+
+updateThemeList();
+
+$('#theme_view').click(function () {
+    var file = getThemeListSelected();
+    showAlert("Dictionary <b>" + file + "</b> has been downloaded.", "info");
+    window.location.href = "http://" + host + "/theme/file/view?token=" + token + "&name=" + file;
+});
+$('#theme_delete').click(function () {
+    var file = getThemeListSelected();
+    bootbox.dialog({
+        message: 'Are you sure you want to delete dictionary <b>' + file + "</b>?",
+        title: "Confirm",
+        onEscape: function () { },
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default"
+            },
+            danger: {
+                label: "<span class=\"fa fa-trash-o\"></span> Delete",
+                className: "btn-danger",
+                callback: function () {
+                    $.getJSON("http://" + host + "/theme/file/delete?token=" + token + "&callback=?",
+                    {
+                        "name": file
+                    },
+                    function (j) {
+                        updateThemeList();
+                        showAlert("Dictionary <b>" + file + "</b> has been deleted.", "info");
+                    }
+                    );
+                }
+            }
+        }
+    });
+});
+$("#theme_uploaddiv").hide();
+$('#theme_showupload').click(function () {
+    $("#theme_showupload").hide();
+    $("#theme_uploaddiv").fadeIn(400);
+});
+$("#theme_uploadblank").load(function () {
+    updateThemeList();
+
+    var currFile = $("#theme_uploadinput").val().split('\\').slice(-1);
+    showAlert("Dictionary <b>" + currFile + "</b> has been uploaded.", "info");
+});
+$("#theme_uploadinput").change(function () {
+    var currFile = this.value.split('\\').slice(-1);
+    if (currFile !== "") {
+        $("#theme_uploadfile").html(currFile);
+    }
+    else {
+        $("#theme_uploadfile").html("No file chosen");
+    }
+
+    toggleDisabled($("#theme_uploadsubmit"), currFile == "");
+    if (currFile == "") {
+        $("#theme_uploadsubmit").tooltip("hide");
+    }
+    else {
+        $("#theme_uploadsubmit").tooltip("show");
+    }
+});
+$("#theme_uploadfile").html("No file chosen");
+
+table.on('preXhr.dt', function (e, settings, data) {
+    $("#example_processing div").fadeIn(800);
+});
+table.on('xhr.dt', function (e, settings, data) {
+    $("#example_processing div").hide();
+});
+});
+});
 
 </script>
 
 </head>
 <body>
-<ol class="breadcrumb">
-    <li><a href="/"><span class="fa fa-home" title="Home"></span></a></li>
-    <li><a href="query.html" id="queryPage">Query</a></li>
-    <li class="active">Records</li>
-</ol>
+    <ol class="breadcrumb">
+        <li><a href="/"><span class="fa fa-home" title="Home"></span></a></li>
+        <li><a href="query.html" id="queryPage">Query</a></li>
+        <li class="active">Records</li>
+    </ol>
 
-<div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
+    <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-<h3>
-</h3>
+        <h3>
+        </h3>
 
-<div class="block" id="form_div" style="width:100%;">
-    <div id="form_divmask" style="position:absolute; z-index: 1000; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); "></div>
-    <div class="actionblock" id="trendblock">
-        <form class="form-inline" id="trend_form" action="trend.html" method="get">
-            <input type="hidden" name="db"></input>
-            <input type="hidden" name="query"></input>
-            <input type="hidden" name="from"></input>
-            <input type="hidden" name="to"></input>
-            <label class="control-label">Interval: </label>
-            <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
-             <select class="form-control input-sm" id="interval_list" name="intervaltype" style="width:90px;display:inline-block;"">
-            </select> 
-            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
-        </form>
-    </div>
-    <div class="actionblock" id="themeblock">
-        <div style="display:inline-block;">
-            <form class="form-inline" id="theme_form" action="theme.html" method="get">
-                <input type="hidden" name="db"></input>
-                <input type="hidden" name="query"></input>
-                <input type="hidden" name="from"></input>
-                <input type="hidden" name="to"></input>
-                <label class="control-label">Dictionary: </label>
-                <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
-                <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-pie-chart"></span> Visualize</button>
-            </form>
-        </div>
-        <div style="display:inline-block;">
-            |
-            <div id="theme_othersdiv" style="display: inline-block;">
-                <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="fa fa-download"></span> View</button>
-                <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="fa fa-trash-o"></span> Delete</button>
-            </div>
-            <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="fa fa-upload"></span> New</button>
-            <div id="theme_uploaddiv" style="display: inline-block;">
-                <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
-                <form class="form-inline" id="theme_uploadform" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
-                    <input id="theme_uploadstatus" type="hidden" name="root"></input>
-                    <div class="btn-group">
-                        <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="fa fa-upload"></span> Upload</button>
-                        <span class="btn btn-default btn-sm btn-file" title="CSV file only">
-                            Browse ...
-                            <input id="theme_uploadinput" type="file" name="file" accept=".csv" tabindex="0"></input>
-                        </span>
-                        <span class="btn btn-sm disabled" id="theme_uploadfile"></span>
-                    </div>
+        <div class="block" id="form_div" style="width:100%;">
+            <div id="form_divmask" style="position:absolute; z-index: 1000; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); "></div>
+            <div class="actionblock" id="trendblock">
+                <form class="form-inline" id="trend_form" action="trend.html" method="get">
+                    <input type="hidden" name="db"></input>
+                    <input type="hidden" name="query"></input>
+                    <input type="hidden" name="from"></input>
+                    <input type="hidden" name="to"></input>
+                    <label class="control-label">Interval: </label>
+                    <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
+                    <select class="form-control input-sm" id="interval_list" name="intervaltype" style="width:90px;display:inline-block;"">
+                    </select> 
+                    <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
                 </form>
             </div>
+            <div class="actionblock" id="themeblock">
+                <div style="display:inline-block;">
+                    <form class="form-inline" id="theme_form" action="theme.html" method="get">
+                        <input type="hidden" name="db"></input>
+                        <input type="hidden" name="query"></input>
+                        <input type="hidden" name="from"></input>
+                        <input type="hidden" name="to"></input>
+                        <label class="control-label">Dictionary: </label>
+                        <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
+                        <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-pie-chart"></span> Visualize</button>
+                    </form>
+                </div>
+                <div style="display:inline-block;">
+                    |
+                    <div id="theme_othersdiv" style="display: inline-block;">
+                        <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="fa fa-download"></span> View</button>
+                        <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="fa fa-trash-o"></span> Delete</button>
+                    </div>
+                    <button class="btn btn-warning btn-sm" id="theme_showupload" type="button"><span class="fa fa-upload"></span> New</button>
+                    <div id="theme_uploaddiv" style="display: inline-block;">
+                        <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
+                        <form class="form-inline" id="theme_uploadform" method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
+                            <input id="theme_uploadstatus" type="hidden" name="root"></input>
+                            <div class="btn-group">
+                                <button id="theme_uploadsubmit" class="btn btn-warning btn-sm disabled" type="submit" title="Upload the selected file"><span class="fa fa-upload"></span> Upload</button>
+                                <span class="btn btn-default btn-sm btn-file" title="CSV file only">
+                                    Browse ...
+                                    <input id="theme_uploadinput" type="file" name="file" accept=".csv" tabindex="0"></input>
+                                </span>
+                                <span class="btn btn-sm disabled" id="theme_uploadfile"></span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="newrow"></div>
+            <div class="actionblock" id="topicblock">
+                <form class="form-inline" id="topic_form" action="topic.html" method="get">
+                    <input type="hidden" name="db"></input>
+                    <input type="hidden" name="query"></input>
+                    <input type="hidden" name="from"></input>
+                    <input type="hidden" name="to"></input>
+                    <label class="control-label">k: </label>
+                    <input class="form-control input-sm" id="topic_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
+                    <label class="control-label">#Word per Topic: </label>
+                    <input class="form-control input-sm" id="topic_wordnum" style="width:50px;" name="wordnum" title="Greater than or equal to 1"></input>
+                    <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Topics</button>
+                </form>
+            </div>
+            <div class="actionblock" id="topkblock">
+                <form class="form-inline" id="topk_form" action="topk.html" method="get">
+                    <input type="hidden" name="db"></input>
+                    <input type="hidden" name="query"></input>
+                    <input type="hidden" name="from"></input>
+                    <input type="hidden" name="to"></input>
+                    <label class="control-label">k: </label>
+                    <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
+                    <label class="control-label">#Word per Phrase: </label>
+                    <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1"></input> - <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1"></input>
+                    <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Co-occurrences</button>
+                </form>
+            </div>
+            <div class="actionblock" id="heatmapblock">
+                <form class="form-inline" id="geo_form" method="get">
+                    <input type="hidden" name="db"></input>
+                    <input type="hidden" name="query"></input>
+                    <input type="hidden" name="from"></input>
+                    <input type="hidden" name="to"></input>
+                    <label class="control-label">#Coordinates: </label>
+                    <input class="form-control input-sm" id="geo_n" style="width:80px;" name="n" title="Greater than or equal to 1"></input>
+                    <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-globe"></span> Heatmap</button>
+                </form>
+            </div>
+            <div id="searchToggleDiv" class="btn-group" data-toggle="buttons">
+                <label id="searchToggleButton" class="btn btn-xs"><span class="fa fa-filter"></span> Use Filter<input type="checkbox" id="searchToggle"></label>
+            </div>
         </div>
-    </div>
-    <div class="newrow"></div>
-    <div class="actionblock" id="topicblock">
-        <form class="form-inline" id="topic_form" action="topic.html" method="get">
-            <input type="hidden" name="db"></input>
-            <input type="hidden" name="query"></input>
-            <input type="hidden" name="from"></input>
-            <input type="hidden" name="to"></input>
-            <label class="control-label">k: </label>
-            <input class="form-control input-sm" id="topic_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
-            <label class="control-label">#Word per Topic: </label>
-            <input class="form-control input-sm" id="topic_wordnum" style="width:50px;" name="wordnum" title="Greater than or equal to 1"></input>
-            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Topics</button>
-        </form>
-    </div>
-    <div class="actionblock" id="topkblock">
-        <form class="form-inline" id="topk_form" action="topk.html" method="get">
-            <input type="hidden" name="db"></input>
-            <input type="hidden" name="query"></input>
-            <input type="hidden" name="from"></input>
-            <input type="hidden" name="to"></input>
-            <label class="control-label">k: </label>
-            <input class="form-control input-sm" id="topk_k" style="width:50px;" name="k" title="Greater than or equal to 1"></input>
-            <label class="control-label">#Word per Phrase: </label>
-            <input class="form-control input-sm" id="topk_minlen" style="width:50px;" name="minlen" title="Greater than or equal to 1"></input> - <input class="form-control input-sm" id="topk_maxlen" style="width:50px;" name="maxlen" title="Greater than or equal to 1"></input>
-            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-th"></span> Top-k Co-occurrences</button>
-        </form>
-    </div>
-    <div class="actionblock" id="heatmapblock">
-        <form class="form-inline" id="geo_form" method="get">
-            <input type="hidden" name="db"></input>
-            <input type="hidden" name="query"></input>
-            <input type="hidden" name="from"></input>
-            <input type="hidden" name="to"></input>
-            <label class="control-label">#Coordinates: </label>
-            <input class="form-control input-sm" id="geo_n" style="width:80px;" name="n" title="Greater than or equal to 1"></input>
-            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-globe"></span> Heatmap</button>
-        </form>
-    </div>
-    <div id="searchToggleDiv" class="btn-group" data-toggle="buttons">
-        <label id="searchToggleButton" class="btn btn-xs"><span class="fa fa-filter"></span> Use Filter<input type="checkbox" id="searchToggle"></label>
-    </div>
-</div>
 
-<div class="modal" id="progress_wrapper" tabindex="-1" role="dialog" aria-labelledby="progress_wrapper_label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" style="width: 800px; margin: auto; margin-top: 200px;">
-    <div class="progress">
-        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-            <span>Loading...</span>
+        <div class="modal" id="progress_wrapper" tabindex="-1" role="dialog" aria-labelledby="progress_wrapper_label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="width: 800px; margin: auto; margin-top: 200px;">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span>Loading...</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    </div>
-</div>
 
-<div class="modal" id="map_wrapper" tabindex="-1" role="dialog" aria-labelledby="map_wrapper_label" aria-hidden="true">
-    <div class="modal-dialog" style="width: 800px; height: 600px; margin: auto; margin-top: 50px;">
-    <div id="map-panel" style="position: absolute; top: 4px; right: 100px; z-index: 100;">
-        <div class="btn-group" data-toggle="buttons">
-        <label id="markerButton" class="btn btn-xs btn-info"><span class="fa fa-map-marker"></span> Show Markers
-            <input type="checkbox" id="marker">
-        </label>
+        <div class="modal" id="map_wrapper" tabindex="-1" role="dialog" aria-labelledby="map_wrapper_label" aria-hidden="true">
+            <div class="modal-dialog" style="width: 800px; height: 600px; margin: auto; margin-top: 50px;">
+                <div id="map-panel" style="position: absolute; top: 4px; right: 100px; z-index: 100;">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label id="markerButton" class="btn btn-xs btn-info"><span class="fa fa-map-marker"></span> Show Markers
+                            <input type="checkbox" id="marker">
+                        </label>
+                    </div>
+                </div>
+                <div class="map" id="map_canvas" style="width: 800px; height: 600px;">
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="map" id="map_canvas" style="width: 800px; height: 600px;">
-    </div>
-    </div>
-</div>
 
-<div class="block" style="width:100%;">
-    <table id="example" class="table table-hover" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-            </tr>
-        </thead>
-    </table>
-</div>
+        <div class="block" style="width:100%;">
+            <table id="example" class="table table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+            </table>
+        </div>
 
-</div>
+    </div>
 </body>
 </html>
