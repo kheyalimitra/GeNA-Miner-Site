@@ -1,6 +1,5 @@
 {
   "name": "datatables-fixedheader",
-  "version": "3.1.0",
   "main": [
     "js/dataTables.fixedHeader.js",
     "css/fixedHeader.dataTables.scss"
@@ -10,11 +9,12 @@
     "datatables": ">=1.10.7"
   },
   "homepage": "https://github.com/DataTables/FixedHeader",
-  "_release": "3.1.0",
+  "version": "3.1.1",
+  "_release": "3.1.1",
   "_resolution": {
     "type": "version",
-    "tag": "3.1.0",
-    "commit": "2d9ab85256be3c7b14b1f3e2bff230264c5375e0"
+    "tag": "3.1.1",
+    "commit": "20376190bc40d55a1dbdf44959c82ac8b473a3f8"
   },
   "_source": "git://github.com/DataTables/FixedHeader.git",
   "_target": "*",

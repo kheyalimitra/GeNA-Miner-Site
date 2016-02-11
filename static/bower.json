@@ -1,22 +1,22 @@
 {
   "name": "gena_miner-site",
   "version": "0.0.0",
-  "homepage": "https://github.com/chuanconggao/gena_miner-site",
+  "homepage": "https://github.com/GeNA-Lab/GeNA-Miner-Site",
   "authors": [
     "Chuancong Gao <chuancong@gmail.com>"
   ],
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "bootstrap": "*",
     "bootbox": "*",
     "bootstrap-growl": "*",
-    "bootstrap": "*",
-    "d3": "*",
+    "eonasdan-bootstrap-datetimepicker": "*",
+    "datatables": "*",
     "datatables-fixedheader": "*",
     "datatables-plugins": "*",
     "datatables-responsive": "*",
     "datatables-tabletools": "*",
-    "datatables": "*",
     "fontawesome": "*",
     "jquery": "*",
     "jquery-cookie": "*",
@@ -25,7 +25,8 @@
     "phpjs": "*",
     "rangyinputs": "*",
     "underscore": "*",
-    "eonasdan-bootstrap-datetimepicker": "*",
+    "d3": "*",
+    "vega": "*",
     "awesomplete": "https://github.com/LeaVerou/awesomplete.git#gh-pages"
   }
 }
