@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <head>
 
@@ -140,165 +139,166 @@ table td {
 </style>
 
 <script type="text/javascript" class="init">
-    $(document).ready(function () {
-        $.getJSON("hosts.json", function (hosts) {
-            var token = $.cookie("token");
+$(document).ready(function() {
+    $.getJSON("hosts.json", function(hosts) {
+        var token = $.cookie("token");
 
-            var db = $.url().param('db');
-            var host = hosts[db].host;
-            var dbName = hosts[db].name;
+        var db = $.url().param('db');
+        var host = hosts[db].host;
+        var dbName = hosts[db].name;
 
-            var jsonp = hosts[db].jsonp;
+        var jsonp = hosts[db].jsonp;
 
-            $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
+        $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
 
-            var query = $.url().param('query');
-            var yearFrom = $.url().param('from');
-            /*
-            if (!yearFrom) {
+        var query = $.url().param('query');
+        var yearFrom = $.url().param('from');
+        /*
+        if (!yearFrom) {
             yearFrom = 1900;
-            }
-            */
-            var yearTo = $.url().param('to');
-            var intervalType = $.url().param('intervaltype');
-            /*
-            if (!yearTo) {
+        }
+        */
+        var yearTo = $.url().param('to');
+        var intervalType = $.url().param('intervaltype');
+            
+        /*
+        if (!yearTo) {
             yearTo = new Date().getFullYear() - 1;
-            }
-            */
+        }
+        */
 
-            document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo;
-            $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
+        document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo;
+        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ")");
 
-            if (hosts[db].hiddenActions != null) {
-                $.each(hosts[db].hiddenActions, function (index, s) {
-                    $("#" + s + "block").hide();
-                });
-            }
-            if (hosts[db].disableActions != null) {
-                $.each(hosts[db].disableActions, function (index, s) {
-                    $("#" + s + "block .btn, #" + s + "block .form-control").prop("disabled", true);
-                });
-            }
+        if (hosts[db].hiddenActions != null) {
+            $.each(hosts[db].hiddenActions, function(index, s) {
+                $("#" + s + "block").hide();
+            });
+        }
+        if (hosts[db].disableActions != null) {
+            $.each(hosts[db].disableActions, function(index, s) {
+                $("#" + s + "block .btn, #" + s + "block .form-control").prop("disabled", true); 
+            });
+        }
 
-            if (hosts[db].noFilterToggle) {
-                $("#searchToggleDiv").hide();
-            }
-            $.each(hosts[db].intervaltype, function(k, v) {
-                    $('#interval_list')
-                        .append($("<option></option>")
-                            .attr("value", v.value)
-                            .text(v.text));
-                });
+        if (hosts[db].noFilterToggle) {
+            $("#searchToggleDiv").hide();
+        }
 
-            $("#interval_list").prepend("<option value='' selected='selected'></option>");
+        $.each(hosts[db].intervaltype, function(k, v) {
+            $('#interval_list')
+                .append($("<option></option>")
+                    .attr("value", v.value)
+                    .text(v.text));
+        });
 
-            function getFilterQuery() {
-                if ($('#searchToggle').prop("checked")) {
-                    if (query == "") {
-                        return filterValue;
-                    }
-                    else if (filterValue == "") {
-                        return query;
-                    }
-                    else {
-                        return "(" + query + ") AND (" + filterValue + ")";
-                    }
+        $("#interval_list").prepend("<option value='' selected='selected'></option>");
+
+        function getFilterQuery() {
+            if ($('#searchToggle').prop("checked")) {
+                if (query == "") {
+                    return filterValue;
                 }
-                else {
+                else if (filterValue == "") {
                     return query;
                 }
-            }
-
-            function setFilterQueryTooltip() {
-                if ($('#searchToggle').prop("checked") && filterValue != "") {
-                    $("#searchToggleButton").attr("title", "Query with Filter: " + getFilterQuery()).tooltip({ placement: "left", html: true, container: 'body', trigger: 'hover' }).tooltip("fixTitle").tooltip('show');
-                }
                 else {
-                    $("#searchToggleButton").tooltip('destroy');
+                    return "(" + query + ") AND (" + filterValue + ")";
                 }
+            }
+            else {
+                return query;
+            }
+        }
 
-                $("input[name='query']").val(getFilterQuery());
+        function setFilterQueryTooltip() {
+            if ($('#searchToggle').prop("checked") && filterValue != "") {
+                $("#searchToggleButton").attr("title", "Query with Filter: " + getFilterQuery()).tooltip({placement: "left", html: true, container: 'body', trigger: 'hover'}).tooltip("fixTitle").tooltip('show');
+            }
+            else {
+                $("#searchToggleButton").tooltip('destroy');
             }
 
-            $('#searchToggle').change(setFilterQueryTooltip);
+            $("input[name='query']").val(getFilterQuery());
+        }
 
-            var tableHeaderTags = '<th class="all"></th>';
-            for (var i = 0; i < hosts[db].columns.length; i++) {
-                tableHeaderTags += '<th></th>';
-            }
-            $("#example thead tr").html(tableHeaderTags);
+        $('#searchToggle').change(setFilterQueryTooltip);
 
-            function draw_heatmap() {
-                $("#searchToggleButton").tooltip('hide');
-                $('#progress_wrapper').modal('show');
+        var tableHeaderTags = '<th class="all"></th>';
+        for (var i = 0; i < hosts[db].columns.length; i++) {
+            tableHeaderTags += '<th></th>';
+        }
+        $("#example thead tr").html(tableHeaderTags);
 
-                $.ajax({
-                    dataType: (jsonp ? "jsonp" : "json"),
-                    jsonpCallback: "jsonpcallback_heatmap",
-                    cache: true,
-                    url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent((getFilterQuery() == "" ? "" : "(" + getFilterQuery() + ") AND ") + "_exists_:coordinates") + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo) + "&length=" + $('#geo_n').val() + "&raw=true",
-                    success: function (raw_data) {
-                        $('#progress_wrapper').modal('hide');
-                        var heatmapData = [];
-                        console.log(raw_data.data[1]);
-                        for (i = 0; i < raw_data.data.length; i++) {
-                            var match = raw_data.data[i].coordinates.split(',');
-                            heatmapData.push(new google.maps.LatLng(parseFloat(match[0]), parseFloat(match[1])));
-                        }
+        function draw_heatmap() {
+            $("#searchToggleButton").tooltip('hide');
+            $('#progress_wrapper').modal('show');
 
-                        $('#map_wrapper').modal('toggle');
+            $.ajax({
+                dataType: (jsonp ? "jsonp" : "json"),
+                jsonpCallback: "jsonpcallback_heatmap",
+                cache: true,
+                url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent((getFilterQuery() == "" ? "" : "(" + getFilterQuery() + ") AND ") + "_exists_:coordinates") + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo) + "&length=" + $('#geo_n').val() + "&raw=true",
+                success: function(raw_data) {
+                    $('#progress_wrapper').modal('hide');
+                    var heatmapData = [];
+                    console.log(raw_data.data[1]);
+                    for (i = 0; i < raw_data.data.length; i++) {
+                        var match = raw_data.data[i].coordinates.split(',');
+                        heatmapData.push(new google.maps.LatLng(parseFloat(match[0]), parseFloat(match[1])));
+                    }
 
-                        var map = new google.maps.Map(document.getElementById('map_canvas'), {
-                            center: new google.maps.LatLng(0, 0),
-                            zoom: 2,
-                            mapTypeId: google.maps.MapTypeId.MAP
+                    $('#map_wrapper').modal('toggle');
+
+                    var map = new google.maps.Map(document.getElementById('map_canvas'), {
+                        center: new google.maps.LatLng(0, 0),
+                        zoom: 2,
+                        mapTypeId: google.maps.MapTypeId.MAP
+                    });
+
+                    var heatmap = new google.maps.visualization.HeatmapLayer({
+                        data: heatmapData
+                    });
+                    heatmap.setMap(map);
+
+                    var markers = [];
+                    for (i = 0; i < heatmapData.length; ++i) {
+                        var newmarker = new google.maps.Marker({
+                            position: heatmapData[i]
                         });
 
-                        var heatmap = new google.maps.visualization.HeatmapLayer({
-                            data: heatmapData
-                        });
-                        heatmap.setMap(map);
-
-                        var markers = [];
-                        for (i = 0; i < heatmapData.length; ++i) {
-                            var newmarker = new google.maps.Marker({
-                                position: heatmapData[i]
-                            });
-
-                            var info_keys = ["date_time", "user_name", "text", "type", "place", "source",
-                            "hashtag_list", "mention_list", "url_list", "media_list", "coordinates", "language",
+                        var info_keys = ["date_time", "user_name", "text", "type", "place", "source", 
+                            "hashtag_list", "mention_list", "url_list", "media_list", "coordinates", "language", 
                             "tweet_id", "user_id", "original_id", "original_user_id"];
 
-                            var title_dict = { "date_time": "Date & Time", "user_name": "User", "text": "Text", "type": "Type",
-                                "place": "Place", "source": "Source", "hashtag_list": "Hashtags", "mention_list": "Mentions",
-                                "url_list": "URLs", "media_list": "Media", "coordinates": "Coordinates", "language": "Language",
-                                "tweet_id": "Tweet ID", "user_id": "User ID", "original_id": "Original Tweet ID",
-                                "original_user_id": "Original User ID"
-                            };
+                        var title_dict = {"date_time": "Date & Time", "user_name": "User", "text": "Text", "type": "Type",
+                            "place": "Place", "source": "Source", "hashtag_list": "Hashtags", "mention_list": "Mentions", 
+                            "url_list": "URLs", "media_list": "Media", "coordinates": "Coordinates", "language": "Language", 
+                            "tweet_id": "Tweet ID", "user_id": "User ID", "original_id": "Original Tweet ID", 
+                            "original_user_id": "Original User ID"};
 
-                            var info_div_string = "<div><p>";
-                            for (j = 0; j < info_keys.length; ++j) {
-                                var key = info_keys[j];
-                                info_div_string += "<span style='font-weight:bold'>" + title_dict[key] + ": </span>" + raw_data.data[i][key] + "<br>";
-                            }
-                            info_div_string += "</p></div>";
-
-                            newmarker["infowindow"] = new google.maps.InfoWindow({
-                                content: info_div_string
-                            });
-
-                            google.maps.event.addListener(newmarker, 'click', function () {
-                                for (k = 0; k < markers.length; ++k) {
-                                    markers[k]["infowindow"].close();
-                                }
-                                this["infowindow"].open(map, this);
-                            });
-
-                            markers.push(newmarker);
+                        var info_div_string = "<div><p>";
+                        for (j = 0; j < info_keys.length; ++j) {
+                            var key = info_keys[j];
+                            info_div_string += "<span style='font-weight:bold'>" + title_dict[key] + ": </span>" + raw_data.data[i][key] + "<br>";
                         }
+                        info_div_string += "</p></div>";
 
-                        var gradient = [
+                        newmarker["infowindow"] = new google.maps.InfoWindow({
+                            content: info_div_string
+                        });
+
+                        google.maps.event.addListener(newmarker, 'click', function() {
+                            for(k = 0; k < markers.length; ++k) {
+                                markers[k]["infowindow"].close();
+                            }
+                            this["infowindow"].open(map, this);
+                        });
+
+                        markers.push(newmarker);
+                    }
+
+                    var gradient = [
                         'rgba(0, 0, 255, 0)',
                         'rgba(0, 0, 255, 1)',
                         'rgba(0, 0, 255, 1)',
@@ -314,35 +314,35 @@ table td {
                         'rgba(191, 0, 31, 1)',
                         'rgba(255, 0, 0, 1)'
                     ];
-
-                        heatmap.set('gradient', gradient);
-                        heatmap.set('opacity', 1);
-                        heatmap.set('radius', 20);
-
-                        $("#marker").change(function () {
-                            if ($("#marker").prop("checked")) {
-                                for (i = 0; i < markers.length; ++i) {
-                                    markers[i].setMap(map);
-                                }
-                                heatmap.setMap(null);
-                            } else {
-                                for (i = 0; i < markers.length; ++i) {
-                                    markers[i].setMap(null);
-                                }
-                                heatmap.setMap(map);
+                    
+                    heatmap.set('gradient', gradient);
+                    heatmap.set('opacity', 1);
+                    heatmap.set('radius', 20);
+                    
+                    $("#marker").change(function () { 
+                        if ($("#marker").prop("checked")) {
+                            for (i = 0; i < markers.length; ++i) {
+                                markers[i].setMap(map);
                             }
-                        });
+                            heatmap.setMap(null);
+                        } else {
+                            for (i = 0; i < markers.length; ++i) {
+                                markers[i].setMap(null);
+                            }
+                            heatmap.setMap(map);
+                        }
+                    });
 
-                    }
-                });
-            }
+                }
+            });
+        }
 
-            var tabletoolsButtons = db == "twitter" ?
+        var tabletoolsButtons = db == "twitter" ? 
             [
                 {
-                    "sExtends": "collection",
+                    "sExtends":    "collection",
                     "sButtonText": "<span class=\"fa fa-clipboard\"></span> Copy Current (CSV) <span class=\"fa fa-caret-down\"></span>",
-                    "aButtons": [
+                    "aButtons":    [
                         {
                             "sExtends": "copy",
                             "sButtonText": "Plain",
@@ -357,8 +357,8 @@ table td {
                             },
                             "sButtonText": "For NodeXL",
                             "mColumns": [2, 3, 4, 8],
-                            "fnClick": function (nButton, oConfig, flash) {
-                                this.fnSetText(flash, toNodeXLData(this.fnGetTableData(oConfig), "", "\t"));
+                            "fnClick": function( nButton, oConfig, flash ) {
+                                this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig), "", "\t") );
                             }
                         },
                         {
@@ -367,16 +367,16 @@ table td {
                                 page: 'current'
                             },
                             "sButtonText": "For Nvivo",
-                            "fnClick": function (nButton, oConfig, flash) {
-                                this.fnSetText(flash, toNvivoData(this.fnGetTableData(oConfig), "", "\t"));
+                            "fnClick": function( nButton, oConfig, flash ) {
+                                this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig), "", "\t") );
                             }
                         }
                     ]
                 },
                 {
-                    "sExtends": "collection",
+                    "sExtends":    "collection",
                     "sButtonText": "<span class=\"fa fa-table\"></span> Save Current (CSV) <span class=\"fa fa-caret-down\"></span>",
-                    "aButtons": [
+                    "aButtons":    [
                         {
                             "sExtends": "csv",
                             "sButtonText": "Plain",
@@ -393,8 +393,8 @@ table td {
                             "mColumns": [2, 3, 4, 8],
                             "sFieldBoundary": "",
                             "sFieldSeperator": "\t",
-                            "fnClick": function (nButton, oConfig, flash) {
-                                this.fnSetText(flash, toNodeXLData(this.fnGetTableData(oConfig), "\"", ","));
+                            "fnClick": function( nButton, oConfig, flash ) {
+                                this.fnSetText( flash, toNodeXLData(this.fnGetTableData(oConfig), "\"", ",") );
                             }
                         },
                         {
@@ -405,8 +405,8 @@ table td {
                             "sButtonText": "For Nvivo",
                             "sFieldBoundary": "",
                             "sFieldSeperator": "\t",
-                            "fnClick": function (nButton, oConfig, flash) {
-                                this.fnSetText(flash, toNvivoData(this.fnGetTableData(oConfig), "\"", ","));
+                            "fnClick": function( nButton, oConfig, flash ) {
+                                this.fnSetText( flash, toNvivoData(this.fnGetTableData(oConfig), "\"", ",") );
                             }
                         }
                     ]
@@ -429,229 +429,229 @@ table td {
                 }
             ];
 
-            var table = $('#example').DataTable({
-                dom: '<"toggleButtons">fTlrtip',
-                tableTools: {
-                    "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
-                    "aButtons": tabletoolsButtons
-                },
+        var table = $('#example').DataTable( {
+            dom: '<"toggleButtons">fTlrtip',
+            tableTools: {
+                "sSwfPath": "static/swf/copy_csv_xls_pdf.swf",
+                "aButtons": tabletoolsButtons
+            }, 
 
-                "serverSide": true,
-                "ajax": {
-                    "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo),
-                    "dataType": (jsonp ? "jsonp" : "json"),
-                    cache: true,
-                    jsonpCallback: "jsonpcallback_main",
-                    "error": function (reason) {
-                        alert("Error occurred!");
-                    }
-                },
+            "serverSide": true,
+            "ajax": {
+                "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query) + "&from=" + encodeURIComponent(yearFrom) + "&to=" + encodeURIComponent(yearTo),
+                "dataType": (jsonp ? "jsonp" : "json"),
+                cache: true,
+                jsonpCallback: "jsonpcallback_main", 
+                "error": function(reason) {
+                    alert("Error occurred!");
+                }
+            },
 
-                "processing": true,
-                "language": {
-                    "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>",
-                    "search": "",
-                    "paginate": {
-                        "previous": '<span class="fa fa-chevron-left"></span>',
-                        "next": '<span class="fa fa-chevron-right"></span>'
-                    }
-                },
-                "deferRender": true,
-                "pageLength": 50,
-                "pagingType": "simple_numbers",
-                "lengthMenu": [[10, 50, 100, 500, 1000], ["10", "50", "100", "500", "1,000"]],
+            "processing": true,
+            "language": {
+                "processing": "<div style=\"height: 100%; width: 100%; background-color: rgba(255, 255, 255, 0.85);\"><span class=\"fa fa-spinner fa-spin\"></span> Processing</div>", 
+                "search": "", 
+                "paginate": {
+                    "previous": '<span class="fa fa-chevron-left"></span>', 
+                    "next": '<span class="fa fa-chevron-right"></span>'
+                }
+            },
+            "deferRender": true,
+            "pageLength": 50,
+            "pagingType": "simple_numbers",
+            "lengthMenu": [[10, 50, 100, 500, 1000], ["10", "50", "100", "500", "1,000"]],
 
-                "responsive": {
-                    "details": {
-                        type: 'column'
-                    }
-                },
+            "responsive": {
+                "details": {
+                    type: 'column'
+                }
+            },
 
-                "columns": [{
-                    "width": "1px",
-                    "data": null,
-                    "defaultContent": '',
-                    "orderable": false,
-                    "class": 'control',
-                    "targets": 0
-                }].concat(hosts[db].columns),
-                "order": hosts[db].order,
+            "columns": [{
+                "width": "1px",
+                "data": null,
+                "defaultContent": '',
+                "orderable": false,
+                "class": 'control',
+                "targets": 0
+            }].concat(hosts[db].columns),
+            "order": hosts[db].order,
 
-                "drawCallback": function (settings) {
-                    if (!$("#groupBy").prop("checked")) {
-                        return;
-                    }
-
-                    var api = this.api();
-                    var rows = api.rows({ page: 'current' }).nodes();
-                    var last = null;
-
-                    var groupCol = hosts[db].order[0][0];
-
-                    api.column(groupCol, { page: 'current' }).data().each(function (group, i) {
-                        if (last !== group) {
-                            $(rows).eq(i).before(
-                            '<tr class="group"><td colspan="10"><b>' + hosts[db].columns[groupCol - 1].title + ': </b>' + group + " <span class=\"caret\"></span>" + '</td></tr>'
-                        );
-
-                            last = group;
-                        }
-                    });
+            "drawCallback": function ( settings ) {
+                if (!$("#groupBy").prop("checked")) {
+                    return;
                 }
 
-            });
-            $("div.toggleButtons").html('\
+                var api = this.api();
+                var rows = api.rows( {page:'current'} ).nodes();
+                var last=null;
+
+                var groupCol = hosts[db].order[0][0];
+
+                api.column(groupCol, {page:'current'} ).data().each( function ( group, i ) {
+                    if ( last !== group) {
+                        $(rows).eq( i ).before(
+                            '<tr class="group"><td colspan="10"><b>' + hosts[db].columns[groupCol - 1].title + ': </b>'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
+                        );
+     
+                        last = group;
+                    }
+                } );
+            }
+
+        });
+        $("div.toggleButtons").html('\
             <div class="btn-group" data-toggle="buttons">\
                 <label id="expandAllButton" class="btn btn-default btn-sm"><span class="fa fa-plus-square-o"></span> Expand All<input type="checkbox" id="expandAll"></label>\
                 <label id="groupByButton" class="btn btn-default btn-sm"><span class="fa fa-list-ul"></span> Group By<input type="checkbox" id="groupBy"></label>\
             </div>\
         ');
-            $(".DTTT_collection > a").removeClass("DTTT_button").addClass("btn btn-default btn-sm btn-block");
+        $(".DTTT_collection > a").removeClass("DTTT_button").addClass("btn btn-default btn-sm btn-block");
 
-            function expandAll(flag) {
-                $('#example tbody tr[role="row"].parent td.control').trigger("click");
-                if (flag) {
-                    $('#example tbody tr[role="row"] td.control').trigger("click");
-                }
+        function expandAll(flag) {
+            $('#example tbody tr[role="row"].parent td.control').trigger("click");
+            if (flag) {
+                $('#example tbody tr[role="row"] td.control').trigger("click");
             }
+        }
 
-            if (hosts[db].toggleButtons) {
-                if (hosts[db]["toggleButtons"].defaultExpandAll) {
-                    $('#expandAllButton').trigger("click");
-                }
-                if (hosts[db]["toggleButtons"].defaultGroupBy) {
-                    $('#groupByButton').trigger("click");
-                }
+        if (hosts[db].toggleButtons) {
+            if (hosts[db]["toggleButtons"].defaultExpandAll) {
+                $('#expandAllButton').trigger("click");
             }
+            if (hosts[db]["toggleButtons"].defaultGroupBy) {
+                $('#groupByButton').trigger("click");
+            }
+        }
 
-            $('#expandAll').change(function () {
-                expandAll(this.checked);
-            });
-            $('#groupBy').change(function () {
-                table.draw();
-            });
+        $('#expandAll').change(function() {
+            expandAll(this.checked);
+        });
+        $('#groupBy').change(function() {
+            table.draw();
+        });
 
-            new $.fn.dataTable.FixedHeader(table);
+        new $.fn.dataTable.FixedHeader( table );
 
-            $(".DTTT_container").addClass("btn-group");
-            $(".DTTT_container a").removeClass("DTTT_button");
-            $(".DTTT_container a").addClass("btn btn-default btn-sm");
-            $(".dataTables_length label").addClass("control-label");
-            $(".dataTables_filter label").addClass("control-label");
+        $(".DTTT_container").addClass("btn-group");
+        $(".DTTT_container a").removeClass("DTTT_button");
+        $(".DTTT_container a").addClass("btn btn-default btn-sm");
+        $(".dataTables_length label").addClass("control-label");
+        $(".dataTables_filter label").addClass("control-label");
 
-            var filterValue = ""
-            function search() {
+        var filterValue = ""
+        function search() {
 
-                /*
-                var columnRegex = /((?:\w|[_.])+):/g;
-                var match = columnRegex.exec(filterValue);
-                while (match != null) {
+            /*
+            var columnRegex = /((?:\w|[_.])+):/g;
+            var match = columnRegex.exec(filterValue);
+            while (match != null) {
                 if (!(match[1] in {"year":"", "id":"", "title":"", "source":"", "authors":"", "abstract":"", "keywords":""})) {
-                showAlert("Please check your inputs.<br/><br/>Wrong column name(s).", "danger");
-                $("#example_filter input").tooltip("show");
-                return;
+                    showAlert("Please check your inputs.<br/><br/>Wrong column name(s).", "danger");
+                    $("#example_filter input").tooltip("show");
+                    return;
                 }
 
                 match = columnRegex.exec(filterValue);
-                }
-                */
+            }
+            */
 
-                $("input[name='query']").val(getFilterQuery());
+            $("input[name='query']").val(getFilterQuery());
 
-                $.ajax({
-                    dataType: (jsonp ? "jsonp" : "json"),
-                    jsonpCallback: "jsonpcallback_validate",
-                    cache: true,
-                    url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query) + "&search=" + encodeURIComponent($("#example_filter input").val()),
-                    success: function (j) {
-                        if (j.valid) {
-                            if ($("#example_filter input").val() != "") {
-                                $('#example_filter').addClass("has-success");
-                            }
-                            else {
-                                $('#example_filter').removeClass("has-success");
-                            }
-                            $('#example_filter').removeClass("has-error");
-
-                            filterValue = $("#example_filter input").val();
-                            setFilterQueryTooltip();
-                            table.search(filterValue).draw();
+            $.ajax({
+                dataType: (jsonp ? "jsonp" : "json"),
+                jsonpCallback: "jsonpcallback_validate",
+                cache: true,
+                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query) + "&search=" + encodeURIComponent($("#example_filter input").val()), 
+                success: function(j) {
+                    if (j.valid) {
+                        if ($("#example_filter input").val() != "") {
+                            $('#example_filter').addClass("has-success");
                         }
                         else {
                             $('#example_filter').removeClass("has-success");
-                            $('#example_filter').addClass("has-error");
-
-                            showAlert("Please check your inputs.<br/><br/>Wrong query syntax.", "danger");
                         }
+                        $('#example_filter').removeClass("has-error");
+
+                        filterValue = $("#example_filter input").val();
+                        setFilterQueryTooltip();
+                        table.search(filterValue).draw();
                     }
-                });
-            };
+                    else {
+                        $('#example_filter').removeClass("has-success");
+                        $('#example_filter').addClass("has-error");
 
-            var popoverShown = false;
-            function closePopover() {
-                if (popoverShown) {
-                    popoverShown = false;
-                    $('#example_filter input').popover('hide').animate({
-                        "width": "300px"
-                    }, 200);
-                    $("#example_filter_clear").hide();
-                }
-            }
-
-            $("#example_filter").addClass("input-group");
-            $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;">Clear</span>');
-            $("#example_filter input").after("<div class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></div>").attr("placeholder", "Filter");
-            $('#example_filter input').unbind().bind('keyup', function (e) {
-                if (e.keyCode == 13) {
-                    search();
-
-                    closePopover();
-                    setTimeout(function () {
-                        $('#example_filter button').focus();
-                    }, 0);
+                        showAlert("Please check your inputs.<br/><br/>Wrong query syntax.", "danger");
+                    }
                 }
             });
-            $("#example_filter_searchicon").click(function () {
+        };
+
+        var popoverShown = false;
+        function closePopover() {
+            if (popoverShown) {
+                popoverShown = false;
+                $('#example_filter input').popover('hide').animate({
+                    "width": "300px"
+                }, 200);
+                $("#example_filter_clear").hide();
+            }
+        }
+
+        $("#example_filter").addClass("input-group");
+        $("#example_filter input").before('<span id="example_filter_clear" class="btn btn-clipboard btn-xs" style="display:none; position:absolute; top:4px; right:36px; z-index:200;">Clear</span>');
+        $("#example_filter input").after("<div class=\"input-group-btn\"><button id=\"example_filter_searchicon\" class=\"btn btn-info btn-sm\"><span class=\"fa fa-search\"></span></button></div>").attr("placeholder", "Filter");
+        $('#example_filter input').unbind().bind('keyup', function(e) {
+            if(e.keyCode == 13) {
                 search();
 
                 closePopover();
-            });
-            $("#example_filter_clear").click(function () {
-                $("#example_filter input").val("");
-                search();
-
-                setTimeout(function () {
-                    $('#example_filter input').focus();
+                setTimeout(function() {
+                    $('#example_filter button').focus();
                 }, 0);
+            }
+        });
+        $("#example_filter_searchicon").click(function() {
+            search();
+
+            closePopover();
+        });
+        $("#example_filter_clear").click(function() {
+            $("#example_filter input").val("");
+            search();
+
+            setTimeout(function() {
+                $('#example_filter input').focus();
+            }, 0);
+        });
+
+        $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
+
+        function getPopoverButtons() {
+            var buttonGroups = [];
+
+            var offset = 0;
+            $.each(hosts[db].buttonGroups, function(i, v) {
+                var buttons = ""
+                $.each(hosts[db].columns.slice(offset, offset + v), function(i, v) {
+                    if (!v.unsearchable) {
+                        if (v.dataName) {
+                            buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.dataName + '<\/a>';
+                        }
+                        else {
+                            buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.data + ':<\/a>';
+                        }
+                    }
+                });
+                buttonGroups.push('<span class="btn-group">' + buttons + '<\/span>');
+                offset += v;
             });
 
-            $(".breadcrumb [title]").tooltip({ placement: "bottom", html: true, container: 'body' });
-            $("[title]").tooltip({ placement: "top", html: true, container: 'body', trigger: "focus" });
+            return buttonGroups.join('<br/>');
+        }
 
-            function getPopoverButtons() {
-                var buttonGroups = [];
-
-                var offset = 0;
-                $.each(hosts[db].buttonGroups, function (i, v) {
-                    var buttons = ""
-                    $.each(hosts[db].columns.slice(offset, offset + v), function (i, v) {
-                        if (!v.unsearchable) {
-                            if (v.dataName) {
-                                buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.dataName + '<\/a>';
-                            }
-                            else {
-                                buttons += '<a class="btn btn-clipboard btn-xs" title="' + v.title + '">' + v.data + ':<\/a>';
-                            }
-                        }
-                    });
-                    buttonGroups.push('<span class="btn-group">' + buttons + '<\/span>');
-                    offset += v;
-                });
-
-                return buttonGroups.join('<br/>');
-            }
-
-            $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content",
+        $("#example_filter input").attr("data-trigger", "manual").attr("data-delay", '{"show": 200, "hide": 0}').attr("data-content", 
             '\
             <h5><small>Column</small></h5>\
             <p>' + getPopoverButtons() + '</p>\
@@ -677,19 +677,19 @@ table td {
             '
         ).popover({
             placement: "bottom", html: true, container: 'body'
-        }).focus(function () {
+        }).focus(function() {
             if (!popoverShown) {
                 popoverShown = true;
                 $(this).animate({
                     "width": "500px"
-                }, 200, function () {
+                }, 200, function() {
                     $(this).popover("show");
                     if ($(this).val() != "") {
                         $("#example_filter_clear").show();
                     }
                 });
             }
-        }).on("input", function (e) {
+        }).on("input", function(e) {
             if ($(this).val() != "") {
                 $("#example_filter_clear").show();
             }
@@ -697,96 +697,99 @@ table td {
                 $("#example_filter_clear").hide();
             }
         });
-            $("body").tooltip({ placement: "top", html: true, container: 'body', selector: '.popover-content [title]' });
+        $("body").tooltip({placement: "top", html: true, container: 'body', selector: '.popover-content [title]'});
 
-            $(document).on('click', function (e) {
-                if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
-                    closePopover();
-                }
-            }).keydown(function (e) {
-                if (e.keyCode === 27) {
-                    closePopover();
-                }
-            }).on("click", ".popover a.btn", function () {
-                var text = $(this).text();
+        $(document).on('click', function(e) {
+            if (!($(e.target).parents().is('.popover') || $(e.target).is('#example_filter input'))) {
+                closePopover();
+            }
+        }).keydown(function(e) {
+            if (e.keyCode === 27) {
+                closePopover();
+            }
+        }).on("click", ".popover a.btn", function() {
+            var text = $(this).text();
 
-                setTimeout(function () {
-                    $("#example_filter input").focus().replaceSelectedText(text);
-                }, 0);
+            setTimeout(function() {
+                $("#example_filter input").focus().replaceSelectedText(text);
+            }, 0);
+        });
+
+        table.on('draw.dt', function () {
+            if (!hosts[db].searchOnly) {
+                $("#form_divmask").hide();
+            }
+
+            expandAll($("#expandAll").prop("checked"));
+
+            if ($(".dataTables_paginate li.paginate_button").length > 3 && $(".dataTables_paginate li.paginate_button:nth-last-of-type(3)").hasClass("disabled")) {
+                $(".dataTables_paginate li.paginate_button:nth-last-of-type(2)").hide();
+            }
+
+            $("a.user, a.place, a.region").each(function() {
+                $(this).attr("data-url", $(this).attr("href"));
+            }).removeAttr("href").click(function() {
+                window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
             });
 
-            table.on('draw.dt', function () {
-                if (!hosts[db].searchOnly) {
-                    $("#form_divmask").hide();
-                }
+            $("a.url").attr("target", "_blank");
 
-                expandAll($("#expandAll").prop("checked"));
+            $("a.place").html(function() {
+                return $(this).html() + ' <span class="fa fa-map-marker"><\/span>';
+            });
 
-                if ($(".dataTables_paginate li.paginate_button").length > 3 && $(".dataTables_paginate li.paginate_button:nth-last-of-type(3)").hasClass("disabled")) {
-                    $(".dataTables_paginate li.paginate_button:nth-last-of-type(2)").hide();
-                }
+            if (db == "twitter") {
+                $("#example tbody td:nth-child(5)").each(function() {
+                    var type = $(this).text()
+                    var html = $(this).html()
+                    if (type == "retweet") {
+                        $(this).html(html + ' <span class="fa fa-retweet"><\/span>');
+                    }
+                    else if (type == "reply") {
+                        $(this).html(html + ' <span class="fa fa-reply"><\/span>');
+                    }
+                    else if (type == "mention") {
+                        $(this).html(html + ' <span class="fa fa-user-plus"><\/span>');
+                    }
+                    else {
+                        $(this).html("");
+                    }
+                });
 
-                $("a.user, a.place, a.region").each(function () {
+                $("a.url[title]").each(function() {
+                    var type = $(this).attr("data-type");
+                    var title = $(this).attr("title");
+                    if (type == "link") {
+                        $(this).attr("title", title + ' <span class="fa fa-chain"><\/span>');
+                    }
+                    else if (type == "media") {
+                        $(this).attr("title", title + ' <span class="fa fa-photo"><\/span>');
+                    }
+                });
+
+                $("#example tbody td:nth-child(7) a").attr("target", "_blank");
+            }
+
+            $("a.url[title], a.place[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+        }).on('click', 'td.control', function () {
+            setTimeout(function() {
+                $("tr.child a.user, tr.child a.place").each(function() {
                     $(this).attr("data-url", $(this).attr("href"));
-                }).removeAttr("href").click(function () {
+                }).removeAttr("href").click(function() {
                     window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
                 });
 
-                $("a.url").attr("target", "_blank");
+                $("tr.child a.url").attr("target", "_blank");
+            }, 0);
+        });
 
-                $("a.place").html(function () {
-                    return $(this).html() + ' <span class="fa fa-map-marker"><\/span>';
-                });
+        $("input[name='db']").val(db);
+        $("input[name='query']").val(query);
+        $("input[name='from']").val(yearFrom);
+        $("input[name='to']").val(yearTo);
 
-                if (db == "twitter") {
-                    $("#example tbody td:nth-child(5)").each(function () {
-                        var type = $(this).text()
-                        var html = $(this).html()
-                        if (type == "retweet") {
-                            $(this).html(html + ' <span class="fa fa-retweet"><\/span>');
-                        }
-                        else if (type == "reply") {
-                            $(this).html(html + ' <span class="fa fa-reply"><\/span>');
-                        }
-                        else if (type == "mention") {
-                            $(this).html(html + ' <span class="fa fa-user-plus"><\/span>');
-                        }
-                        else {
-                            $(this).html("");
-                        }
-                    });
+        $('#trend_interval').val(5);
 
-                    $("a.url[title]").each(function () {
-                        var type = $(this).attr("data-type");
-                        var title = $(this).attr("title");
-                        if (type == "link") {
-                            $(this).attr("title", title + ' <span class="fa fa-chain"><\/span>');
-                        }
-                        else if (type == "media") {
-                            $(this).attr("title", title + ' <span class="fa fa-photo"><\/span>');
-                        }
-                    });
-
-                    $("#example tbody td:nth-child(7) a").attr("target", "_blank");
-                }
-
-                $("a.url[title], a.place[title]").tooltip({ placement: "bottom", html: true, container: 'body' });
-            }).on('click', 'td.control', function () {
-                setTimeout(function () {
-                    $("tr.child a.user, tr.child a.place").each(function () {
-                        $(this).attr("data-url", $(this).attr("href"));
-                    }).removeAttr("href").click(function () {
-                        window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));
-                    });
-
-                    $("tr.child a.url").attr("target", "_blank");
-                }, 0);
-            });
-            $("input[name='db']").val(db);
-            $("input[name='query']").val(query);
-            $("input[name='from']").val(yearFrom);
-            $("input[name='to']").val(yearTo);
-            $('#trend_interval').val(5);
             $('#trend_form').submit(function (e) {
                 var intervalTypeSelection = $("#interval_list");
                 var intervalVal = $('#trend_interval').val();
@@ -827,173 +830,174 @@ table td {
 
             });
 
-            $('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload?token=" + token);
-            $('#theme_uploadstatus').val($.url().attr("protocol") + "://" + $.url().attr("host") + ":" + $.url().attr("port") + "/theme_upload.html");
 
-            $('#topk_k').val(10);
-            $('#topk_minlen').val(1);
-            $('#topk_maxlen').val(5);
+        $('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload?token=" + token);
+        $('#theme_uploadstatus').val($.url().attr("protocol") + "://" + $.url().attr("host") + ":" + $.url().attr("port") + "/theme_upload.html");
 
-            $('#topk_form').submit(function (e) {
-                if (!isIntWithMinMaxVal($('#topk_k').val(), 1, 100)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topk_k").tooltip("show");
-                    $("#topk_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-                if (!isIntWithMinMaxVal($('#topk_minlen').val(), 1, 10)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topk_minlen").tooltip("show");
-                    $("#topk_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-                if (!isIntWithMinMaxVal($('#topk_maxlen').val(), 1, 10)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topk_maxlen").tooltip("show");
-                    $("#topk_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-                if ($('#topk_minlen').val() > $('#topk_maxlen').val()) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topk_minlen").tooltip("show");
-                    $("#topk_maxlen").tooltip("show");
-                    $("#topk_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-            });
+        $('#topk_k').val(10);
+        $('#topk_minlen').val(1);
+        $('#topk_maxlen').val(5);
 
-            $('#topic_k').val(5);
-            $('#topic_wordnum').val(10);
-
-            $('#topic_form').submit(function (e) {
-                if (!isIntWithMinMaxVal($('#topic_k').val(), 1, 100)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topic_k").tooltip("show");
-                    $("#topic_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-                if (!isIntWithMinMaxVal($('#topic_wordnum').val(), 100)) {
-                    showAlert("Please check your inputs.", "danger");
-                    $("#topic_wordnum").tooltip("show");
-                    $("#topic_form").addClass("has-error");
-                    e.preventDefault();
-                    return;
-                }
-            });
-
-            $('#geo_n').val(1000);
-            $('#geo_form').submit(function (e) {
+        $('#topk_form').submit( function (e) {
+            if (!isIntWithMinVal($('#topk_k').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topk_k").tooltip("show");
+                $("#topk_form").addClass("has-error");
                 e.preventDefault();
+                return;
+            }
+            if (!isIntWithMinVal($('#topk_minlen').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topk_minlen").tooltip("show");
+                $("#topk_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+            if (!isIntWithMinVal($('#topk_maxlen').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topk_maxlen").tooltip("show");
+                $("#topk_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+            if (parseInt($('#topk_minlen').val()) > parseInt($('#topk_maxlen').val())) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topk_minlen").tooltip("show");
+                $("#topk_maxlen").tooltip("show");
+                $("#topk_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+        });
 
-                if (!isIntWithMinVal($('#geo_n').val(), 1)) {
-                    showAlert("Please check your inputs.", "danger");
-                    return;
-                }
-                draw_heatmap();
-            });
+        $('#topic_k').val(5);
+        $('#topic_wordnum').val(10);
 
-            function updateThemeList() {
-                $.ajax({
-                    dataType: "jsonp",
-                    jsonpCallback: "jsonpcallback_themelist",
-                    url: "http://" + host + "/theme/file/list?token=" + token,
-                    success: function (j) {
-                        list = j.data;
-                        var options = '';
+        $('#topic_form').submit( function (e) {
+            if (!isIntWithMinVal($('#topic_k').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topic_k").tooltip("show");
+                $("#topic_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+            if (!isIntWithMinVal($('#topic_wordnum').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                $("#topic_wordnum").tooltip("show");
+                $("#topic_form").addClass("has-error");
+                e.preventDefault();
+                return;
+            }
+        });
 
-                        toggleDisabled($("#theme_form button, #theme_othersdiv button"), list.length == 0);
-                        if (list.length > 0) {
-                            for (var i = 0; i < list.length; i++) {
-                                options += '<option value="' + list[i] + '">' + list[i] + '</option>';
-                            }
+        $('#geo_n').val(1000);
+        $('#geo_form').submit( function (e) {
+            e.preventDefault();
+
+            if (!isIntWithMinVal($('#geo_n').val(), 1)) {
+                showAlert("Please check your inputs.", "danger");
+                return;
+            }
+            draw_heatmap();
+        });
+
+        function updateThemeList() {
+            $.ajax({
+                dataType: "jsonp",
+                jsonpCallback: "jsonpcallback_themelist",
+                url: "http://" + host + "/theme/file/list?token=" + token, 
+                success: function(j) {
+                    list = j.data;
+                    var options = '';
+
+                    toggleDisabled($("#theme_form button, #theme_othersdiv button"), list.length == 0);
+                    if (list.length > 0) {
+                        for (var i = 0; i < list.length; i++) {
+                            options += '<option value="' + list[i] + '">' + list[i] + '</option>';
                         }
-                        $("select#theme_list").html(options);
                     }
-                });
-            }
-            function getThemeListSelected() {
-                return $('#theme_list').find(":selected").text()
-            }
-
-            updateThemeList();
-
-            $('#theme_view').click(function () {
-                var file = getThemeListSelected();
-                showAlert("Dictionary <b>" + file + "</b> has been downloaded.", "info");
-                window.location.href = "http://" + host + "/theme/file/view?token=" + token + "&name=" + file;
+                    $("select#theme_list").html(options);
+                }
             });
-            $('#theme_delete').click(function () {
-                var file = getThemeListSelected();
-                bootbox.dialog({
-                    message: 'Are you sure you want to delete dictionary <b>' + file + "</b>?",
-                    title: "Confirm",
-                    onEscape: function () { },
-                    buttons: {
-                        cancel: {
-                            label: "Cancel",
-                            className: "btn-default"
-                        },
-                        danger: {
-                            label: "<span class=\"fa fa-trash-o\"></span> Delete",
-                            className: "btn-danger",
-                            callback: function () {
-                                $.getJSON("http://" + host + "/theme/file/delete?token=" + token + "&callback=?",
+        }
+        function getThemeListSelected() {
+            return $('#theme_list').find(":selected").text()
+        }
+
+        updateThemeList();
+
+        $('#theme_view').click( function () {
+            var file = getThemeListSelected();
+            showAlert("Dictionary <b>" + file + "</b> has been downloaded.", "info");
+            window.location.href = "http://" + host + "/theme/file/view?token=" + token + "&name=" + file;
+        });
+        $('#theme_delete').click( function () {
+            var file = getThemeListSelected();
+            bootbox.dialog({
+                message: 'Are you sure you want to delete dictionary <b>' + file + "</b>?",
+                title: "Confirm",
+                onEscape: function() {},
+                buttons: {
+                    cancel: {
+                        label: "Cancel",
+                        className: "btn-default"
+                    },
+                    danger: {
+                        label: "<span class=\"fa fa-trash-o\"></span> Delete",
+                        className: "btn-danger",
+                        callback: function() {
+                            $.getJSON("http://" + host + "/theme/file/delete?token=" + token + "&callback=?", 
                                 {
                                     "name": file
-                                },
-                                function (j) {
+                                }, 
+                                function(j){
                                     updateThemeList();
-                                    showAlert("Dictionary <b>" + file + "</b> has been deleted.", "info");
+                                    showAlert("Dictionary <b>"+ file + "</b> has been deleted.", "info");
                                 }
                             );
-                            }
                         }
                     }
-                });
-            });
-            $("#theme_uploaddiv").hide();
-            $('#theme_showupload').click(function () {
-                $("#theme_showupload").hide();
-                $("#theme_uploaddiv").fadeIn(400);
-            });
-            $("#theme_uploadblank").load(function () {
-                updateThemeList();
-
-                var currFile = $("#theme_uploadinput").val().split('\\').slice(-1);
-                showAlert("Dictionary <b>" + currFile + "</b> has been uploaded.", "info");
-            });
-            $("#theme_uploadinput").change(function () {
-                var currFile = this.value.split('\\').slice(-1);
-                if (currFile !== "") {
-                    $("#theme_uploadfile").html(currFile);
                 }
-                else {
-                    $("#theme_uploadfile").html("No file chosen");
-                }
-
-                toggleDisabled($("#theme_uploadsubmit"), currFile == "");
-                if (currFile == "") {
-                    $("#theme_uploadsubmit").tooltip("hide");
-                }
-                else {
-                    $("#theme_uploadsubmit").tooltip("show");
-                }
-            });
-            $("#theme_uploadfile").html("No file chosen");
-
-            table.on('preXhr.dt', function (e, settings, data) {
-                $("#example_processing div").fadeIn(800);
-            });
-            table.on('xhr.dt', function (e, settings, data) {
-                $("#example_processing div").hide();
             });
         });
+        $("#theme_uploaddiv").hide();
+        $('#theme_showupload').click( function () {
+            $("#theme_showupload").hide();
+            $("#theme_uploaddiv").fadeIn(400);
+        });
+        $("#theme_uploadblank").load(function(){
+            updateThemeList();
+
+            var currFile = $("#theme_uploadinput").val().split('\\').slice(-1);
+            showAlert("Dictionary <b>" + currFile + "</b> has been uploaded.", "info");
+        });
+        $("#theme_uploadinput").change(function() {
+            var currFile = this.value.split('\\').slice(-1);
+            if (currFile !== "") {
+                $("#theme_uploadfile").html(currFile);
+            }
+            else {
+                $("#theme_uploadfile").html("No file chosen");
+            }
+
+            toggleDisabled($("#theme_uploadsubmit"), currFile == "");
+            if (currFile == "") {
+                $("#theme_uploadsubmit").tooltip("hide");
+            }
+            else {
+                $("#theme_uploadsubmit").tooltip("show");
+            }
+        });
+        $("#theme_uploadfile").html("No file chosen");
+
+        table.on('preXhr.dt', function ( e, settings, data ) {
+            $("#example_processing div").fadeIn(800);
+        });
+        table.on('xhr.dt', function ( e, settings, data ) {
+            $( "#example_processing div").hide();
+        });
     });
+});
 
 </script>
 
@@ -1022,7 +1026,7 @@ table td {
             <input type="hidden" name="to"></input>
             <label class="control-label">Interval: </label>
             <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
-             <select class="form-control input-sm" id="interval_list" name="intervaltype" style="width:90px;display:inline-block;"">
+            <select class="form-control input-sm" id="interval_list" name="intervaltype" style="width:90px;display:inline-block;"">
             </select> 
             <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
         </form>
@@ -1141,3 +1145,4 @@ table td {
 </div>
 </body>
 </html>
+
