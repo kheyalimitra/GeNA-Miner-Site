@@ -6,6 +6,13 @@
         "dateTimeFormat": "YYYY",
         "jsonp": true,
         "showIndexed": true,
+        "intervaltype": [            
+            {
+                "value": "year",
+                "text":  "Year",
+                "selected": true
+            }
+        ],
         "columns": [
             {
                 "width": "50%",
@@ -80,6 +87,34 @@
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
         "allowEmptyQuery": true,
+        "intervaltype": [
+            {
+                "value": "year",
+                "text":  "Year",
+                "selected": true
+            },
+            {
+                "value": "month",
+                "text":  "Month"
+            },
+            {
+                "value": "day",
+                "text":  "Day"
+            },
+            {
+                "value": "hour",
+                "text":  "Hour"
+            },
+            {
+                "value": "minute",
+                "text":  "Minute"
+            },
+            {
+                "value": "second",
+                "text":  "Second"
+            }
+
+        ],
         "columns": [
             {
                 "width": "120px",
@@ -193,10 +228,7 @@
         ],
         "order": [[1, "desc"]],
         "buttonGroups": [6, 6, 4],
-        "disableActions": [
-            "trend",
-            "theme"
-        ]
+        "disableActions": ["theme"]        
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",

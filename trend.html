@@ -58,12 +58,16 @@ $(document).ready(function() {
         if (!interval) {
             interval = 5;
         }
-        var img = query.replace(/ /g, '+') + "_" + yearFrom + "-" + yearTo + "_interval=" + interval + ".svg";
+        var intervalType = $.url().param('intervaltype');
+        if (!intervalType) {
+            intervalType = 'Year';
+        }
+        var img = query.replace(/ /g, '+') + "_" + yearFrom + "-" + yearTo + "_interval=" + interval +"_intervaltype="+intervalType+ ".svg";
     ;
 
-        document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- #Publication Trend (Year Interval = " + interval + ")";
+        document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- #Publication Trend (Interval = " + interval + ", Interval Type = "+intervalType + ")";
         $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
-        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- #Publication Trend (Year Interval = " + interval + ")</small>");
+        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- #Publication Trend (Interval = " + interval + ", Interval Type = " + intervalType + ")</small>");
 
         var table = $('#example').DataTable( {
             dom: 'lfTrtip',
@@ -88,7 +92,7 @@ $(document).ready(function() {
             }, 
 
             "ajax": {
-                "url": "http://" + host + "/trend/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval + "&plot=true",
+                "url": "http://" + host + "/trend/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval +"&intervaltype=" + intervalType + "&plot=true",
                 "dataType": "jsonp",
                 cache: true,
                 jsonpCallback: "jsonpcallback",
@@ -97,7 +101,7 @@ $(document).ready(function() {
             "deferRender": true,
             "searching": false,
             "paging": false, 
-
+    
             "columns": [
                 { 
                     "width": "70%", 

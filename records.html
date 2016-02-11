@@ -159,6 +159,8 @@ $(document).ready(function() {
         }
         */
         var yearTo = $.url().param('to');
+        var intervalType = $.url().param('intervaltype');
+            
         /*
         if (!yearTo) {
             yearTo = new Date().getFullYear() - 1;
@@ -182,6 +184,15 @@ $(document).ready(function() {
         if (hosts[db].noFilterToggle) {
             $("#searchToggleDiv").hide();
         }
+
+        $.each(hosts[db].intervaltype, function(k, v) {
+            $('#interval_list')
+                .append($("<option></option>")
+                    .attr("value", v.value)
+                    .text(v.text));
+        });
+
+        $("#interval_list").prepend("<option value='' selected='selected'></option>");
 
         function getFilterQuery() {
             if ($('#searchToggle').prop("checked")) {
@@ -778,15 +789,47 @@ $(document).ready(function() {
         $("input[name='to']").val(yearTo);
 
         $('#trend_interval').val(5);
-        $('#trend_form').submit( function (e) {
-            if (!isIntWithMinVal($('#trend_interval').val(), 1)) {
-                showAlert("Please check your inputs.", "danger");
-                $("#trend_interval").tooltip("show");
-                $("#trend_form").addClass("has-error");
-                e.preventDefault();
-                return;
-            }
-        });
+
+            $('#trend_form').submit(function (e) {
+                var intervalTypeSelection = $("#interval_list");
+                var intervalVal = $('#trend_interval').val();
+                var isError = false;
+                var errorMessage = "";
+                var errorType = "danger";
+                if (((intervalTypeSelection.val() === 'year') && !isIntWithMinMaxVal(intervalVal, 1, 10))) {
+                    errorMessage = "Please check your inputs: Year value should be with in 1 and 10.";
+                    isError = true;
+                }
+                if (((intervalTypeSelection.val() === 'month') && !isIntWithMinMaxVal(intervalVal, 1, 12))) {
+                    errorMessage = "Please check your inputs: Month value should be with in 1 and 12.";
+                    isError = true;
+                }
+                if (((intervalTypeSelection.val() === 'day') && !isIntWithMinMaxVal(intervalVal, 1, 365))) {
+                    isError = true;
+                    errorMessage = "Please check your inputs: Day value should be with in 1 and 365.";
+                }
+                if (((intervalTypeSelection.val() === 'hour') && !isIntWithMinMaxVal(intervalVal, 1, 24))) {
+                    errorMessage = "Please check your inputs: Hour value should be with in 1 and 24.";
+                    isError = true;
+                }
+                if (((intervalTypeSelection.val() === 'minute') && !isIntWithMinMaxVal(intervalVal, 1, 60))) {
+                    errorMessage = "Please check your inputs: Minute value should be with in 1 and 10.";
+                    isError = true;
+                }
+                if (((intervalTypeSelection.val() === 'second') && !isIntWithMinMaxVal(intervalVal, 1, 60))) {
+                    errorMessage = "Please check your inputs: Second value should be with in 1 and 10.";
+                    isError = true;
+                }
+                if (isError) {
+                    showAlert(errorMessage, errorType);
+                    $("#trend_interval").tooltip("show");
+                    $("#trend_form").addClass("has-error");
+                    e.preventDefault();
+                    return;
+                }
+
+            });
+
 
         $('#theme_uploadform').attr("action", "http://" + host + "/theme/file/upload?token=" + token);
         $('#theme_uploadstatus').val($.url().attr("protocol") + "://" + $.url().attr("host") + ":" + $.url().attr("port") + "/theme_upload.html");
@@ -981,8 +1024,10 @@ $(document).ready(function() {
             <input type="hidden" name="query"></input>
             <input type="hidden" name="from"></input>
             <input type="hidden" name="to"></input>
-            <label class="control-label">Year Interval: </label>
+            <label class="control-label">Interval: </label>
             <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
+            <select class="form-control input-sm" id="interval_list" name="intervaltype" style="width:90px;display:inline-block;"">
+            </select> 
             <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
         </form>
     </div>
