@@ -73,12 +73,12 @@
                 "orderable": false
             }
         ],
-        "order": [ [ 2, "desc" ] ],
+        "order": [[2, "desc"]],
         "toggleButtons": {
             "defaultGroupBy": true
         },
-        "buttonGroups": [ 5, 4 ],
-        "hiddenActions": [ "heatmap" ],
+        "buttonGroups": [5, 4],
+        "hiddenActions": ["heatmap"],
         "noFilterToggle": true
     },
     "twitter": {
@@ -227,8 +227,8 @@
             }
         ],
         "order": [[1, "desc"]],
-        "buttonGroups": [ 6, 6, 4 ],
-        "disableActions": [	"theme" ]        
+        "buttonGroups": [6, 6, 4],
+        "disableActions": ["theme"]        
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",
