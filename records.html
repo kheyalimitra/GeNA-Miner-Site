@@ -786,7 +786,7 @@ $(document).ready(function() {
         $("input[name='from']").val(yearFrom);
         $("input[name='to']").val(yearTo);
 
-        $('#trend_interval').val(5);
+        $('#trend_interval').val(1);
 
         $('#trend_form').submit(function (e) {
             if (!isIntWithMinVal($('#trend_interval').val(), 1)) {
