@@ -82,7 +82,7 @@
         "noFilterToggle": true
     },
     "twitter": {
-        "host": "localhost:5001",
+        "host": "gena-lab.chuancong.me:5001",
         "name": "Twitter (Public Stream)",
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
@@ -232,7 +232,7 @@
         ],
         "order": [[1, "desc"]],
         "buttonGroups": [6, 6, 4],
-        "disableActions": ["theme"]
+        "disableActions": ["theme", "trend"]
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",
