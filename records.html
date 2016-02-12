@@ -236,7 +236,7 @@ $(document).ready(function() {
                 dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback_heatmap",
                 cache: true,
-                url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent((getFilterQuery() == "" ? "" : "(" + getFilterQuery() + ") AND ") + "_exists_:coordinates").replace("%20", "+") + "&from=" + encodeURIComponent(yearFrom).replace("%20", "+") + "&to=" + encodeURIComponent(yearTo).replace("%20", "+") + "&length=" + $('#geo_n').val() + "&raw=true",
+                url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent((getFilterQuery() == "" ? "" : "(" + getFilterQuery() + ") AND ") + "_exists_:coordinates").replace(/%20/g, "+") + "&from=" + encodeURIComponent(yearFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(yearTo).replace(/%20/g, "+") + "&length=" + $('#geo_n').val() + "&raw=true",
                 success: function(raw_data) {
                     $('#progress_wrapper').modal('hide');
                     var heatmapData = [];
@@ -436,7 +436,7 @@ $(document).ready(function() {
 
             "serverSide": true,
             "ajax": {
-                "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query).replace("%20", "+") + "&from=" + encodeURIComponent(yearFrom).replace("%20", "+") + "&to=" + encodeURIComponent(yearTo).replace("%20", "+"),
+                "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&from=" + encodeURIComponent(yearFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(yearTo).replace(/%20/g, "+"),
                 "dataType": (jsonp ? "jsonp" : "json"),
                 cache: true,
                 jsonpCallback: "jsonpcallback_main", 
@@ -560,7 +560,7 @@ $(document).ready(function() {
                 dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback_validate",
                 cache: true,
-                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query).replace("%20", "+") + "&search=" + encodeURIComponent($("#example_filter input").val()).replace("%20", "+"), 
+                url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&search=" + encodeURIComponent($("#example_filter input").val()).replace(/%20/g, "+"), 
                 success: function(j) {
                     if (j.valid) {
                         if ($("#example_filter input").val() != "") {

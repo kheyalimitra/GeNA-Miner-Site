@@ -48,14 +48,8 @@ $(document).ready(function() {
         $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
 
         var query = $.url().param('query');
-        var yearFrom = $.url().param('from');
-        if (!yearFrom) {
-            yearFrom = 1900;
-        }
-        var yearTo = $.url().param('to');
-        if (!yearTo) {
-            yearTo = new Date().getFullYear() - 1;
-        }
+        var dateFrom = $.url().param('from');
+        var dateTo = $.url().param('to');
         var interval = $.url().param('interval');
         if (!interval) {
             interval = 5;
@@ -67,15 +61,15 @@ $(document).ready(function() {
 
         var img;
         if (hosts[db].intervalType.length == 1) {
-            img = encodeURIComponent(query).replace("%20", "+") + "_" + yearFrom + "-" + yearTo + "_interval=" + interval + ".svg";
+            img = encodeURIComponent(query).replace(/%20/g, "+") + "_" + encodeURIComponent(dateFrom.replace(/:/g, ".")).replace(/%20/g, "+") + "-" + encodeURIComponent(dateTo.replace(/:/g, ".")).replace(/%20/g, "+") + "_interval=" + interval + ".svg";
         }
         else {
-            img = encodeURIComponent(query).replace("%20", "+") + "_" + yearFrom + "-" + yearTo + "_interval=" + interval + "_intervaltype=" + intervalType + ".svg";
+            img = encodeURIComponent(query).replace(/%20/g, "+") + "_" + encodeURIComponent(dateFrom.replace(/:/g, ".")).replace(/%20/g, "+") + "-" + encodeURIComponent(dateTo.replace(/:/g, ".")).replace(/%20/g, "+") + "_interval=" + interval + "_intervaltype=" + intervalType + ".svg";
         }
 
-        document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- #Publication Trend (Interval = " + interval + ", Interval Type = "+intervalType + ")";
-        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + encodeURIComponent(query).replace("%20", "+") + "&from=" + encodeURIComponent(yearFrom).replace("%20", "+") + "&to=" + encodeURIComponent(yearTo).replace("%20", "+")).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
-        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- #Publication Trend (Interval = " + interval + ", Interval Type = " + intervalType + ")</small>");
+        document.title = "GeNA Miner -- " + query + " " + dateFrom + "-" + dateTo + " -- #Publication Trend (Interval = " + interval + ", Interval Type = "+intervalType + ")";
+        $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&from=" + encodeURIComponent(dateFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(dateTo).replace(/%20/g, "+")).attr("title", query + " (" + dateFrom + "-" + dateTo + ")");
+        $("h3").html(query + " (" + dateFrom + "-" + dateTo + ") " + "<small>-- #Publication Trend (Interval = " + interval + ", Interval Type = " + intervalType + ")</small>");
 
         var table = $('#example').DataTable( {
             dom: 'lfTrtip',
@@ -102,7 +96,7 @@ $(document).ready(function() {
             "ajax": {
                 dataType: (jsonp ? "jsonp" : "json"),
                 jsonpCallback: "jsonpcallback",
-                "url": "http://" + host + "/trend/load?token=" + token + "&query=" + query.replace(/ /g, "+") + "&from=" + yearFrom + "&to=" + yearTo + "&interval=" + interval +"&intervaltype=" + intervalType + "&plot=true",
+                "url": "http://" + host + "/trend/load?token=" + token + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&from=" + encodeURIComponent(dateFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(dateTo).replace(/%20/g, "+") + "&interval=" + interval +"&intervaltype=" + intervalType + "&plot=true",
                 cache: true,
             },
 
