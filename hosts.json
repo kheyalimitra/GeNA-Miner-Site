@@ -119,6 +119,7 @@
             }
 
         ],
+        "showIndexed": true,
         "columns": [
             {
                 "width": "120px",
