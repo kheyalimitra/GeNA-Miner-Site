@@ -80,6 +80,7 @@
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
         "allowEmptyQuery": true,
+	"showIndexed": true,
         "columns": [
             {
                 "width": "120px",
