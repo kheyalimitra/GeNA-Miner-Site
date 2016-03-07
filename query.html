@@ -187,10 +187,11 @@ $(document).ready(function() {
                                 showAlert("You did not enter the correct indexed query name.", "warning");
                             }
                             else {
-                                $.getJSON("http://" + host + "/history/delete?callback=?&token=" + token, 
+                                $.getJSON("http://" + host + "/history/delete?" + (jsonp ? "callback=?&" : "") + "token=" + token,
                                     {
-                                        "query": query
-                                    }, 
+                                        "query": query,
+                                        "stat": data["stat"]
+                                    },
                                     function(j){
                                         table.ajax.reload();
                                         showAlert("Indexed query <b>"+ query + "</b> has been deleted.", "info");
