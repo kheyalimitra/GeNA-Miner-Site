@@ -704,6 +704,7 @@
                 "enum": [
                   "insert",
                   "remove",
+                  "upsert",
                   "toggle"
                 ]
               },
@@ -1415,6 +1416,192 @@
         },
         "tension": {
           "$ref": "#/refs/numberValue"
+        },
+        "orient": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "rule": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/defs/rule"
+                      },
+                      {
+                        "type": "object",
+                        "allOf": [
+                          {
+                            "$ref": "#/refs/stringModifiers"
+                          },
+                          {
+                            "oneOf": [
+                              {
+                                "$ref": "#/refs/signal",
+                                "required": [
+                                  "signal"
+                                ]
+                              },
+                              {
+                                "properties": {
+                                  "value": {
+                                    "enum": [
+                                      "horizontal",
+                                      "vertical"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "value"
+                                ]
+                              },
+                              {
+                                "properties": {
+                                  "field": {
+                                    "$ref": "#/refs/field"
+                                  }
+                                },
+                                "required": [
+                                  "field"
+                                ]
+                              },
+                              {
+                                "properties": {
+                                  "band": {
+                                    "type": "boolean"
+                                  }
+                                },
+                                "required": [
+                                  "band"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "rule"
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/defs/rule"
+                  },
+                  {
+                    "type": "object",
+                    "allOf": [
+                      {
+                        "$ref": "#/refs/stringModifiers"
+                      },
+                      {
+                        "oneOf": [
+                          {
+                            "$ref": "#/refs/signal",
+                            "required": [
+                              "signal"
+                            ]
+                          },
+                          {
+                            "properties": {
+                              "value": {
+                                "enum": [
+                                  "horizontal",
+                                  "vertical"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "value"
+                            ]
+                          },
+                          {
+                            "properties": {
+                              "field": {
+                                "$ref": "#/refs/field"
+                              }
+                            },
+                            "required": [
+                              "field"
+                            ]
+                          },
+                          {
+                            "properties": {
+                              "band": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "band"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/refs/stringModifiers"
+                },
+                {
+                  "oneOf": [
+                    {
+                      "$ref": "#/refs/signal",
+                      "required": [
+                        "signal"
+                      ]
+                    },
+                    {
+                      "properties": {
+                        "value": {
+                          "enum": [
+                            "horizontal",
+                            "vertical"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ]
+                    },
+                    {
+                      "properties": {
+                        "field": {
+                          "$ref": "#/refs/field"
+                        }
+                      },
+                      "required": [
+                        "field"
+                      ]
+                    },
+                    {
+                      "properties": {
+                        "band": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "band"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         "url": {
           "$ref": "#/refs/stringValue"
@@ -4832,6 +5019,20 @@
                 },
                 {
                   "$ref": "#/refs/data"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "fields": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/refs/data"
+                      }
+                    }
+                  },
+                  "required": [
+                    "fields"
+                  ]
                 }
               ]
             },
