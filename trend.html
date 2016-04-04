@@ -32,8 +32,12 @@
 
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <script src="js/main.js"></script>
-
-
+<!--vega scripts-->
+<script src="https://vega.github.io/vega-editor/vendor/d3.min.js"></script>
+<script src="https://vega.github.io/vega-editor/vendor/d3.geo.projection.min.js"></script>
+<script src="https://vega.github.io/vega-editor/vendor/topojson.js"></script>
+<script src="https://vega.github.io/vega-editor/vendor/d3.layout.cloud.js"></script>
+<script src="https://vega.github.io/vega/vega.min.js"></script>
 <script type="text/javascript" class="init">
 $(document).ready(function() {
     $.getJSON("hosts.json", function(hosts) {
@@ -98,8 +102,10 @@ $(document).ready(function() {
                 jsonpCallback: "jsonpcallback",
                 "url": "http://" + host + "/trend/load?token=" + token + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&from=" + encodeURIComponent(dateFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(dateTo).replace(/%20/g, "+") + "&interval=" + interval +"&intervaltype=" + intervalType + "&plot=true",
                 cache: true,
-            },
 
+            },
+		
+	     
             "deferRender": true,
             "searching": false,
             "paging": false,
@@ -115,17 +121,110 @@ $(document).ready(function() {
                 },
             ],
             "order": [[ 0, "asc" ]]
-        });
+	});
         new $.fn.dataTable.FixedHeader( table );
 
         $(".DTTT_container").addClass("btn-group");
         $(".DTTT_container a").removeClass("DTTT_button");
         $(".DTTT_container a").addClass("btn btn-default btn-sm");
+	var datatableJsonArray = null;
+	// stringify json from data table 
+	table.on( 'xhr', function () {
+    		var json = table.ajax.json();
+    		datatableJsonArray = JSON.stringify(json);
+		datatableJsonArray = datatableJsonArray.replace("{\"data\":","");
+		datatableJsonArray = datatableJsonArray.substring(0,datatableJsonArray.lastIndexOf("}"));
+		// object creation for VEGA 
+		var bar = {
+			"width": 400,
+			"height": 250,
+			"padding": {"top": 20, "left": 30, "bottom": 20, "right": 10},
 
-        table.on( 'draw.dt', function () {
-            $("#trendimg").attr("src", "http://" + host + "/static/trend/" + img); 
-        } );
+			"data": [
+			{
+				"name": "exampleTable",
+				"values": datatableJsonArray
+			}
+		       ],
 
+		       "signals": [
+		       {
+				 "name": "tooltip",
+				 "init": {},
+				 "streams": [
+				 {"type": "rect:mouseover", "expr": "datum"},
+				 {"type": "rect:mouseout", "expr": "{}"}
+			       ]
+			}
+		      ],
+
+		      "predicates": [
+		      {
+				  "name": "tooltip", "type": "==", 
+				  "operands": [{"signal": "tooltip._id"}, {"arg": "id"}]
+		      }
+		      ],
+
+		      "scales": [
+		      {           "name": "xscale", "type": "ordinal", "range": "width",
+				  "domain": {"data": "exampleTable", "field": "range"} },
+				{ "name": "yscale", "range": "height", "nice": true,
+				  "domain": {"data": "exampleTable", "field": "count"} }
+		      ],
+
+		      "axes": [
+		      {          "type": "x", "scale": "xscale" },
+			       { "type": "y", "scale": "yscale" }
+		       ],
+
+		  "marks": [
+		    {
+		      "type": "rect",
+		      "from": {"data":"exampleTable"},
+		      "properties": {
+			"enter": {
+			  "x": {"scale": "xscale", "field": "range"},
+			  "width": {"scale": "xscale", "band": true, "offset": -1},
+			  "y": {"scale": "yscale", "field": "count"},
+			  "y2": {"scale": "yscale", "value":0}
+			},
+			"update": { "fill": {"value": "steelblue"} },
+			"hover": { "fill": {"value": "red"} }
+		      }
+		    },
+		    {
+		      "type": "text",
+		      "properties": {
+			"enter": {
+			  "align": {"value": "center"},
+			  "fill": {"value": "#333"}
+			},
+			"update": {
+			  "x": {"scale": "xscale", "signal": "tooltip.range"},
+			  "dx": {"scale": "xscale", "band": true, "mult": 0.5},
+			  "y": {"scale": "yscale", "signal": "tooltip.count", "offset": -5},
+			  "text": {"signal": "tooltip.count"},
+			  "fillOpacity": {
+			    "rule": [
+			      {
+				"predicate": {"name": "tooltip", "id": {"value": null}},
+				"value": 0
+			      },
+			      {"value": 1}
+			    ]
+			  }
+			}
+		      }
+		    }
+		  ]
+		}
+	parse(bar);
+    
+	} );
+	/// parse data table to populate bar chart using VEGA
+	function parse(spec) {
+  		vg.parse.spec(spec, function(error, chart) { chart({el:"#exampleTable"}).update(); });
+	}
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
         $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
     });
@@ -158,8 +257,8 @@ $(document).ready(function() {
     </table>
     </div>
 </div>
-<div style="width:70%; float:left; ">
-    <div class="block" align="center" style="position: fixed;">
+<div style="width:70%; float:left;">
+    <div class="block" align="center" style="position: fixed;" id="exampleTable">
         <img id="trendimg" style="max-width:100%; max-height:100%;">
     </div>
 </div>
