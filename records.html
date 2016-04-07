@@ -754,6 +754,12 @@ $(document).ready(function() {
                     }
                 });
 
+		$('.hashtag').click(function() {
+  			var textbox = $('#example_filter input');
+  			textbox.val(textbox.val()+$(this).text().substring(1)+' ');
+    			textbox.focus();
+		})
+
                 $("a.url[title]").each(function() {
                     var type = $(this).attr("data-type");
                     var title = $(this).attr("title");
