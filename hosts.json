@@ -82,7 +82,7 @@
         "noFilterToggle": true
     },
     "twitter": {
-        "host": "gena-lab.chuancong.me:5001",
+        "host": "localhost:5001",
         "name": "Twitter (Public Stream)",
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
