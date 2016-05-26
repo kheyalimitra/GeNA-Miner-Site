@@ -82,7 +82,7 @@
         "noFilterToggle": true
     },
     "twitter": {
-        "host": "localhost:5001",
+        "host": "gena-lab.chuancong.me:5001",
         "name": "Twitter (Public Stream)",
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
@@ -235,8 +235,17 @@
         "buttonGroups": [6, 6, 4],
         "disableActions": ["theme", "trend"]
     },
+    "adhoc": {
+        "name": "Ad-hoc Datasets",
+        "beta": true,
+        "allowedTokens": [
+            "4dda3274fca48216e591ec989fb117edfeee7bb3",
+            "3ab83d7d20012d2d962754b7cc33394c1a8799ca"
+        ]
+    },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",
+        "beta": true,
         "name": "NCAA - Men's Basketball",
         "allowedTokens": [
             "4dda3274fca48216e591ec989fb117edfeee7bb3",
