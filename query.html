@@ -123,20 +123,20 @@ $(document).ready(function() {
             },
 
             "deferRender": true,
-            "paging": false, 
+            "paging": false,
             "searching": false,
             "ordering": false,
-            "scrollY": "400px",
+            "scrollY": "800px",
             "scrollCollapse": true,
 
             "columns": [
                 {
-                    "width": "250px", 
+                    "width": "350px", 
                     "data": "query",
                     "orderable": false
                 },
                 {
-                    "width": "100px", 
+                    "width": "400px", 
                     "data": "stat",
                     "orderable": false 
                 },
@@ -144,6 +144,14 @@ $(document).ready(function() {
                     "width": "50px", 
                     "orderable": false,
                     "defaultContent": '<button style="display: none;" class="btn btn-danger btn-xs"><span class="fa fa-trash-o"></span> Delete</button>'
+                }
+            ],
+            "columnDefs": [
+                {
+                    "render": function(data, type, row) {
+                        return data.length == 0 ? '<span style="color: gray; font-style: italic;">&lt;Empty Query&gt;</span>' : data;
+                    },
+                    "targets": 0
                 }
             ]
         });
