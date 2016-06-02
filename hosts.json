@@ -1,6 +1,6 @@
 {
     "pubmed": {
-        "host": "gena-lab.chuancong.me:5000",
+        "host": "localhost:5000",
         "name": "PubMed",
         "minPeriod": "year",
         "dateTimeFormat": "YYYY",
@@ -81,7 +81,7 @@
         "noFilterToggle": true
     },
     "twitter": {
-        "host": "gena-lab.chuancong.me:5001",
+        "host": "localhost:5001",
         "name": "Twitter (Public Stream)",
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
@@ -235,17 +235,14 @@
         "disableActions": ["theme", "trend"]
     },
     "adhoc": {
+        "host": "localhost:5002",
         "name": "Ad-hoc Datasets",
-        "beta": true,
-        "allowedTokens": [
-            "4dda3274fca48216e591ec989fb117edfeee7bb3",
-            "3ab83d7d20012d2d962754b7cc33394c1a8799ca"
-        ]
+        "beta": true
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",
         "beta": true,
-        "name": "NCAA - Men's Basketball",
+        "name": "NCAA - Basketball",
         "allowedTokens": [
             "4dda3274fca48216e591ec989fb117edfeee7bb3",
             "3ab83d7d20012d2d962754b7cc33394c1a8799ca"
