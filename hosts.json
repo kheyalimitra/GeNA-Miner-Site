@@ -4,8 +4,7 @@
         "name": "PubMed",
         "minPeriod": "year",
         "dateTimeFormat": "YYYY",
-        "jsonp": true,
-        "showIndexed": true,
+        "showHistory": true,
         "intervalType": [
             {
                 "value": "year",
@@ -119,7 +118,7 @@
             }
 
         ],
-        "showIndexed": true,
+        "showHistory": true,
         "columns": [
             {
                 "width": "120px",
