@@ -168,7 +168,7 @@ $(document).ready(function() {
             var query = data["query"];
             bootbox.dialog({
                 message: '\
-                    Are you sure you want to delete indexed query <b>' + query + '</b>?<br/><br/>\
+                    Are you sure you want to delete history query <b>' + query + '</b>?<br/><br/>\
                     <div class="panel panel-default">\
                         <div class="panel-body">\
                             <div class="form-inline">\
@@ -192,7 +192,7 @@ $(document).ready(function() {
                         className: "btn-danger",
                         callback: function() {
                             if ($("input#deleteConfirm").val() != query) {
-                                showAlert("You did not enter the correct indexed query name.", "warning");
+                                showAlert("You did not enter the correct history query name.", "warning");
                             }
                             else {
                                 $.getJSON("http://" + host + "/history/delete?" + (jsonp ? "callback=?&" : "") + "token=" + token,
@@ -202,7 +202,7 @@ $(document).ready(function() {
                                     },
                                     function(j){
                                         table.ajax.reload();
-                                        showAlert("Indexed query <b>"+ query + "</b> has been deleted.", "info");
+                                        showAlert("History query <b>"+ query + "</b> has been deleted.", "info");
                                     }
                                 );
                             }
@@ -356,7 +356,7 @@ $(document).ready(function() {
         <table style="width:100%; ">
             <tr>
                 <td>
-                    <label class="control-label">Indexed Query: </label>
+                    <label class="control-label">History Query: </label>
                 </td>
                 <td style="text-align:right;">
                     <div class="btn-group" data-toggle="buttons">
@@ -369,7 +369,7 @@ $(document).ready(function() {
             <thead>
                 <tr>
                     <th>Query</th>
-                    <th>Indexed</th>
+                    <th>Period</th>
                     <th></th>
                 </tr>
             </thead>
