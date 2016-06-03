@@ -2,9 +2,9 @@
     "pubmed": {
         "host": "localhost:5000",
         "name": "PubMed",
+        "showHistory": true,
         "minPeriod": "year",
         "dateTimeFormat": "YYYY",
-        "showHistory": true,
         "intervalType": [
             {
                 "value": "year",
@@ -83,9 +83,10 @@
     "twitter": {
         "host": "localhost:5001",
         "name": "Twitter (Public Stream)",
+        "allowEmptyQuery": true,
+        "showHistory": true,
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
-        "allowEmptyQuery": true,
         "intervalType": [
             {
                 "value": "year",
@@ -118,7 +119,6 @@
             }
 
         ],
-        "showHistory": true,
         "columns": [
             {
                 "width": "120px",
@@ -237,7 +237,42 @@
     "adhoc": {
         "host": "localhost:5002",
         "name": "Ad-hoc Datasets",
-        "beta": true
+        "beta": true,
+        "showHistory": true,
+        "minPeriod": "second",
+        "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
+        "intervalType": [
+            {
+                "value": "year",
+                "text":  "Year"
+            },
+            {
+                "value": "month",
+                "text":  "Month"
+            },
+            {
+                "value": "week",
+                "text":  "Week"
+            },
+            {
+                "value": "day",
+                "text":  "Day",
+                "default": true
+            },
+            {
+                "value": "hour",
+                "text":  "Hour"
+            },
+            {
+                "value": "minute",
+                "text":  "Minute"
+            },
+            {
+                "value": "second",
+                "text":  "Second"
+            }
+
+        ]
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",
