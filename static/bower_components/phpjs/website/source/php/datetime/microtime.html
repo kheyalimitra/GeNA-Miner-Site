@@ -19,6 +19,10 @@ notes: []
 type: function
 layout: function
 title: PHP's microtime in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.microtime.php">PHP's microtime</a>
+  looks like.
 function: microtime
 category: datetime
 language: php
@@ -30,7 +34,7 @@ alias:
   - /functions/microtime/
 ---
 {% codeblock lang:javascript %}module.exports = function microtime (getAsFloat) {
-  //  discuss at: http://locutusjs.io/php/microtime/
+  //  discuss at: http://locutus.io/php/microtime/
   // original by: Paulo Freitas
   // improved by: Dumitru Uzun (http://duzun.me)
   //   example 1: var $timeStamp = microtime(true)

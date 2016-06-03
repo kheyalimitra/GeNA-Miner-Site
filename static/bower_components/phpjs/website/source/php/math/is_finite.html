@@ -17,6 +17,10 @@ notes: []
 type: function
 layout: function
 title: PHP's is_finite in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.is_finite.php">PHP's is_finite</a>
+  looks like.
 function: is_finite
 category: math
 language: php
@@ -28,7 +32,7 @@ alias:
   - /functions/is_finite/
 ---
 {% codeblock lang:javascript %}module.exports = function is_finite (val) { // eslint-disable-line camelcase
-  //  discuss at: http://locutusjs.io/php/is_finite/
+  //  discuss at: http://locutus.io/php/is_finite/
   // original by: Onno Marsman (https://twitter.com/onnomarsman)
   //   example 1: is_finite(Infinity)
   //   returns 1: false

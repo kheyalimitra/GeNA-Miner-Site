@@ -26,6 +26,8 @@ authors:
     - 'Michael White (http://getsprink.com)'
     - Jack
     - 'Brett Zamir (http://brett-zamir.me)'
+  reimplemented by:
+    - stag019
   bugfixed by:
     - 'Onno Marsman (https://twitter.com/onnomarsman)'
     - 'Brett Zamir (http://brett-zamir.me)'
@@ -46,6 +48,10 @@ notes:
 type: function
 layout: function
 title: PHP's parse_str in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.parse_str.php">PHP's parse_str</a>
+  looks like.
 function: parse_str
 category: strings
 language: php
@@ -57,7 +63,7 @@ alias:
   - /functions/parse_str/
 ---
 {% codeblock lang:javascript %}module.exports = function parse_str (str, array) { // eslint-disable-line camelcase
-  //       discuss at: http://locutusjs.io/php/parse_str/
+  //       discuss at: http://locutus.io/php/parse_str/
   //      original by: Cagri Ekin
   //      improved by: Michael White (http://getsprink.com)
   //      improved by: Jack

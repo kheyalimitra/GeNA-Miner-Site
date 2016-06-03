@@ -13,6 +13,10 @@ notes: []
 type: function
 layout: function
 title: PHP's bccomp in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.bccomp.php">PHP's bccomp</a> looks
+  like.
 function: bccomp
 category: bc
 language: php
@@ -24,7 +28,7 @@ alias:
   - /functions/bccomp/
 ---
 {% codeblock lang:javascript %}module.exports = function bccomp (leftOperand, rightOperand, scale) {
-  //  discuss at: http://locutusjs.io/php/bccomp/
+  //  discuss at: http://locutus.io/php/bccomp/
   // original by: lmeyrick (https://sourceforge.net/projects/bcmath-js/)
   //   example 1: bccomp(1, 2)
   //   returns 1: -1

@@ -11,6 +11,8 @@ authors:
     - 'Blues (http://tech.bluesmoon.info/)'
   improved by:
     - 'Brett Zamir (http://brett-zamir.me)'
+  reimplemented by:
+    - 'Brett Zamir (http://brett-zamir.me)'
   bugfixed by:
     - 'Brett Zamir (http://brett-zamir.me)'
   input by:
@@ -20,6 +22,10 @@ notes:
 type: function
 layout: function
 title: PHP's strftime in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.strftime.php">PHP's strftime</a> looks
+  like.
 function: strftime
 category: datetime
 language: php
@@ -31,7 +37,7 @@ alias:
   - /functions/strftime/
 ---
 {% codeblock lang:javascript %}module.exports = function strftime (fmt, timestamp) {
-  //       discuss at: http://locutusjs.io/php/strftime/
+  //       discuss at: http://locutus.io/php/strftime/
   //      original by: Blues (http://tech.bluesmoon.info/)
   // reimplemented by: Brett Zamir (http://brett-zamir.me)
   //         input by: Alex

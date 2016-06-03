@@ -1,5 +1,5 @@
 module.exports = function mktime () {
-  //  discuss at: http://locutusjs.io/php/mktime/
+  //  discuss at: http://locutus.io/php/mktime/
   // original by: Kevin van Zonneveld (http://kvz.io)
   // improved by: baris ozdil
   // improved by: Kevin van Zonneveld (http://kvz.io)
@@ -66,7 +66,9 @@ module.exports = function mktime () {
   // Set hours, minutes, and seconds.
   d.setHours(r[0], r[1], r[2])
 
+  var time = d.getTime()
+
   // Divide milliseconds by 1000 to return seconds and drop decimal.
   // Add 1 second if negative or it'll be off from PHP by 1 second.
-  return (d.getTime() / 1e3 >> 0) - (d.getTime() < 0)
+  return (time / 1e3 >> 0) - (time < 0)
 }

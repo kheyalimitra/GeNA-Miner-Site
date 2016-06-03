@@ -14,6 +14,10 @@ notes: []
 type: function
 layout: function
 title: PHP's substr_compare in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.substr_compare.php">PHP's
+  substr_compare</a> looks like.
 function: substr_compare
 category: strings
 language: php
@@ -25,7 +29,7 @@ alias:
   - /functions/substr_compare/
 ---
 {% codeblock lang:javascript %}module.exports = function substr_compare (mainStr, str, offset, length, caseInsensitivity) { // eslint-disable-line camelcase
-  //  discuss at: http://locutusjs.io/php/substr_compare/
+  //  discuss at: http://locutus.io/php/substr_compare/
   // original by: Brett Zamir (http://brett-zamir.me)
   // original by: strcasecmp, strcmp
   //   example 1: substr_compare("abcde", "bc", 1, 2)

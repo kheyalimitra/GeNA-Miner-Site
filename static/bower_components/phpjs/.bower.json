@@ -1,12 +1,12 @@
 {
   "name": "phpjs",
   "homepage": "https://github.com/kvz/phpjs",
-  "version": "2.0.2",
-  "_release": "2.0.2",
+  "version": "2.0.4",
+  "_release": "2.0.4",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.2",
-    "commit": "6383e60ba6f45a045742893941e1a1f4b5290350"
+    "tag": "v2.0.4",
+    "commit": "a8e44dc7ba4d452db1fb6a823ca0ade12b5e3dd7"
   },
   "_source": "https://github.com/kvz/phpjs.git",
   "_target": "*",

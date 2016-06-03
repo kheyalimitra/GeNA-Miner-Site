@@ -16,14 +16,14 @@
   ],
   "homepage": "https://datatables.net",
   "license": "MIT",
-  "version": "2.0.2",
-  "_release": "2.0.2",
+  "version": "2.1.0",
+  "_release": "2.1.0",
   "_resolution": {
     "type": "version",
-    "tag": "2.0.2",
-    "commit": "892c6a2b075a85970892ba62f6c0a50d8c0ff58f"
+    "tag": "2.1.0",
+    "commit": "c2688aef4b13e32a370a5fa20bbc1d29e1e1c6f6"
   },
-  "_source": "git://github.com/DataTables/Responsive.git",
+  "_source": "https://github.com/DataTables/Responsive.git",
   "_target": "*",
   "_originalSource": "datatables-responsive"
 }

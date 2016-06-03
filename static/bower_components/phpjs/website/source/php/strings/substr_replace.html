@@ -25,6 +25,10 @@ notes: []
 type: function
 layout: function
 title: PHP's substr_replace in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.substr_replace.php">PHP's
+  substr_replace</a> looks like.
 function: substr_replace
 category: strings
 language: php
@@ -36,7 +40,7 @@ alias:
   - /functions/substr_replace/
 ---
 {% codeblock lang:javascript %}module.exports = function substr_replace (str, replace, start, length) { // eslint-disable-line camelcase
-  //  discuss at: http://locutusjs.io/php/substr_replace/
+  //  discuss at: http://locutus.io/php/substr_replace/
   // original by: Brett Zamir (http://brett-zamir.me)
   //   example 1: substr_replace('ABCDEFGH:/MNRPQR/', 'bob', 0)
   //   returns 1: 'bob'

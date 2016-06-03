@@ -35,6 +35,10 @@ notes:
 type: function
 layout: function
 title: PHP's http_build_query in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.http_build_query.php">PHP's
+  http_build_query</a> looks like.
 function: http_build_query
 category: url
 language: php
@@ -46,7 +50,7 @@ alias:
   - /functions/http_build_query/
 ---
 {% codeblock lang:javascript %}module.exports = function http_build_query (formdata, numericPrefix, argSeparator) { // eslint-disable-line camelcase
-  //  discuss at: http://locutusjs.io/php/http_build_query/
+  //  discuss at: http://locutus.io/php/http_build_query/
   // original by: Kevin van Zonneveld (http://kvz.io)
   // improved by: Legaev Andrey
   // improved by: Michael White (http://getsprink.com)

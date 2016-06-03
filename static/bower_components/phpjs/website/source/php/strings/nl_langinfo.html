@@ -13,6 +13,10 @@ notes: []
 type: function
 layout: function
 title: PHP's nl_langinfo in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.nl_langinfo.php">PHP's nl_langinfo</a>
+  looks like.
 function: nl_langinfo
 category: strings
 language: php
@@ -24,7 +28,7 @@ alias:
   - /functions/nl_langinfo/
 ---
 {% codeblock lang:javascript %}module.exports = function nl_langinfo (item) { // eslint-disable-line camelcase
-  //  discuss at: http://locutusjs.io/php/nl_langinfo/
+  //  discuss at: http://locutus.io/php/nl_langinfo/
   // original by: Brett Zamir (http://brett-zamir.me)
   //   example 1: nl_langinfo('DAY_1')
   //   returns 1: 'Sunday'

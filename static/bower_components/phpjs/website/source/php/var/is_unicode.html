@@ -14,6 +14,10 @@ notes:
 type: function
 layout: function
 title: PHP's is_unicode in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.is_unicode.php">PHP's is_unicode</a>
+  looks like.
 function: is_unicode
 category: var
 language: php
@@ -25,7 +29,7 @@ alias:
   - /functions/is_unicode/
 ---
 {% codeblock lang:javascript %}module.exports = function is_unicode (vr) { // eslint-disable-line camelcase
-  //  discuss at: http://locutusjs.io/php/is_unicode/
+  //  discuss at: http://locutus.io/php/is_unicode/
   // original by: Brett Zamir (http://brett-zamir.me)
   //      note 1: Almost all strings in JavaScript should be Unicode
   //   example 1: is_unicode('We the peoples of the United Nations...!')

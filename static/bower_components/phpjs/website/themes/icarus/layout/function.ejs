@@ -11,36 +11,25 @@
 
     <div class="article-entry">
       <p>
-        Here’s what our current JavaScript equivalent to
-        <%-
-          curLang.origin_template
-            .replace(/\[human\]/g, curLang.human)
-            .replace(/\[category\]/g, page.category)
-            .replace(/\[function\]/g, page.function)
-        %>
-
-        <%= curLang.human %>'s
-
-        <%= page.function %>
-        looks like.
+        <%- page.description %>
       </p>
 
       <!-- Code -->
       <%- page.content %>
 
       [
-      <a href="https://github.com/kvz/locutus/blob/master/functions/<%= page.category %>/<%= page.function %>.js">View on GitHub</a>
+      <a href="https://github.com/kvz/locutus/blob/master/src/<%= page.language %>/<%= page.category %>/<%= page.function %>.js">View on GitHub</a>
       |
-      <a href="https://github.com/kvz/locutus/edit/master/functions/<%= page.category %>/<%= page.function %>.js">Edit on GitHub</a>
+      <a href="https://github.com/kvz/locutus/edit/master/src/<%= page.language %>/<%= page.category %>/<%= page.function %>.js">Edit on GitHub</a>
       |
-      <a href="https://raw.githubusercontent.com/kvz/locutus/master/functions/<%= page.category %>/<%= page.function %>.js">Source on GitHub</a>
+      <a href="https://raw.githubusercontent.com/kvz/locutus/master/src/<%= page.language %>/<%= page.category %>/<%= page.function %>.js">Source on GitHub</a>
       ]
 
       <div class="clearfix"></div>
 
       <h2>How to use</h2>
       <p>
-        You you can install via <code>npm install --save --save-exact locutus</code> and
+        You you can install via <code>npm install locutus</code> and
         require it via <code>require('locutus/<%= page.language %>/<%= page.category %>/<%= page.function %>')</code>.
         You could also require the <code><%= page.category %></code> module in full
         so that you could access <code><%= page.category %>.<%= page.function %></code> instead.
@@ -59,7 +48,7 @@
           down to ES5 before we publish to npm, meaning you don't have to transpile yourself
           when you require Locutus that way.
         <% } else if (page.estarget === 'es5') { %>
-          This function targets ES5, but as of Locutus 2.0.0 we also support
+          This function targets ES5, but as of Locutus 2.0.2 we also support
           ES6 functions. Locutus transpiles to ES5 before publishing to npm.
         <% } else { %>
           This function has an unrecognized estarget: '<%= page.estarget %>'. Someone
@@ -138,8 +127,6 @@
 
       <hr />
       <%- partial('locutus/add_more', {curLang: curLang}) %>
-
-      <hr />
       <p>
         <a href="/<%= page.language %>/<%= page.category %>/">&laquo; More <%= curLang.human %> <%= page.category %> functions</a>
       </p>

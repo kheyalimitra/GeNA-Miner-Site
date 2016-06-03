@@ -1,13 +1,11 @@
 module.exports = function Count (s, sep) {
-  //  discuss at: http://locutusjs.io/php/printf/
+  //  discuss at: http://locutus.io/php/printf/
   // original by: Kevin van Zonneveld (http://kvz.io)
   //    input by: GopherJS (http://www.gopherjs.org/)
   //   example 1: Count("cheese", "e")
   //   returns 1: 3
   //   example 2: Count("five", "") // before & after each rune
   //   returns 2: 5
-
-  var Index = require('../strings/Index2')
 
   var pos
   var n = 0
@@ -23,7 +21,7 @@ module.exports = function Count (s, sep) {
     return 0
   }
   while (true) {
-    pos = Index(s, sep)
+    pos = (s + '').indexOf(sep)
     if (pos === -1) {
       break
     }

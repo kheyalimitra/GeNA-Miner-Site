@@ -16,7 +16,7 @@ standard library. This means that developers coming from other languages are oft
 
 Locutus aims to show developers who are proficient in other programming languages how these high-level tasks can be achieved in JavaScript. 
 
-Apart from the things that are missing in JavaScript, we are also porting functions like Go's [string.Index](/golang/strings/Index/), even though JavaScript offers a perfectly good native equivalent in the form of [String.indexOf](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/indexOf). We are going this extra mile to show newcomers an example of how behavior might differ between various languages.
+Apart from the things that are missing in JavaScript, we are also porting functions like Go's [strings.Index](/golang/strings/Index/), even though JavaScript offers a perfectly good native equivalent in the form of [String.indexOf](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/indexOf). We are going this extra mile to show newcomers an example of how behavior might differ between various languages.
 
 At an earlier stage, we also had the idea that when enough parts of a language were ported, you might even be able to run programs in JavaScript that were entirely written in other languages. While this certainly was fun to try and we had some degree of success in doing this for PHP, we have since abandoned this goal. Mainly because it drove us to write many hacks, while we were never really able to get anything to work flawlessly. Moreover, projects like [GopherJS](https://github.com/gopherjs/gopherjs) and [Emscripten](http://kripken.github.io/emscripten-site/) offer better means to that end, anyway.
 
@@ -40,7 +40,7 @@ So, if you know a better way to do something, we would love to see your improvem
 
 ## Contributing
 
-We use [GitHub](http://github.com/kvz/locutus) for collaboration. There are a few guidelines in our [CONTRIBUTING.md](http://github.com/kvz/locutus/CONTRIBUTING.md) document. It would be helpful to glance over them before submitting your work, to avoid unnecessary back and forth, as well as potential disappointment.
+We use [GitHub](http://github.com/kvz/locutus) for collaboration. There are a few guidelines in our [CONTRIBUTING.md](https://github.com/kvz/locutus/blob/master/CONTRIBUTING.md) document. It would be helpful to glance over them before submitting your work, to avoid unnecessary back and forth, as well as potential disappointment.
 
 ## Licensing
 

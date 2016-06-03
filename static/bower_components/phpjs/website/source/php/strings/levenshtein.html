@@ -13,6 +13,10 @@ dependencies: []
 authors:
   original by:
     - 'Carlos R. L. Rodrigues (http://www.jsfromhell.com)'
+  reimplemented by:
+    - 'Brett Zamir (http://brett-zamir.me)'
+    - Alexander M Beedie
+    - 'Rafał Kukawski (http://blog.kukawski.pl)'
   bugfixed by:
     - 'Onno Marsman (https://twitter.com/onnomarsman)'
   revised by:
@@ -21,6 +25,10 @@ notes: []
 type: function
 layout: function
 title: PHP's levenshtein in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.levenshtein.php">PHP's levenshtein</a>
+  looks like.
 function: levenshtein
 category: strings
 language: php
@@ -32,7 +40,7 @@ alias:
   - /functions/levenshtein/
 ---
 {% codeblock lang:javascript %}module.exports = function levenshtein (s1, s2, costIns, costRep, costDel) {
-  //       discuss at: http://locutusjs.io/php/levenshtein/
+  //       discuss at: http://locutus.io/php/levenshtein/
   //      original by: Carlos R. L. Rodrigues (http://www.jsfromhell.com)
   //      bugfixed by: Onno Marsman (https://twitter.com/onnomarsman)
   //       revised by: Andrea Giammarchi (http://webreflection.blogspot.com)

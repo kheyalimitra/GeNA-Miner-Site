@@ -9,6 +9,8 @@ dependencies: []
 authors:
   original by:
     - Ole Vrijenhoek
+  reimplemented by:
+    - Ole Vrijenhoek
   bugfixed by:
     - 'Kevin van Zonneveld (http://kvz.io)'
     - 'Brett Zamir (http://brett-zamir.me)'
@@ -16,6 +18,10 @@ notes: []
 type: function
 layout: function
 title: PHP's convert_uuencode in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.convert_uuencode.php">PHP's
+  convert_uuencode</a> looks like.
 function: convert_uuencode
 category: strings
 language: php
@@ -27,7 +33,7 @@ alias:
   - /functions/convert_uuencode/
 ---
 {% codeblock lang:javascript %}module.exports = function convert_uuencode (str) { // eslint-disable-line camelcase
-  //       discuss at: http://locutusjs.io/php/convert_uuencode/
+  //       discuss at: http://locutus.io/php/convert_uuencode/
   //      original by: Ole Vrijenhoek
   //      bugfixed by: Kevin van Zonneveld (http://kvz.io)
   //      bugfixed by: Brett Zamir (http://brett-zamir.me)

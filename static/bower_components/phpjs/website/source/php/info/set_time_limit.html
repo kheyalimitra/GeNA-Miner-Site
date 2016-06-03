@@ -13,6 +13,10 @@ notes: []
 type: function
 layout: function
 title: PHP's set_time_limit in JavaScript
+description: >-
+  Here’s what our current JavaScript equivalent to <a
+  href="http://php.net/manual/en/function.set_time_limit.php">PHP's
+  set_time_limit</a> looks like.
 function: set_time_limit
 category: info
 language: php
@@ -24,7 +28,7 @@ alias:
   - /functions/set_time_limit/
 ---
 {% codeblock lang:javascript %}module.exports = function set_time_limit (seconds) { // eslint-disable-line camelcase
-  //  discuss at: http://locutusjs.io/php/set_time_limit/
+  //  discuss at: http://locutus.io/php/set_time_limit/
   // original by: Brett Zamir (http://brett-zamir.me)
   //        test: skip-all
   //   example 1: set_time_limit(4)

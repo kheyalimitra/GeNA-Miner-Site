@@ -1,5 +1,5 @@
 module.exports = function gmmktime () {
-  //  discuss at: http://locutusjs.io/php/gmmktime/
+  //  discuss at: http://locutus.io/php/gmmktime/
   // original by: Brett Zamir (http://brett-zamir.me)
   // original by: mktime
   //   example 1: gmmktime(14, 10, 2, 2, 1, 2008)
@@ -35,7 +35,9 @@ module.exports = function gmmktime () {
   // Set hours, minutes, and seconds.
   d.setUTCHours(r[0], r[1], r[2])
 
+  var time = d.getTime()
+
   // Divide milliseconds by 1000 to return seconds and drop decimal.
   // Add 1 second if negative or it'll be off from PHP by 1 second.
-  return (d.getTime() / 1e3 >> 0) - (d.getTime() < 0)
+  return (time / 1e3 >> 0) - (time < 0)
 }

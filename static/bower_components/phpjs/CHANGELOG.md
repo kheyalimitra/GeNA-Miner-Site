@@ -18,23 +18,49 @@ Ideas that will be planned and find their way into a release at one point
 
 - [ ] Have _one_ way of checking pure JS arrays vs PHP arrays (vs: `Object.prototype.toString.call(arr1) === '[object Array]'`, `typeof retObj[p] === 'object'`, `var asString = Object.prototype.toString.call(mixedVar) var asFunc = _getFuncName(mixedVar.constructor) if (asString === '[object Object]' && asFunc === 'Object') {` )
 - [ ] Compare example test cases for PHP against `php -r` to make sure they are correctly mimicking the most recent stable behavior
-- [ ] Investigate if we can have one helper function for intersecting, and use that in all `array_*diff*` and `array_*sort*` functions. Refrain from using `labels`, as those functions currently still rely on
+- [ ] Investigate if we can have one helper function for intersecting, and use that in all `array_*diff*` and `array_*sort*` functions. Refrain from using `labels`, which those functions currently still rely on
 - [ ] Investigate if we can have one helper function for sorting, and use that in all `*sort*` functions
 - [ ] Investigate if we can have one helper function to resolve `Function/'function'/'Class::function'/[$object, 'function']`, and use that in `is_callable`, `array_walk`, `call_user_func_array` etc.
 - [ ] Port a few more tricky/inter-depending Ruby functions
 - [ ] Port a few more tricky/inter-depending Python functions
 - [ ] Port a few more tricky/inter-depending Go functions
 - [ ] Parse `require`s with AST just like Browserify does. Then we can add dependencies back to website
+- [ ] website: Render authors server-side
 
-## v2.0.2
+## v2.0.5
 
 Released: Not yet
 
-- [ ] Triage all open issues and PRs via waffle.io
-- [ ] Auto-deploys of `master` to http://locutusjs.io via Travis CI
 - [ ] Address the 25 remaining test failures that are currently skipped (find out which ones via `npm run test:languages:noskip`)
-- [ ] website: Add social buttons
-- [ ] website: Render authors server-side
+- [x] Cache node modules on Travis so we'll be less dependent on npm connectivity
+
+## v2.0.4
+
+Released: 2016-05-25
+
+- [x] Upgrade depurar to 0.2.2, fixing an issue with the testwriter (@kukawski)
+- [x] Add the 'reimplemented by' and 'parts by' contributionKeys to the /authors website page
+- [x] Fix linting warnings when hacking on website by adding eslint dependencies locally
+- [x] Improve array_rand: Fix coding style, hangs when selected huge number of keys from huge array, function signature (@kukawski)
+
+
+## v2.0.3
+
+Released: 2016-05-22
+
+- [x] Minor `util.js` refactoring
+- [x] Use hexo deploy instead of custom bash script to aid Windows compatibility
+- [x] Use cross-env and rimraf in build scripts to aid Windows compatibility
+- [x] Improve Travis auto-deployments (now using official deploy methods)
+- [x] Switch from locutusjs.io to locutus.io
+- [x] Triage all open issues and PRs
+- [x] Triage all open issues and PRs
+- [x] docs: Miscellaneous cosmetic updates
+- [x] website: Miscellaneous cosmetic updates
+- [x] website: Show languages & functions in profile sidebar
+- [x] website: Add social buttons
+- [x] website: Let Travis auto-deploy to gh-pages on master changes
+- [x] website: Use Hexo deploy vs bash script
 
 ## v2.0.2
 
