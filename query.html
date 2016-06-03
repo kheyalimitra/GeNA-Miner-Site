@@ -131,19 +131,23 @@ $(document).ready(function() {
 
             "columns": [
                 {
-                    "width": "350px", 
+                    "width": "300px",
                     "data": "query",
                     "orderable": false
                 },
                 {
-                    "width": "400px", 
+                    "width": "340px",
                     "data": "stat",
                     "orderable": false 
                 },
                 {
-                    "width": "50px", 
+                    "width": "160px",
+                    "data": "dateTime",
+                    "orderable": false
+                },
+                {
                     "orderable": false,
-                    "defaultContent": '<button style="display: none;" class="btn btn-danger btn-xs"><span class="fa fa-trash-o"></span> Delete</button>'
+                    "defaultContent": '<button style="display: none;" class="btn btn-danger btn-xs"><span class="fa fa-trash-o"></span></button>'
                 }
             ],
             "columnDefs": [
@@ -351,31 +355,28 @@ $(document).ready(function() {
             </div>
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
         </form>
-    </div>
-    <div class="block" id="indexed">
-        <table style="width:100%; ">
-            <tr>
-                <td>
-                    <label class="control-label">History Query: </label>
-                </td>
-                <td style="text-align:right;">
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-default btn-sm"><span class="fa fa-pencil-square-o"></span> Edit<input type="checkbox" id="manage"></label>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <table id="example" class="table table-hover" style="width:100%;" >
-            <thead>
-                <tr>
-                    <th>Query</th>
-                    <th>Period</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div id="indexed">
+            <table id="example" class="table table-hover" style="width:100%;" >
+                <thead>
+                    <tr>
+                        <th>Query</th>
+                        <th>Period</th>
+                        <th>Last Date &amp; Time</th>
+                        <th>
+                        <div class="btn-group" data-toggle="buttons">
+                            <button class="btn btn-default btn-xs"><span class="fa fa-pencil-square-o"></span><input type="checkbox" id="manage"></button>
+                        </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="manage">
+        <br/>
+        <button class="btn btn-warning btn-sm" id="updates"><span class="fa fa-cubes"></span> Manage Indexes</button>
+        <div/>
     </div>
 </div>
 
