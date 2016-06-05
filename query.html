@@ -45,10 +45,6 @@
     height: 22px;
 }
 
-#indexed.block {
-    display: none;
-}
-
 /* Fix for datetime picker */
 .input-date {
     border-radius: 3px !important;
@@ -110,16 +106,13 @@ $(document).ready(function() {
         $("#dbName").text("-- " + dbName);
         document.title = "GeNA Miner -- " + dbName;
 
-        var jsonp = hosts[db].jsonp;
-
         var minPeriod = hosts[db].minPeriod;
         var momentFormat = hosts[db].dateTimeFormat;
 
         var table = $("#example").DataTable( {
             "ajax": {
                 "url": "http://" + host + "/history/load?token=" + token,
-                "dataType": (jsonp ? "jsonp" : "json"),
-                "jsonpCallback": "jsonpcallback",
+                "dataType": "json"
             },
 
             "deferRender": true,
@@ -131,7 +124,7 @@ $(document).ready(function() {
 
             "columns": [
                 {
-                    "width": "300px",
+                    "width": "500px",
                     "data": "query",
                     "orderable": false
                 },
@@ -199,7 +192,7 @@ $(document).ready(function() {
                                 showAlert("You did not enter the correct history query name.", "warning");
                             }
                             else {
-                                $.getJSON("http://" + host + "/history/delete?" + (jsonp ? "callback=?&" : "") + "token=" + token,
+                                $.getJSON("http://" + host + "/history/delete?" + "token=" + token,
                                     {
                                         "query": query,
                                         "stat": data["stat"]
@@ -230,8 +223,8 @@ $(document).ready(function() {
         else if (minPeriod == "second") {
             $(".input-date").css("width", "140px");
 
-            //$('#from').val(moment().startOf('day').subtract(1, "months").format(momentFo*/
-            $('#from').val("2014-11-21 20:00:00");
+            $('#from').val(moment().utc().endOf('hour').subtract(2, "hours").subtract(1, "years").format(momentFormat));
+            //$('#from').val("2014-11-21 20:00:00");
             $('#to').val(moment().utc().endOf('hour').subtract(2, "hours").format(momentFormat));
 
             $('#from').attr("title", $('#from').attr("title") + (" least recent available time"));
@@ -312,10 +305,6 @@ $(document).ready(function() {
             }
         });
 
-        if (hosts[db].showHistory) {
-            $("#indexed.block").show();
-        }
-
         table.on('draw.dt', function () {
             $("#query").each(function() {
                 new Awesomplete(this, {
@@ -325,6 +314,10 @@ $(document).ready(function() {
                     minChars: 1
                 });
             });
+        });
+
+        $('#dataTab').on('click', function() {
+            window.location.href = 'data.html?db=' + db;
         });
     });
 });
@@ -339,7 +332,11 @@ $(document).ready(function() {
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="container-fluid">
     <h3>GeNA Miner <small id="dbName"></small></h3>
-<div style="max-width:800px;">
+<div style="max-width:1000px;">
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a>Query</a></li>
+        <li role="presentation"><a id="dataTab">Data</a></li>
+    </ul>
     <div class="block">
         <form class="form-inline" id="query_form" action="records.html" method="get">
             <input type="hidden" name="db">
@@ -355,28 +352,22 @@ $(document).ready(function() {
             </div>
             <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
         </form>
-        <div id="indexed">
-            <table id="example" class="table table-hover" style="width:100%;" >
-                <thead>
-                    <tr>
-                        <th>Query</th>
-                        <th>Period</th>
-                        <th>Last Date &amp; Time</th>
-                        <th>
-                        <div class="btn-group" data-toggle="buttons">
-                            <button class="btn btn-default btn-xs"><span class="fa fa-pencil-square-o"></span><input type="checkbox" id="manage"></button>
-                        </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <div id="manage">
-        <br/>
-        <button class="btn btn-warning btn-sm" id="updates"><span class="fa fa-cubes"></span> Manage Indexes</button>
-        <div/>
+        <table id="example" class="table table-hover" style="width:100%;">
+            <thead>
+                <tr>
+                    <th>Query</th>
+                    <th>Period</th>
+                    <th>Last Date &amp; Time</th>
+                    <th>
+                    <div class="btn-group" data-toggle="buttons">
+                        <button class="btn btn-default btn-xs"><span class="fa fa-pencil-square-o"></span><input type="checkbox" id="manage"></button>
+                    </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 </div>
 

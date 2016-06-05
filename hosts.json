@@ -2,7 +2,6 @@
     "pubmed": {
         "host": "localhost:5000",
         "name": "PubMed",
-        "showHistory": true,
         "minPeriod": "year",
         "dateTimeFormat": "YYYY",
         "intervalType": [
@@ -84,7 +83,6 @@
         "host": "localhost:5001",
         "name": "Twitter (Public Stream)",
         "allowEmptyQuery": true,
-        "showHistory": true,
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
         "intervalType": [
@@ -238,7 +236,6 @@
         "host": "localhost:5002",
         "name": "Ad-hoc Datasets",
         "beta": true,
-        "showHistory": true,
         "minPeriod": "second",
         "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
         "intervalType": [
