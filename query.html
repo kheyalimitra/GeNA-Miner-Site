@@ -106,8 +106,8 @@ $(document).ready(function() {
         $("#dbName").text("-- " + dbName);
         document.title = "GeNA Miner -- " + dbName;
 
-        var minPeriod = hosts[db].minPeriod;
-        var momentFormat = hosts[db].dateTimeFormat;
+        var minPeriod = hosts[db].query.minPeriod;
+        var momentFormat = hosts[db].query.dateTimeFormat;
 
         var table = $("#example").DataTable( {
             "ajax": {
@@ -154,10 +154,12 @@ $(document).ready(function() {
         });
 
         $('#example tbody').on('click', 'tr', function () {
-            $('tr.active').removeClass("active");
-            $(this).addClass('active');
+            if (table.rows().data().length > 0) {
+                $('tr.active').removeClass("active");
+                $(this).addClass('active');
 
-            $("#query").val(table.row($(this)).data()["query"]);
+                $("#query").val(table.row($(this)).data()["query"]);
+            }
         });
 
         $('#example tbody').on('click', 'button', function () {
@@ -236,7 +238,7 @@ $(document).ready(function() {
             sideBySide: true
         });
 
-        var allowEmptyQuery = hosts[db].allowEmptyQuery;
+        var allowEmptyQuery = hosts[db].query.allowEmptyQuery;
         if (allowEmptyQuery) {
             $("#query").attr("title", "Leave it empty to match all records").attr("placeholder", "Leave it empty to match all records")
         }

@@ -107,13 +107,98 @@ $(document).ready(function() {
         var host = hosts[db].host;
         var dbName = hosts[db].name;
 
+        var table = $("#example").DataTable( {
+            "ajax": {
+                "url": "http://" + host + "/data/load?token=" + token,
+                "dataType": "json"
+            },
+
+            "deferRender": true,
+            "paging": false,
+            "searching": false,
+            "ordering": false,
+            "scrollY": "800px",
+            "scrollCollapse": true,
+
+            "columns": [
+                {
+                    "width": "500px",
+                    "data": "index",
+                    "orderable": false
+                },
+                {
+                    "width": "500px",
+                    "data": "stat",
+                    "orderable": false
+                },
+            ],
+            "columnDefs": [
+                {
+                    "render": function(data, type, row) {
+                        return data.length == 0 ? '<span style="color: gray; font-style: italic;">&lt;All&gt;</span>' : data;
+                    },
+                    "targets": 0
+                }
+            ]
+        });
+
+        $('#example tbody').on('click', 'tr', function(e) {
+            if (table.rows().data().length > 0) {
+                $('tr.active').removeClass("active");
+                $(this).addClass('active');
+
+                $("#buttonDiv button").prop("disabled", false);
+            }
+        });
+
+        $('#remove').on('click', function() {
+            var data = table.row($("tr.active")).data();
+            var index = data["index"];
+            bootbox.dialog({
+                message: '\
+                    Are you sure you want to delete index <b>' + index + '</b>?<br/><br/>\
+                    <div class="panel panel-default">\
+                        <div class="panel-body">\
+                            <div class="form-inline">\
+                                <label class="control-label">Index:</label> <input id="deleteConfirm"type="text" class="form-control input-sm" style="width:250px"></input>\
+                            </div>\
+                        </div>\
+                        <div class="panel-footer">\
+                            <span class="help-block">Enter the exact index name to confirm. </span>\
+                        </div>\
+                    </div>\
+                    ',
+                title: "Confirm",
+                onEscape: function() {},
+                buttons: {
+                    cancel: {
+                        label: "Cancel",
+                        className: "btn-default"
+                    },
+                    danger: {
+                        label: '<span class="fa fa-trash-o"></span> Delete',
+                        className: "btn-danger",
+                        callback: function() {
+                            if ($("input#deleteConfirm").val() != index) {
+                                showAlert("You did not enter the correct index name.", "warning");
+                            }
+                            else {
+                                $.getJSON(
+                                    "http://" + host + "/data/delete?" + "token=" + token + "&index=" + index,
+                                    function(j){
+                                        table.ajax.reload();
+                                        showAlert("Index <b>"+ query + "</b> has been deleted.", "info");
+                                    }
+                                );
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
         $("#dbName").text("-- " + dbName);
         document.title = "GeNA Miner -- " + dbName;
-
-        var jsonp = hosts[db].jsonp;
-
-        var minPeriod = hosts[db].minPeriod;
-        var momentFormat = hosts[db].dateTimeFormat;
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
         $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
@@ -121,6 +206,18 @@ $(document).ready(function() {
         $('#queryTab').on('click', function() {
             window.location.href = 'query.html?db=' + db;
         });
+
+        if (hosts[db].data) {
+            if (hosts[db].data.allowAdd) {
+                $("#add").show()
+            }
+            if (hosts[db].data.allowUpdate) {
+                $("#update").show()
+            }
+            if (hosts[db].data.allowRemove) {
+                $("#remove").show()
+            }
+        }
     });
 });
 </script>
@@ -140,7 +237,7 @@ $(document).ready(function() {
         <li role="presentation" class="active"><a>Data</a></li>
     </ul>
     <div class="block">
-    <table id="indexTable" class="table table-hover" style="width:100%;">
+    <table id="example" class="table table-hover" style="width:100%;">
         <thead>
             <tr>
                 <th>Index</th>
@@ -150,10 +247,10 @@ $(document).ready(function() {
         <tbody>
         </tbody>
     </table>
-    <div style="text-align:right;">
-        <button class="btn btn-primary btn-sm" id="add"><span class="fa fa-file-o"></span> New</button>
-        <button class="btn btn-warning btn-sm" id="update"><span class="fa fa-upload"></span> Update</button>
-        <button class="btn btn-danger btn-sm" id="remove"><span class="fa fa-trash-o"></span> Remove</button>
+    <div id="buttonDiv" style="text-align:right;">
+        <button class="btn btn-primary btn-sm" disabled="disabled" id="add" style="display: none;"><span class="fa fa-file-o"></span> New</button>
+        <button class="btn btn-warning btn-sm" disabled="disabled" id="update" style="display: none;"><span class="fa fa-upload"></span> Update</button>
+        <button class="btn btn-danger btn-sm" disabled="disabled" id="remove" style="display: none;"><span class="fa fa-trash-o"></span> Remove</button>
     </div>
     </div>
 </div>

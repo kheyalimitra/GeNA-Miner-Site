@@ -2,8 +2,13 @@
     "pubmed": {
         "host": "localhost:5000",
         "name": "PubMed",
-        "minPeriod": "year",
-        "dateTimeFormat": "YYYY",
+        "query": {
+            "minPeriod": "year",
+            "dateTimeFormat": "YYYY"
+        },
+        "data": {
+            "allowRemove": true
+        },
         "intervalType": [
             {
                 "value": "year",
@@ -82,9 +87,11 @@
     "twitter": {
         "host": "localhost:5001",
         "name": "Twitter (Public Stream)",
-        "allowEmptyQuery": true,
-        "minPeriod": "second",
-        "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
+        "query": {
+            "allowEmptyQuery": true,
+            "minPeriod": "second",
+            "dateTimeFormat": "YYYY-MM-DD HH:mm:ss"
+        },
         "intervalType": [
             {
                 "value": "year",
@@ -115,7 +122,6 @@
                 "value": "second",
                 "text":  "Second"
             }
-
         ],
         "columns": [
             {
@@ -236,8 +242,15 @@
         "host": "localhost:5002",
         "name": "Ad-hoc Datasets",
         "beta": true,
-        "minPeriod": "second",
-        "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
+        "query": {
+            "minPeriod": "second",
+            "dateTimeFormat": "YYYY-MM-DD HH:mm:ss"
+        },
+        "data": {
+            "allowAdd": true,
+            "allowUpdate": true,
+            "allowRemove": true
+        },
         "intervalType": [
             {
                 "value": "year",
@@ -268,7 +281,6 @@
                 "value": "second",
                 "text":  "Second"
             }
-
         ]
     },
     "ncaa": {
