@@ -147,8 +147,6 @@ $(document).ready(function() {
         var host = hosts[db].host;
         var dbName = hosts[db].name;
 
-        var jsonp = hosts[db].jsonp;
-
         $("#queryPage").attr("title", dbName).attr("href", "query.html?db=" + db);
 
         var query = $.url().param('query');
@@ -233,8 +231,7 @@ $(document).ready(function() {
             $('#progress_wrapper').modal('show');
 
             $.ajax({
-                dataType: (jsonp ? "jsonp" : "json"),
-                jsonpCallback: "jsonpcallback_heatmap",
+                dataType: "json",
                 cache: true,
                 url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent((getFilterQuery() == "" ? "" : "(" + getFilterQuery() + ") AND ") + "_exists_:coordinates").replace(/%20/g, "+") + "&from=" + encodeURIComponent(yearFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(yearTo).replace(/%20/g, "+") + "&length=" + $('#geo_n').val() + "&raw=true",
                 success: function(raw_data) {
@@ -437,9 +434,8 @@ $(document).ready(function() {
             "serverSide": true,
             "ajax": {
                 "url": "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&from=" + encodeURIComponent(yearFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(yearTo).replace(/%20/g, "+"),
-                "dataType": (jsonp ? "jsonp" : "json"),
+                "dataType": "json",
                 cache: true,
-                jsonpCallback: "jsonpcallback_main", 
                 "error": function(reason) {
                     alert("Error occurred!");
                 }
@@ -557,8 +553,7 @@ $(document).ready(function() {
             $("input[name='query']").val(getFilterQuery());
 
             $.ajax({
-                dataType: (jsonp ? "jsonp" : "json"),
-                jsonpCallback: "jsonpcallback_validate",
+                dataType: "json",
                 cache: true,
                 url: "http://" + host + "/main/load/validate?token=" + token + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&search=" + encodeURIComponent($("#example_filter input").val()).replace(/%20/g, "+"), 
                 success: function(j) {
@@ -870,14 +865,13 @@ $(document).ready(function() {
 
         function updateThemeList() {
             $.ajax({
-                dataType: "jsonp",
-                jsonpCallback: "jsonpcallback_themelist",
+                dataType: "json",
                 url: "http://" + host + "/theme/file/list?token=" + token, 
                 success: function(j) {
                     list = j.data;
                     var options = '';
 
-                    toggleDisabled($("#theme_form button, #theme_othersdiv button"), list.length == 0);
+                    toggleDisabled($("#theme_list, #theme_form button, #theme_othersdiv button"), list.length == 0);
                     if (list.length > 0) {
                         for (var i = 0; i < list.length; i++) {
                             options += '<option value="' + list[i] + '">' + list[i] + '</option>';

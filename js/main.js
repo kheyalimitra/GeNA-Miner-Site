@@ -32,10 +32,5 @@ function showAlert(msg, type) {
 }
 
 function toggleDisabled(elem, disabled) {
-    if (disabled) {
-        elem.addClass("disabled");
-    }
-    else {
-        elem.removeClass("disabled");
-    }
+    elem.prop("disabled", disabled);
 }
