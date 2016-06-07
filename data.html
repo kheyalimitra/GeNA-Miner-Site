@@ -116,15 +116,11 @@ $(document).ready(function() {
             "deferRender": true,
             "paging": false,
             "searching": false,
-            "ordering": false,
-            "scrollY": "800px",
-            "scrollCollapse": true,
 
             "columns": [
                 {
                     "width": "500px",
-                    "data": "index",
-                    "orderable": false
+                    "data": "index"
                 },
                 {
                     "width": "500px",
@@ -132,6 +128,7 @@ $(document).ready(function() {
                     "orderable": false
                 },
             ],
+            "order": [[0, "asc"]],
             "columnDefs": [
                 {
                     "render": function(data, type, row) {
@@ -248,7 +245,7 @@ $(document).ready(function() {
         </tbody>
     </table>
     <div id="buttonDiv" style="text-align:right;">
-        <button class="btn btn-primary btn-sm" disabled="disabled" id="add" style="display: none;"><span class="fa fa-file-o"></span> New</button>
+        <button class="btn btn-primary btn-sm" id="add" style="display: none;"><span class="fa fa-file-o"></span> New</button>
         <button class="btn btn-warning btn-sm" disabled="disabled" id="update" style="display: none;"><span class="fa fa-upload"></span> Update</button>
         <button class="btn btn-danger btn-sm" disabled="disabled" id="remove" style="display: none;"><span class="fa fa-trash-o"></span> Remove</button>
     </div>

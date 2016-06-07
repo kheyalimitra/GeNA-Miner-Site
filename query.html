@@ -118,31 +118,27 @@ $(document).ready(function() {
             "deferRender": true,
             "paging": false,
             "searching": false,
-            "ordering": false,
-            "scrollY": "800px",
-            "scrollCollapse": true,
 
             "columns": [
                 {
                     "width": "500px",
-                    "data": "query",
-                    "orderable": false
+                    "data": "query"
                 },
                 {
                     "width": "340px",
                     "data": "stat",
-                    "orderable": false 
+                    "orderable": false
                 },
                 {
                     "width": "160px",
-                    "data": "dateTime",
-                    "orderable": false
+                    "data": "dateTime"
                 },
                 {
                     "orderable": false,
                     "defaultContent": '<button style="display: none;" class="btn btn-danger btn-xs"><span class="fa fa-trash-o"></span></button>'
                 }
             ],
+            "order": [[2, "desc"]],
             "columnDefs": [
                 {
                     "render": function(data, type, row) {
@@ -225,7 +221,7 @@ $(document).ready(function() {
         else if (minPeriod == "second") {
             $(".input-date").css("width", "140px");
 
-            $('#from').val(moment().utc().endOf('hour').subtract(2, "hours").subtract(1, "years").format(momentFormat));
+            $('#from').val(moment().utc().endOf('hour').subtract(2, "hours").subtract(1, "months").format(momentFormat));
             //$('#from').val("2014-11-21 20:00:00");
             $('#to').val(moment().utc().endOf('hour').subtract(2, "hours").format(momentFormat));
 
@@ -248,11 +244,6 @@ $(document).ready(function() {
 
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: 'body'});
         $("[title]").tooltip({placement: "top", html: true, container: 'body', trigger: "focus"});
-        table.on('draw.dt', function () {
-            if ($("div.dataTables_scrollBody").prop("scrollHeight") > $("div.dataTables_scrollBody").height()) {
-                $(".dataTables_scroll").attr("title", "Scroll to see more entries").attr("data-trigger", "manual").tooltip({placement: "bottom", html: true, container: 'body'}).tooltip("show");
-            }
-        } );
 
         $("#query").on("input", function() {
             if (this.value !== table.$("tr.active").val()) {
@@ -343,7 +334,7 @@ $(document).ready(function() {
         <form class="form-inline" id="query_form" action="records.html" method="get">
             <input type="hidden" name="db">
             <label class="control-label">Query: </label>
-            <input class="form-control input-sm" id="query" style="width:250px;" name="query" autocomplete="off">
+            <input class="form-control input-sm" id="query" style="width:400px;" name="query" autocomplete="off">
             <label class="control-label">Period: </label>
             <div class='input-group'>
                 <input class="form-control input-sm input-date" id="from" style="width:50px;" name="from" autocomplete="off" title="Greater than or equal to ">
