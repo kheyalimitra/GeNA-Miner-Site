@@ -103,12 +103,12 @@
             },
             {
                 "value": "week",
-                "text":  "Week"
+                "text":  "Week",
+                "default": true
             },
             {
                 "value": "day",
-                "text":  "Day",
-                "default": true
+                "text":  "Day"
             },
             {
                 "value": "hour",
@@ -236,7 +236,7 @@
         ],
         "order": [[1, "desc"]],
         "buttonGroups": [6, 6, 4],
-        "disableActions": ["theme", "trend"]
+        "disableActions": ["theme"]
     },
     "adhoc": {
         "host": "localhost:5002",
@@ -281,7 +281,8 @@
                 "value": "second",
                 "text":  "Second"
             }
-        ]
+        ],
+        "hiddenActions": ["trend", "theme", "topk", "topic", "heatmap"]
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",

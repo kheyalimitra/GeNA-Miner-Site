@@ -221,7 +221,7 @@ $(document).ready(function() {
         else if (minPeriod == "second") {
             $(".input-date").css("width", "140px");
 
-            $('#from').val(moment().utc().endOf('hour').subtract(2, "hours").subtract(1, "months").format(momentFormat));
+            $('#from').val(moment().utc().startOf('hour').subtract(1, "hours").subtract(1, "months").format(momentFormat));
             //$('#from').val("2014-11-21 20:00:00");
             $('#to').val(moment().utc().endOf('hour').subtract(2, "hours").format(momentFormat));
 

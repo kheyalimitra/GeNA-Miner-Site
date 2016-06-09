@@ -59,13 +59,7 @@ $(document).ready(function() {
             intervalType = 'Year';
         }
 
-        var img;
-        if (hosts[db].intervalType.length == 1) {
-            img = encodeURIComponent(query).replace(/%20/g, "+") + "_" + encodeURIComponent(dateFrom.replace(/:/g, ".")).replace(/%20/g, "+") + "-" + encodeURIComponent(dateTo.replace(/:/g, ".")).replace(/%20/g, "+") + "_interval=" + interval + ".svg";
-        }
-        else {
-            img = encodeURIComponent(query).replace(/%20/g, "+") + "_" + encodeURIComponent(dateFrom.replace(/:/g, ".")).replace(/%20/g, "+") + "-" + encodeURIComponent(dateTo.replace(/:/g, ".")).replace(/%20/g, "+") + "_interval=" + interval + "_intervaltype=" + intervalType + ".svg";
-        }
+        var img = encodeURIComponent(query).replace(/%20/g, "+") + "_" + encodeURIComponent(dateFrom.replace(/:/g, ".")).replace(/%20/g, "+") + "-" + encodeURIComponent(dateTo.replace(/:/g, ".")).replace(/%20/g, "+") + "_interval=" + interval + "_intervaltype=" + intervalType + ".svg";
 
         document.title = "GeNA Miner -- " + query + " " + dateFrom + "-" + dateTo + " -- #Publication Trend (Interval = " + interval + ", Interval Type = "+intervalType + ")";
         $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&from=" + encodeURIComponent(dateFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(dateTo).replace(/%20/g, "+")).attr("title", query + " (" + dateFrom + "-" + dateTo + ")");
