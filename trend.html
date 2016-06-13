@@ -21,6 +21,8 @@
 <script src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
 <!--<script src="static/js/jquery.dataTables.min.js"></script>-->
 
+<script src="static/js/sha1.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap.min.css">
 <script src="static/js/dataTables.bootstrap.min.js"></script>
 
@@ -59,7 +61,7 @@ $(document).ready(function() {
             intervalType = 'Year';
         }
 
-        var img = encodeURIComponent(query).replace(/%20/g, "+") + "_" + encodeURIComponent(dateFrom.replace(/:/g, ".")).replace(/%20/g, "+") + "-" + encodeURIComponent(dateTo.replace(/:/g, ".")).replace(/%20/g, "+") + "_interval=" + interval + "_intervaltype=" + intervalType + ".svg";
+        var img = sha1(query + "_" + dateFrom + "-" + dateTo + "_interval=" + interval + "_intervaltype=" + intervalType) + ".svg";
 
         document.title = "GeNA Miner -- " + query + " " + dateFrom + "-" + dateTo + " -- #Publication Trend (Interval = " + interval + ", Interval Type = "+intervalType + ")";
         $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&from=" + encodeURIComponent(dateFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(dateTo).replace(/%20/g, "+")).attr("title", query + " (" + dateFrom + "-" + dateTo + ")");
@@ -100,11 +102,11 @@ $(document).ready(function() {
 
             "columns": [
                 {
-                    "width": "70%",
+                    "width": "60%",
                     "data": "range",
                 },
                 {
-                    "width": "30%",
+                    "width": "40%",
                     "data": "count",
                 },
             ],
@@ -139,7 +141,7 @@ $(document).ready(function() {
 <h3>
 </h3>
 
-<div style="width:30%; float:left;">
+<div style="width:360px; float:left;">
     <div class="block">
     <table id="example" class="table table-hover" cellspacing="0" width="100%">
         <thead>
@@ -152,7 +154,7 @@ $(document).ready(function() {
     </table>
     </div>
 </div>
-<div style="width:70%; float:left; ">
+<div style="width:800px; float:left; ">
     <div class="block" align="center" style="position: fixed;">
         <img id="trendimg" style="max-width:100%; max-height:100%;">
     </div>

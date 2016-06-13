@@ -135,7 +135,7 @@ $(document).ready(function() {
                 },
                 {
                     "orderable": false,
-                    "defaultContent": '<button style="display: none;" class="btn btn-danger btn-xs"><span class="fa fa-trash-o"></span></button>'
+                    "defaultContent": '<button style="display: none;" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span></button>'
                 }
             ],
             "order": [[2, "desc"]],
@@ -155,6 +155,11 @@ $(document).ready(function() {
                 $(this).addClass('active');
 
                 $("#query").val(table.row($(this)).data()["query"]);
+
+                var stat = table.row($(this)).data()["stat"];
+                n = (stat.length - 1) / 2;
+                $("#from").val(stat.substring(0, n));
+                $("#to").val(stat.substring(n + 1, stat.length));
             }
         });
 
@@ -327,8 +332,8 @@ $(document).ready(function() {
     <h3>GeNA Miner <small id="dbName"></small></h3>
 <div style="max-width:1000px;">
     <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a>Query</a></li>
-        <li role="presentation"><a id="dataTab">Data</a></li>
+        <li role="presentation" class="active"><a><span class="fa fa-search"></span> Query</a></li>
+        <li role="presentation"><a id="dataTab"><span class="fa fa-database"></span> Data</a></li>
     </ul>
     <div class="block">
         <form class="form-inline" id="query_form" action="records.html" method="get">
@@ -343,7 +348,7 @@ $(document).ready(function() {
             <div class='input-group'>
                 <input class="form-control input-sm input-date" id="to" style="width:50px;" name="to" autocomplete="off" title="Less than or equal to ">
             </div>
-            <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-rocket"></span> Load</button>
+            <button class="btn btn-primary btn-sm" id="load" type="submit"><span class="fa fa-check"></span> Load</button>
         </form>
         <table id="example" class="table table-hover" style="width:100%;">
             <thead>
