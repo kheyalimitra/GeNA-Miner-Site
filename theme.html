@@ -70,17 +70,20 @@ $(document).ready(function() {
         if (!yearTo) {
             yearTo = new Date().getFullYear() - 1;
         }
-        var fileName = $.url().param('name');
-
         var interval = $.url().param('interval');
         if (!interval) {
-            interval = 1;
+            interval = 5;
         }
-        $("#interval").val(interval);
+        var intervalType = $.url().param('intervaltype');
+        if (!intervalType) {
+            intervalType = 'Year';
+        }
+
+        var fileName = $.url().param('name');
 
         document.title = "GeNA Miner -- " + query + " " + yearFrom + "-" + yearTo + " -- Themes (Dict. =  " + fileName + ")";
         $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + query.replace(/ /g, '+') + "&from=" + yearFrom + "&to=" + yearTo).attr("title", query + " (" + yearFrom + "-" + yearTo + ")");
-        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Themes (Dict. = " + fileName + ")</small>");
+        $("h3").html(query + " (" + yearFrom + "-" + yearTo + ") " + "<small>-- Themes (Interval = " + interval + ", Interval Type = " + intervalType + ", Dictionary = " + fileName + ")</small>");
 
  
         function truncate(str, maxLength, suffix) {
@@ -93,21 +96,22 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            dataType: "jsonp",
+            dataType: "json",
             cache: true,
-            jsonpCallback: "jsonpcallback",
-            url: "http://" + host + "/theme/load?token=" + token, 
-            data: { 
-                "query" : query.replace(/ /g, "+"), 
-                "from" : yearFrom, 
+            url: "http://" + host + "/theme/load?token=" + token,
+            data: {
+                "query" : query,
+                "from" : yearFrom,
                 "to" : yearTo,
+                "interval": interval,
+                "intervaltype": intervalType,
                 "name" : fileName
-            }, 
+            },
             success: function(raw) {
                 data = raw.data;
-                var start_year = raw.yearFrom;
-                var end_year = raw.yearTo;
-                var Ticks = (end_year - start_year)/interval;
+                var start_year = yearFrom;
+                var end_year = yearTo;
+                var Ticks = (end_year - start_year);
 
                 var margin = {top: 60, right: 200, bottom: 20, left: 20};
                 var xInterval = 50;
@@ -116,7 +120,7 @@ $(document).ready(function() {
 
                 var listvals=[];
                 for (var j=0; j<data.length; j++){
-                    var val = d3.min(data[j]['articles'], function(d) {return d[0];} )
+                    var val = d3.min(data[j]['ranges'], function(d) {return d[0];} )
                     listvals.push(val);
                 }
                 var min_year = d3.min(listvals);
@@ -135,11 +139,7 @@ $(document).ready(function() {
                     .orient("top");
 
                 var formatYears = d3.format("0000");
-                if (interval >= 2) {
-                    xAxis.tickFormat(function (d) { return formatYears(d) + "-" + formatYears(parseInt(d)+parseInt(interval)-1); });
-                } else {
-                    xAxis.tickFormat(formatYears);
-                }
+                xAxis.tickFormat(formatYears);
 
                 var svg = d3.select("#plot").append("svg")
                     .append("g");
@@ -151,7 +151,7 @@ $(document).ready(function() {
 
                 var listvals=[];
                 for (var j=0; j<data.length; j++){
-                    var val = d3.max(data[j]['articles'], function(d) {return d[1];} )
+                    var val = d3.max(data[j]['ranges'], function(d) {return d[1];} )
                     listvals.push(val);
                 }
 
@@ -159,7 +159,7 @@ $(document).ready(function() {
 
                 var listvals=[];
                 for (var j=0; j<data.length; j++){
-                    var val = d3.min(data[j]['articles'], function(d) {return d[1];} )
+                    var val = d3.min(data[j]['ranges'], function(d) {return d[1];} )
                     listvals.push(val);
                 }
 
@@ -177,12 +177,12 @@ $(document).ready(function() {
                     var g = svg.append("g").attr("class","journal");
 
                     var circles = g.selectAll("circle")
-                        .data(data[j]['articles'])
+                        .data(data[j]['ranges'])
                         .enter()
                         .append("circle");
 
                     var text = g.selectAll("text")
-                        .data(data[j]['articles'])
+                        .data(data[j]['ranges'])
                         .enter()
                         .append("text");
 
@@ -254,17 +254,6 @@ $(document).ready(function() {
             }
         });
 
-        $("#interval").change(function(){
-            var url = window.location.href;
-            var index = url.indexOf('&interval=');
-            if (index > -1){
-               url = url.substring(0, index) + "&interval=" + $(this).val();
-            } else {
-               url += "&interval=" + $(this).val();
-            }
-            window.location.href=url;
-        });
-
         $(".breadcrumb [title]").tooltip({placement: "bottom", html: true, container: '#plot'});
     });
 });
@@ -283,13 +272,6 @@ $(document).ready(function() {
 </h3>
     <div class="block" style="width:100%; float:left;">
         <div class="dataTables_length" id="interval_div">
-            <label class="control-label">Label Interval: </label>
-            <select id="interval" class="form-control input-sm" style="display:inline; width:60px;">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="5">5</option>
-              <option value="10">10</option>
-            </select>
             <span class="btn btn-sm disabled">Click to zoom and scroll to move</span>
         </div>
         <div id="plot" style="padding:10px;">

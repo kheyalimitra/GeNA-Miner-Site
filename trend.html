@@ -65,7 +65,7 @@ $(document).ready(function() {
 
         document.title = "GeNA Miner -- " + query + " " + dateFrom + "-" + dateTo + " -- #Publication Trend (Interval = " + interval + ", Interval Type = "+intervalType + ")";
         $("#parentPage").attr("href", "records.html?db=" + db + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&from=" + encodeURIComponent(dateFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(dateTo).replace(/%20/g, "+")).attr("title", query + " (" + dateFrom + "-" + dateTo + ")");
-        $("h3").html(query + " (" + dateFrom + "-" + dateTo + ") " + "<small>-- #Publication Trend (Interval = " + interval + ", Interval Type = " + intervalType + ")</small>");
+        $("h3").html(query + " (" + dateFrom + "-" + dateTo + ") " + "<small>-- #Entries Trend (Interval = " + interval + ", Interval Type = " + intervalType + ")</small>");
 
         var table = $('#example').DataTable( {
             dom: 'lfTrtip',

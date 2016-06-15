@@ -866,12 +866,12 @@ $(document).ready(function() {
         function updateThemeList() {
             $.ajax({
                 dataType: "json",
-                url: "http://" + host + "/theme/file/list?token=" + token, 
+                url: "http://" + host + "/theme/file/list?token=" + token,
                 success: function(j) {
                     list = j.data;
                     var options = '';
 
-                    toggleDisabled($("#theme_list, #theme_form button, #theme_othersdiv button"), list.length == 0);
+                    toggleDisabled($("#theme_list, #theme_submit, #theme_othersdiv button"), list.length == 0);
                     if (list.length > 0) {
                         for (var i = 0; i < list.length; i++) {
                             options += '<option value="' + list[i] + '">' + list[i] + '</option>';
@@ -907,11 +907,11 @@ $(document).ready(function() {
                         label: "<span class=\"fa fa-trash-o\"></span> Delete",
                         className: "btn-danger",
                         callback: function() {
-                            $.getJSON("http://" + host + "/theme/file/delete?token=" + token + "&callback=?", 
+                            $.getJSON("http://" + host + "/theme/file/delete?token=" + token,
                                 {
                                     "name": file
-                                }, 
-                                function(j){
+                                },
+                                function(j) {
                                     updateThemeList();
                                     showAlert("Dictionary <b>"+ file + "</b> has been deleted.", "info");
                                 }
@@ -933,20 +933,16 @@ $(document).ready(function() {
             showAlert("Dictionary <b>" + currFile + "</b> has been uploaded.", "info");
         });
         $("#theme_uploadinput").change(function() {
-            var currFile = this.value.split('\\').slice(-1);
-            if (currFile !== "") {
+            var currFile = this.value.split('\\').slice(-1)[0];
+
+            toggleDisabled($("#theme_uploadsubmit"), currFile.length == 0);
+            if (currFile.length > 0) {
                 $("#theme_uploadfile").html(currFile);
+                $("#theme_uploadsubmit").tooltip("show");
             }
             else {
                 $("#theme_uploadfile").html("No file chosen");
-            }
-
-            toggleDisabled($("#theme_uploadsubmit"), currFile == "");
-            if (currFile == "") {
                 $("#theme_uploadsubmit").tooltip("hide");
-            }
-            else {
-                $("#theme_uploadsubmit").tooltip("show");
             }
         });
         $("#theme_uploadfile").html("No file chosen");
@@ -980,32 +976,25 @@ $(document).ready(function() {
 <div class="block" id="form_div" style="width:100%;">
     <div id="form_divmask" style="position:absolute; z-index: 1000; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); "></div>
     <div class="actionblock" id="trendblock">
-        <form class="form-inline" id="trend_form" action="trend.html" method="get">
-            <input type="hidden" name="db"></input>
-            <input type="hidden" name="query"></input>
-            <input type="hidden" name="from"></input>
-            <input type="hidden" name="to"></input>
-            <label class="control-label">Interval: </label>
-            <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
-            <select class="form-control input-sm" id="trend_intervalType" name="intervaltype" style="width:75px; display:inline-block;">
-            </select>
-            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-bar-chart"></span> Trend</button>
-        </form>
-    </div>
-    <div class="actionblock" id="themeblock">
         <div style="display:inline-block;">
-            <form class="form-inline" id="theme_form" action="theme.html" method="get">
+            <form class="form-inline" id="trend_form" method="get">
                 <input type="hidden" name="db"></input>
                 <input type="hidden" name="query"></input>
                 <input type="hidden" name="from"></input>
                 <input type="hidden" name="to"></input>
+                <label class="control-label">Interval: </label>
+                <input class="form-control input-sm" id="trend_interval" style="width:50px;" maxlength="4" name="interval" title="Greater than or equal to 1"></input>
+                <select class="form-control input-sm" id="trend_intervalType" name="intervaltype" style="width:75px; display:inline-block;"></select>
+                |
+                <button class="btn btn-primary btn-sm" type="submit" formaction="trend.html"><span class="fa fa-bar-chart"></span> Trend</button>
+                |
                 <label class="control-label">Dictionary: </label>
                 <select class="form-control input-sm" id="theme_list" name="name" style="width:250px;"></select>
-                <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-pie-chart"></span> Visualize</button>
+                <button class="btn btn-primary btn-sm" id="theme_submit" type="submit" formaction="theme.html"><span class="fa fa-pie-chart"></span> Visualize</button>
+                :
             </form>
         </div>
         <div style="display:inline-block;">
-            |
             <div id="theme_othersdiv" style="display: inline-block;">
                 <button class="btn btn-info btn-sm" id="theme_view"  type="button"><span class="fa fa-download"></span> View</button>
                 <button class="btn btn-danger btn-sm" id="theme_delete"  type="button"><span class="fa fa-trash-o"></span> Delete</button>
