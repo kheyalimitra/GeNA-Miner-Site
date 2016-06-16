@@ -109,45 +109,32 @@ $(document).ready(function() {
             },
             success: function(raw) {
                 data = raw.data;
-                var start_year = yearFrom;
-                var end_year = yearTo;
-                var Ticks = (end_year - start_year);
 
-                var margin = {top: 60, right: 200, bottom: 20, left: 20};
+                var min_year = yearFrom;
+                var end_year = yearTo;
+                var Ticks = data[0]["ranges"].length;
+
+                var margin = {top: 80, right: 80, bottom: 80, left: 80};
                 var xInterval = 50;
                 var yInterval = 50;
                 var maxR = 20;
 
-                var listvals=[];
-                for (var j=0; j<data.length; j++){
-                    var val = d3.min(data[j]['ranges'], function(d) {return d[0];} )
-                    listvals.push(val);
-                }
-                var min_year = d3.min(listvals);
-
-                width = (end_year - min_year) * xInterval;
+                width = Ticks * xInterval;
                 height = data.length * yInterval;
 
                 var c = d3.scale.category20();
 
-                var x = d3.scale.linear()
-                    .range([0, width]);
+                var xScale = d3.scale.ordinal()
+                    .domain(data[0]["ranges"].map(function(d) { return d[0]; }))
+                    .rangeRoundPoints([0, width]);
 
                 var xAxis = d3.svg.axis()
-                    .scale(x)
                     .ticks(Ticks)
+                    .scale(xScale)
                     .orient("top");
-
-                var formatYears = d3.format("0000");
-                xAxis.tickFormat(formatYears);
 
                 var svg = d3.select("#plot").append("svg")
                     .append("g");
-
-                x.domain([min_year, end_year]);
-                var xScale = d3.scale.linear()
-                    .domain([min_year, end_year])
-                    .range([0, width]);
 
                 var listvals=[];
                 for (var j=0; j<data.length; j++){
@@ -235,14 +222,14 @@ $(document).ready(function() {
                 function zoomed() {
                     if (g.iszoomed) {
                         scale = 1;
-                        $("#plot svg").attr("width", width + 200);
-                        $("#plot svg").attr("height", height + 55);
+                        $("#plot svg").attr("width", width + 240);
+                        $("#plot svg").attr("height", height + 80);
 
                         $('#plot').scrollLeft($('#plot svg').width());
                     } else {
                         $("#plot svg").attr("width", "100%");
-                        scale = ($("#plot svg").width()) / (width + 200);
-                        $("#plot svg").attr("height", (height + 55) * scale);
+                        scale = ($("#plot svg").width()) / (width + 240);
+                        $("#plot svg").attr("height", (height + 80) * scale);
                     }
                     g.iszoomed = !g.iszoomed;
 
