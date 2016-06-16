@@ -40,3 +40,7 @@ function toggleDisabled(elem, disabled) {
     }
     elem.prop("disabled", disabled);
 }
+
+function toggleReadonly(elem, readonly) {
+    elem.prop("readonly", readonly);
+}
