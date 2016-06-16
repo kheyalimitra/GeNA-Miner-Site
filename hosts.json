@@ -235,8 +235,7 @@
             }
         ],
         "order": [[1, "desc"]],
-        "buttonGroups": [6, 6, 4],
-        "disableActions": ["theme"]
+        "buttonGroups": [6, 6, 4]
     },
     "adhoc": {
         "host": "localhost:5002",
@@ -281,8 +280,38 @@
                 "value": "second",
                 "text":  "Second"
             }
-        ],
-        "hiddenActions": ["trend", "theme", "topk", "topic", "heatmap"]
+        ]
+    },
+    "gofundme": {
+        "host": "localhost:5003",
+        "name": "GoFundMe",
+        "beta": true,
+        "query": {
+            "minPeriod": "day",
+            "dateTimeFormat": "YYYY-MM-DD"
+        },
+        "data": {
+            "allowRemove": true
+        },
+        "intervalType": [
+            {
+                "value": "year",
+                "text":  "Year"
+            },
+            {
+                "value": "month",
+                "text":  "Month"
+            },
+            {
+                "value": "week",
+                "text":  "Week"
+            },
+            {
+                "value": "day",
+                "text":  "Day",
+                "default": true
+            }
+        ]
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",
