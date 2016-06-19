@@ -1,7 +1,7 @@
 /**
- * Norwegian translation
- *  @name Norwegian
- *  @anchor Norwegian
+ * Norwegian Bokmål translation
+ *  @name Norwegian-Bokmal
+ *  @anchor Norwegian-Bokmal
  *  @author Petter Ekrann
  *  @author Vegard Johannessen
  */
@@ -25,7 +25,7 @@
 		"sPrevious": "Forrige",
 		"sNext": "Neste",
 		"sLast": "Siste"
-   	}
+   	},
    	"oAria": {
 		"sSortAscending": ": aktiver for å sortere kolonnen stigende",
 		"sSortDescending": ": aktiver for å sortere kolonnen synkende"

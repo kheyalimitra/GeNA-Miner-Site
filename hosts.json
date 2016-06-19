@@ -6,9 +6,6 @@
             "minPeriod": "year",
             "dateTimeFormat": "YYYY"
         },
-        "data": {
-            "allowRemove": true
-        },
         "intervalType": [
             {
                 "value": "year",
@@ -235,7 +232,8 @@
             }
         ],
         "order": [[1, "desc"]],
-        "buttonGroups": [6, 6, 4]
+        "buttonGroups": [6, 6, 4],
+        "noFilterToggle": true
     },
     "adhoc": {
         "host": "localhost:5002",
@@ -280,7 +278,8 @@
                 "value": "second",
                 "text":  "Second"
             }
-        ]
+        ],
+        "noFilterToggle": true
     },
     "gofundme": {
         "host": "localhost:5003",
@@ -291,7 +290,7 @@
             "dateTimeFormat": "YYYY-MM-DD"
         },
         "data": {
-            "allowRemove": true
+            "allowRefresh": true
         },
         "intervalType": [
             {
@@ -311,7 +310,136 @@
                 "text":  "Day",
                 "default": true
             }
-        ]
+        ],
+        "columns": [
+            {
+                "width": "90px",
+                "data": "crawled_date",
+                "title": "Crawled on",
+                "class": "all"
+            },
+            {
+                "width": "90px",
+                "data": "created_date",
+                "title": "Created on",
+                "class": "all"
+            },
+            {
+                "width": "10%",
+                "data": "created_by",
+                "title": "Created by",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "category",
+                "title": "Category",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "width": "20%",
+                "data": "title",
+                "title": "Title",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "width": "60px",
+                "data": "raised",
+                "title": "$Raised",
+                "class": "all"
+            },
+            {
+                "width": "60px",
+                "data": "goal",
+                "title": "$Goal",
+                "class": "all"
+            },
+            {
+                "width": "60px",
+                "data": "donations",
+                "title": "#Donations",
+                "class": "all"
+            },
+            {
+                "width": "60px",
+                "data": "shares",
+                "title": "#Shares",
+                "class": "all"
+            },
+            {
+                "width": "320px",
+                "data": "url",
+                "title": "URL",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "location",
+                "title": "Location",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "message",
+                "title": "Message",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "cover_favorites",
+                "title": "#Cover Favorites",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "photos",
+                "title": "#Photos",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "updates",
+                "title": "#Updates",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "comments",
+                "title": "#Comments",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "postal",
+                "title": "Postal",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "country",
+                "title": "Country",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "color",
+                "title": "Color Theme",
+                "class": "none",
+                "orderable": false
+            },
+            {
+                "data": "facebook_friends",
+                "title": "#FB Friends",
+                "class": "none",
+                "orderable": false
+            }
+        ],
+        "order": [[1, "desc"]],
+        "buttonGroups": [5, 6, 5, 4],
+        "hiddenActions": ["heatmap"],
+        "noFilterToggle": true
     },
     "ncaa": {
         "url": "http://gena-lab.chuancong.me:8000/",

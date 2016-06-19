@@ -493,10 +493,12 @@ $(document).ready(function() {
 
                 var groupCol = hosts[db].order[0][0];
 
+
+
                 api.column(groupCol, {page:'current'} ).data().each( function ( group, i ) {
                     if ( last !== group) {
                         $(rows).eq( i ).before(
-                            '<tr class="group"><td colspan="10"><b>' + hosts[db].columns[groupCol - 1].title + ': </b>'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
+                            '<tr class="group"><td colspan="' + hosts[db].columns.length + '"><b>' + hosts[db].columns[groupCol - 1].title + ': </b>'+ group+ " <span class=\"caret\"></span>" +'</td></tr>'
                         );
      
                         last = group;

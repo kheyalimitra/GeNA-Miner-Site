@@ -134,7 +134,7 @@ $(document).ready(function() {
                     "render": function(data, type, row) {
                         return data.length == 0 ? '<span style="color: gray; font-style: italic;">&lt;All Records&gt;</span>' : data;
                     },
-                    "targets": 0
+                    "targets": [0, 1]
                 }
             ]
         });
@@ -211,6 +211,9 @@ $(document).ready(function() {
             if (hosts[db].data.allowUpdate) {
                 $("#update").show()
             }
+            if (hosts[db].data.allowRefresh) {
+                $("#refresh").show()
+            }
             if (hosts[db].data.allowRemove) {
                 $("#remove").show()
             }
@@ -247,6 +250,7 @@ $(document).ready(function() {
     <div id="buttonDiv" style="text-align:right;">
         <button class="btn btn-primary btn-sm" id="add" style="display: none;"><span class="fa fa-file-o"></span> New</button>
         <button class="btn btn-warning btn-sm" disabled="disabled" id="update" style="display: none;"><span class="fa fa-upload"></span> Update</button>
+        <button class="btn btn-warning btn-sm" disabled="disabled" id="refresh" style="display: none;"><span class="fa fa-refresh"></span> Refresh</button>
         <button class="btn btn-danger btn-sm" disabled="disabled" id="remove" style="display: none;"><span class="fa fa-trash-o"></span> Remove</button>
     </div>
     </div>
