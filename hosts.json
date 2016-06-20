@@ -338,7 +338,6 @@
                 "orderable": false
             },
             {
-                "width": "20%",
                 "data": "title",
                 "title": "Title",
                 "class": "all",
@@ -369,7 +368,6 @@
                 "class": "all"
             },
             {
-                "width": "320px",
                 "data": "url",
                 "title": "URL",
                 "class": "all",

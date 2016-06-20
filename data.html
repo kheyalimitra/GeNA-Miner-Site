@@ -148,6 +148,36 @@ $(document).ready(function() {
             }
         });
 
+        $('#refresh').on('click', function() {
+            var data = table.row($("tr.active")).data();
+            var index = data["index"];
+            bootbox.dialog({
+                message: '\
+                    Are you sure you want to refresh index <b>' + index + '</b>?',
+                title: "Confirm",
+                onEscape: function() {},
+                buttons: {
+                    cancel: {
+                        label: "Cancel",
+                        className: "btn-default"
+                    },
+                    warning: {
+                        label: '<span class="fa fa-refresh"></span> Refresh',
+                        className: "btn-warning",
+                        callback: function() {
+                            $.getJSON(
+                                "http://" + host + "/data/refresh?" + "token=" + token + "&index=" + index,
+                                function(j){
+                                    table.ajax.reload();
+                                    showAlert("Index <b>"+ query + "</b> has been refreshed.", "info");
+                                }
+                            );
+                        }
+                    }
+                }
+            });
+        });
+
         $('#remove').on('click', function() {
             var data = table.row($("tr.active")).data();
             var index = data["index"];
@@ -251,7 +281,7 @@ $(document).ready(function() {
         <button class="btn btn-primary btn-sm" id="add" style="display: none;"><span class="fa fa-file-o"></span> New</button>
         <button class="btn btn-warning btn-sm" disabled="disabled" id="update" style="display: none;"><span class="fa fa-upload"></span> Update</button>
         <button class="btn btn-warning btn-sm" disabled="disabled" id="refresh" style="display: none;"><span class="fa fa-refresh"></span> Refresh</button>
-        <button class="btn btn-danger btn-sm" disabled="disabled" id="remove" style="display: none;"><span class="fa fa-trash-o"></span> Remove</button>
+        <button class="btn btn-danger btn-sm" disabled="disabled" id="remove" style="display: none;"><span class="fa fa-trash-o"></span> Delete</button>
     </div>
     </div>
 </div>

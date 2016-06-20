@@ -168,18 +168,7 @@ $(document).ready(function() {
             var query = data["query"];
             bootbox.dialog({
                 message: '\
-                    Are you sure you want to delete history query <b>' + query + '</b>?<br/><br/>\
-                    <div class="panel panel-default">\
-                        <div class="panel-body">\
-                            <div class="form-inline">\
-                                <label class="control-label">Query:</label> <input id="deleteConfirm"type="text" class="form-control input-sm" style="width:250px"></input>\
-                            </div>\
-                        </div>\
-                        <div class="panel-footer">\
-                            <span class="help-block">Enter the exact query name to confirm. </span>\
-                        </div>\
-                    </div>\
-                    ',
+                    Are you sure you want to delete history query <b>' + query + '</b>?',
                 title: "Confirm",
                 onEscape: function() {},
                 buttons: {
@@ -191,21 +180,17 @@ $(document).ready(function() {
                         label: '<span class="fa fa-trash-o"></span> Delete',
                         className: "btn-danger",
                         callback: function() {
-                            if ($("input#deleteConfirm").val() != query) {
-                                showAlert("You did not enter the correct history query name.", "warning");
-                            }
-                            else {
-                                $.getJSON("http://" + host + "/history/delete?" + "token=" + token,
-                                    {
-                                        "query": query,
-                                        "stat": data["stat"]
-                                    },
-                                    function(j){
-                                        table.ajax.reload();
-                                        showAlert("History query <b>"+ query + "</b> has been deleted.", "info");
-                                    }
-                                );
-                            }
+                            $.getJSON("http://" + host + "/history/delete?" + "token=" + token,
+                                {
+                                    "query": query,
+                                    "stat": data["stat"]
+                                },
+                                function(j){
+                                    table.ajax.reload();
+                                    $("#manageBtn").trigger("click");
+                                    showAlert("History query <b>"+ query + "</b> has been deleted.", "info");
+                                }
+                            );
                         }
                     }
                 }
@@ -368,7 +353,7 @@ $(document).ready(function() {
                     <th>Last Date &amp; Time</th>
                     <th>
                     <div class="btn-group" data-toggle="buttons">
-                        <button class="btn btn-default btn-xs"><span class="fa fa-pencil-square-o"></span><input type="checkbox" id="manage"></button>
+                        <button id="manageBtn" class="btn btn-default btn-xs"><span class="fa fa-pencil-square-o"></span><input type="checkbox" id="manage"></button>
                     </div>
                     </th>
                 </tr>
