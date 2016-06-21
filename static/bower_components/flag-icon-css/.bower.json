@@ -22,7 +22,6 @@
     "commit": "836eca11ecf437ae3d0f0c93dd245ab00d94cee1"
   },
   "_source": "https://github.com/lipis/flag-icon-css.git",
-  "_target": "^2.3.1",
-  "_originalSource": "flag-icon-css",
-  "_direct": true
+  "_target": "*",
+  "_originalSource": "flag-icon-css"
 }

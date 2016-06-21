@@ -43,6 +43,10 @@
 
 <link rel="stylesheet" type="text/css" href="static/css/flag-icon.min.css">
 
+<link rel="stylesheet" href="static/css/ladda-themeless.min.css">
+<script src="static/js/spin.min.js"></script>
+<script src="static/js/ladda.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <script src="js/main.js"></script>
 
@@ -241,14 +245,18 @@ $(document).ready(function() {
 
         function draw_heatmap() {
             $("#searchToggleButton").tooltip('hide');
-            $('#progress_wrapper').modal('show');
+            // $('#progress_wrapper').modal('show');
+            var l = Ladda.create($('#heatmapBtn')[0]);
+            l.start();
 
             $.ajax({
                 dataType: "json",
                 cache: true,
-                url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent((getFilterQuery() == "" ? "" : "(" + getFilterQuery() + ") AND ") + "_exists_:coordinates").replace(/%20/g, "+") + "&from=" + encodeURIComponent(yearFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(yearTo).replace(/%20/g, "+") + "&length=" + $('#geo_n').val() + "&raw=true",
+                url: "http://" + host + "/main/load?token=" + token + "&query=" + encodeURIComponent(getFilterQuery()).replace(/%20/g, "+") + "&from=" + encodeURIComponent(yearFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(yearTo).replace(/%20/g, "+") + "&length=" + $('#geo_n').val() + "&raw=true" + "&search=" + encodeURIComponent("_exists_:coordinates"),
                 success: function(raw_data) {
-                    $('#progress_wrapper').modal('hide');
+                    // $('#progress_wrapper').modal('hide');
+                    l.stop();
+
                     var heatmapData = [];
                     console.log(raw_data.data[1]);
                     for (i = 0; i < raw_data.data.length; i++) {
@@ -1066,7 +1074,7 @@ $(document).ready(function() {
             <input type="hidden" name="to"></input>
             <label class="control-label">#Coordinates: </label>
             <input class="form-control input-sm" id="geo_n" style="width:80px;" name="n" title="Greater than or equal to 1"></input>
-            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-globe"></span> Heatmap</button>
+            <button class="btn btn-primary btn-sm ladda-button" id="heatmapBtn" data-style="zoom-in" type="submit"><span class="ladda-label"><span class="fa fa-globe"></span> Heatmap</span></button>
         </form>
     </div>
     <div id="searchToggleDiv" class="btn-group" data-toggle="buttons">
@@ -1086,7 +1094,7 @@ $(document).ready(function() {
 
 <div class="modal" id="map_wrapper" tabindex="-1" role="dialog" aria-labelledby="map_wrapper_label" aria-hidden="true">
     <div class="modal-dialog" style="width: 800px; height: 600px; margin: auto; margin-top: 50px;">
-    <div id="map-panel" style="position: absolute; top: 4px; right: 100px; z-index: 100;">
+    <div id="map-panel" style="position: absolute; top: 10px; right: 10px; z-index: 100;">
         <div class="btn-group" data-toggle="buttons">
         <label id="markerButton" class="btn btn-xs btn-info"><span class="fa fa-map-marker"></span> Show Markers
             <input type="checkbox" id="marker">

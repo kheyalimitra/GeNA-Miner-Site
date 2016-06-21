@@ -28,6 +28,7 @@
     "d3": "*",
     "vega": "*",
     "awesomplete": "https://github.com/LeaVerou/awesomplete.git#gh-pages",
-    "flag-icon-css": "*"
+    "flag-icon-css": "*",
+    "ladda-bootstrap": "*"
   }
 }
