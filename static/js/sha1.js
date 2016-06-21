@@ -1,1 +1,1 @@
-../bower_components/phpjs/functions/strings/sha1.js
+../bower_components/phpjs/src/php/strings/sha1.js

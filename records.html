@@ -41,6 +41,8 @@
 
 <script src="static/js/rangyinputs-jquery.js"></script>
 
+<link rel="stylesheet" type="text/css" href="static/css/flag-icon.min.css">
+
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <script src="js/main.js"></script>
 
@@ -776,10 +778,10 @@ $(document).ready(function() {
                 $("#example tbody td:nth-child(7) a").attr("target", "_blank");
             }
 
-            $("a.url[title], a.place[title]").tooltip({placement: "bottom", html: true, container: 'body'});
+            $("a.url[title], a.place[title], a.region[title]").tooltip({placement: "bottom", html: true, container: 'body'});
         }).on('click', 'td.control', function () {
             setTimeout(function() {
-                $("tr.child a.user, tr.child a.place").each(function() {
+                $("tr.child a.user, tr.child a.place, tr.child a.region").each(function() {
                     $(this).attr("data-url", $(this).attr("href"));
                 }).removeAttr("href").click(function() {
                     window.open($(this).attr("data-url"), "", "width=" + $(this).attr("data-width") + ",height=" + $(this).attr("data-height"));

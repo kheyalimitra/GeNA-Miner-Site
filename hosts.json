@@ -128,14 +128,14 @@
                 "class": "all"
             },
             {
-                "width": "15%",
+                "width": "10%",
                 "data": "user_name",
                 "title": "User",
                 "class": "all",
                 "orderable": false
             },
             {
-                "width": "55%",
+                "width": "60%",
                 "data": "text",
                 "title": "Text",
                 "class": "all",
@@ -334,10 +334,12 @@
             {
                 "data": "category",
                 "title": "Category",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
                 "class": "all",
                 "orderable": false
             },
             {
+                "width": "20%",
                 "data": "title",
                 "title": "Title",
                 "class": "all",
@@ -368,14 +370,25 @@
                 "class": "all"
             },
             {
+                "width": "120px",
                 "data": "url",
                 "title": "URL",
                 "class": "all",
                 "orderable": false
             },
             {
+                "width": "10%",
                 "data": "location",
                 "title": "Location",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
+                "class": "all",
+                "orderable": false
+            },
+            {
+                "width": "30px",
+                "data": "country",
+                "title": "Country",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
                 "class": "all",
                 "orderable": false
             },
@@ -412,12 +425,7 @@
             {
                 "data": "postal",
                 "title": "Postal",
-                "class": "none",
-                "orderable": false
-            },
-            {
-                "data": "country",
-                "title": "Country",
+                "defaultContent": "<span class=\"missing\">n/a</span>",
                 "class": "none",
                 "orderable": false
             },
