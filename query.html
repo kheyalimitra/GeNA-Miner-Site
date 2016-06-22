@@ -121,7 +121,7 @@ $(document).ready(function() {
 
             "columns": [
                 {
-                    "width": "500px",
+                    "width": "375px",
                     "data": "query"
                 },
                 {
@@ -209,7 +209,7 @@ $(document).ready(function() {
             $('#to').attr("title", $('#to').attr("title") + (" last year"));
         }
         else if (minPeriod == "day") {
-            $(".input-date").css("width", "90px");
+            $(".input-date").css("width", "85px");
 
             $('#from').val(moment().utc().subtract(1, "months").format(momentFormat));
             //$('#from').val("2014-11-21 20:00:00");
@@ -219,7 +219,7 @@ $(document).ready(function() {
             $('#to').attr("title", $('#to').attr("title") + (" last second of two hours ago"));
         }
         else if (minPeriod == "second") {
-            $(".input-date").css("width", "140px");
+            $(".input-date").css("width", "135px");
 
             $('#from').val(moment().utc().startOf('hour').subtract(1, "hours").subtract(1, "months").format(momentFormat));
             //$('#from').val("2014-11-21 20:00:00");
@@ -325,7 +325,7 @@ $(document).ready(function() {
 <div class="beta-ribbon-wrapper"><div class="beta-ribbon"><a href="http://www.genalab.org/">GeNA Lab</a></div></div>
 <div class="container-fluid">
     <h3>GeNA Miner <small id="dbName"></small></h3>
-<div style="max-width:1000px;">
+<div style="max-width:880px;">
     <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a><span class="fa fa-search"></span> Query</a></li>
         <li role="presentation"><a id="dataTab"><span class="fa fa-database"></span> Data</a></li>

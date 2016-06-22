@@ -100,8 +100,7 @@ $(document).ready(function() {
             }, 
 
             "ajax": {
-                dataType: (jsonp ? "jsonp" : "json"),
-                jsonpCallback: "jsonpcallback",
+                dataType: "json",
                 url: "http://" + host + "/topk/load?token=" + token + "&query=" + encodeURIComponent(query).replace(/%20/g, "+") + "&from=" + encodeURIComponent(yearFrom).replace(/%20/g, "+") + "&to=" + encodeURIComponent(yearTo).replace(/%20/g, "+") + "&k=" + k + "&minlen=" + minLen + "&maxlen=" + maxLen,
                 cache: true,
             },

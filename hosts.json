@@ -313,13 +313,13 @@
         ],
         "columns": [
             {
-                "width": "90px",
+                "width": "80px",
                 "data": "crawled_date",
                 "title": "Crawled on",
                 "class": "all"
             },
             {
-                "width": "90px",
+                "width": "80px",
                 "data": "created_date",
                 "title": "Created on",
                 "class": "all"
@@ -332,6 +332,7 @@
                 "orderable": false
             },
             {
+                "width": "10%",
                 "data": "category",
                 "title": "Category",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
@@ -339,42 +340,35 @@
                 "orderable": false
             },
             {
-                "width": "20%",
+                "width": "25%",
                 "data": "title",
                 "title": "Title",
                 "class": "all",
                 "orderable": false
             },
             {
-                "width": "60px",
+                "width": "50px",
                 "data": "raised",
                 "title": "$Raised",
                 "class": "all"
             },
             {
-                "width": "60px",
+                "width": "50px",
                 "data": "goal",
                 "title": "$Goal",
                 "class": "all"
             },
             {
-                "width": "60px",
+                "width": "50px",
                 "data": "donations",
                 "title": "#Donations",
                 "class": "all"
             },
             {
-                "width": "60px",
+                "width": "50px",
                 "data": "shares",
                 "title": "#Shares",
                 "class": "all"
-            },
-            {
-                "width": "120px",
-                "data": "url",
-                "title": "URL",
-                "class": "all",
-                "orderable": false
             },
             {
                 "width": "10%",
@@ -390,6 +384,12 @@
                 "title": "Country",
                 "defaultContent": "<span class=\"missing\">n/a</span>",
                 "class": "all",
+                "orderable": false
+            },
+            {
+                "data": "url",
+                "title": "URL",
+                "class": "none",
                 "orderable": false
             },
             {
