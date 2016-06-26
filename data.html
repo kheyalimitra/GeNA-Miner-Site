@@ -249,19 +249,33 @@ $(document).ready(function() {
             }
         }
         $("#textcheck").change(function() {
-           if(this.checked) {
+           if (this.checked) {
                $("#titletext").prop('disabled', false);
+           }
+           else {
+               $("#titletext").val('');
+               $("#titletext").prop('disabled', true);
            }
         });
         $("#datetimecheck").change(function() {
-           if(this.checked) {
+           if (this.checked) {
                $("#datetimetext").prop('disabled', false);
                $("#datetimeformattext").prop('disabled', false);
            }
+           else {
+               $("#datetimetext").val('');
+               $("#datetimetext").prop('disabled', true);
+               $("#datetimeformattext").val('');
+               $("#datetimeformattext").prop('disabled', true);
+           }
         });
         $("#geolocationcheck").change(function() {
-           if(this.checked) {
+           if (this.checked) {
                $("#locationText").prop('disabled', false);
+           }
+           else {
+               $("#locationText").val('');
+               $("#locationText").prop('disabled', true);
            }
         });
         $('#submitNew').on('click', function() {
