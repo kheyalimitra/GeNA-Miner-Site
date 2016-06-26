@@ -145,6 +145,8 @@ $(document).ready(function() {
                 $(this).addClass('active');
 
                 $("#buttonDiv button").prop("disabled", false);
+                var index = table.row($(this)).data()["index"];
+                $("#adhocdata_uploadform").attr("action", "http://" + host + "/data/update?token=" + token + "&index=" + index);
             }
         });
 
@@ -248,62 +250,34 @@ $(document).ready(function() {
                 $("#remove").show()
             }
         }
-        $("#textcheck").change(function() {
-           if (this.checked) {
-               $("#titletext").prop('disabled', false);
-           }
-           else {
-               $("#titletext").val('');
-               $("#titletext").prop('disabled', true);
-           }
+        $('#update').click(function () {
+            $("#theme_uploaddiv").fadeIn(400);
+            $("#theme_uploadsubmit").prop('disabled', true);
         });
-        $("#datetimecheck").change(function() {
-           if (this.checked) {
-               $("#datetimetext").prop('disabled', false);
-               $("#datetimeformattext").prop('disabled', false);
-           }
-           else {
-               $("#datetimetext").val('');
-               $("#datetimetext").prop('disabled', true);
-               $("#datetimeformattext").val('');
-               $("#datetimeformattext").prop('disabled', true);
-           }
+        $("#theme_uploadblank").load(function(){
+            var currFile = $("#theme_uploadinput").val().split('\\').slice(-1);
+            showAlert("Dictionary <b>" + currFile + "</b> has been uploaded.", "info");
+            $('#uploadModal').hide();
         });
-        $("#geolocationcheck").change(function() {
-           if (this.checked) {
-               $("#locationText").prop('disabled', false);
-           }
-           else {
-               $("#locationText").val('');
-               $("#locationText").prop('disabled', true);
-           }
-        });
-        $('#submitNew').on('click', function() {
-            var indexVal = $("#indextext").val();
-            var idVal = $("#idtext").val();
-            var titleVal = $("#titletext").val();
-            var datetimeVal = $("#datetimetext").val();
-            var datetimeFormatVal = $("#datetimeformattext").val();
-            var geoVal = $("#locationText").val();
-            if (indexVal == '' || idVal == '') {
-                showAlert("You did not fill all required fileds.", "warning");
-                }
+       
+        $("#theme_uploadinput").change(function () {
+            var currFile = this.value.split('\\').slice(-1);
+            if (currFile !== "") {
+                $("#theme_uploadfile").html(currFile);
+                $("#theme_uploadsubmit").prop('disabled', false);
+            }
             else {
-                $.getJSON(
-                    "http://" + host + "/data/create?" + "token=" + token + "&index=" + indexVal+"&idCol=" + idVal +"&dateCol=" + datetimeVal+"&dateFormat=" + datetimeFormatVal+"&textCol=" + titleVal+"&geoCol=" + geoVal,
-                    function(j) {
-                        if (j.error != undefined) {
-                            showAlert("Index already exists", "error");
-                        }
-                       else {
-                            table.ajax.reload();
-                            showAlert("Information saved successfully.", "info");
-                            $('#newModal').modal('hide');
-                        }
-                    }
-                );
-            }              
-         });
+                $("#theme_uploadfile").html("No file chosen");
+            }
+            toggleDisabled($("#theme_uploadsubmit"), currFile == "");
+            if (currFile == "") {
+               $("#theme_uploadsubmit").tooltip("hide");
+            }
+            else {
+               $("#theme_uploadsubmit").tooltip("show");
+            }
+        });
+        $("#theme_uploadfile").html("No file chosen");
     });
 });
 </script>
@@ -334,64 +308,33 @@ $(document).ready(function() {
         </tbody>
     </table>
     <div id="buttonDiv" style="text-align:right;">
-        <button class="btn btn-primary btn-sm" id="add" style="display: none;" data-toggle="modal" data-target="#newModal"><span class="fa fa-file-o"></span> New</button>
-            <div class="modal fade" ID = "newModal" tabindex="-1" role="dialog" >
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" style="text-align: center">Please add following information related to your data</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <input type="text" class="form-control" id="indextext" placeholder="* Index">
-                                </div>
-                                <div class="col-xs-4">
-                                    <input type="text" class="form-control" id="idtext" placeholder="* Unique ID">
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <input type="checkbox"  id="textcheck" aria-label="...">
+       <button class="btn btn-primary btn-sm" id="add" style="display: none;"><span class="fa fa-file-o"></span> New</button> 
+       <button class="btn btn-warning btn-sm" disabled="disabled" id="update" style="display: none;" data-toggle="modal" data-target="#uploadModal"><span class="fa fa-upload"></span> Update</button>
+        <div class="modal fade" ID = "uploadModal" tabindex="-1" role="dialog" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe id="theme_uploadblank" name="uploadBlank" height="0" width="0" frameborder="0" scrolling="yes" style="display:none;"></iframe>
+                        <form class="form-inline" id="adhocdata_uploadform" name ="uploadForm" action ='' method="post" enctype="multipart/form-data" style="display:inline-block" target="uploadBlank">
+                            <div id="theme_uploaddiv" style="display: none;">
+                                <input value="http://localhost:8080/theme_upload.html" id="theme_uploadstatus" name="root" type="hidden">
+                                <div class="btn-group">
+                                    <button data-original-title="Upload the selected file" id="theme_uploadsubmit" disabled class="btn btn-warning btn-sm" type="submit" title="" ><span class="fa fa-upload"></span> Upload</button>
+                                        <span data-original-title="CSV file only" class="btn btn-default btn-sm btn-file" title="">
+                                        Browse ...
+                                            <input id="theme_uploadinput" name="file" accept=".csv" tabindex="0" type="file">
                                         </span>
-                                        <input type="text" class="form-control" id="titletext" placeholder="Text" disabled="disabled">
-                                    </div>
+                                        <span class="btn btn-sm disabled" id="theme_uploadfile">No file chosen</span>
                                 </div>
                             </div>
-                            <br/>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <input type="checkbox" id="datetimecheck"aria-label="...">
-                                        </span>     
-                                        <input type="text" class="form-control" id="datetimetext" placeholder="Date & Time" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <input type="text" class="form-control" id="datetimeformattext" placeholder="Format" disabled="disabled">
-                                </div>
-                           </div>
-                           <br/>
-                           <div class="row">
-                               <div class="col-lg-4">
-                                   <div class="input-group">
-                                       <span class="input-group-addon">
-                                           <input type="checkbox" id="geolocationcheck"aria-label="...">
-                                        </span>
-                                       <input type="text" class="form-control" id="locationText" placeholder="Geo Location" disabled="disabled">
-                                    </div>
-                                </div>
-                            </div>
-                       </div>
-                       <div class="modal-footer">
-                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                           <button type="button" class="btn btn-primary" id="submitNew">Submit</button>
-                        </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-        <button class="btn btn-warning btn-sm" disabled="disabled" id="update" style="display: none;"><span class="fa fa-upload"></span> Update</button>
         <button class="btn btn-warning btn-sm" disabled="disabled" id="refresh" style="display: none;"><span class="fa fa-refresh"></span> Refresh</button>
         <button class="btn btn-danger btn-sm" disabled="disabled" id="remove" style="display: none;"><span class="fa fa-trash-o"></span> Delete</button>
     </div>
